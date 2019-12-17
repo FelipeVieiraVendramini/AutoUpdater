@@ -1,14 +1,35 @@
-﻿using System;
+﻿#region Header and Copyright
+
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) Felipe Vieira Vendramini - All rights reserved
+// The copy or distribution of this file or software without the original lines of this header is extrictly
+// forbidden. This code is public and free as is, and if you alter anything you can insert your name
+// in the fields below.
+// 
+// AutoUpdater - AutoUpdaterCore - Passport.cs
+// 
+// Description: <Write a description for this file>
+// 
+// Colaborators who worked in this file:
+// Felipe Vieira Vendramini
+// 
+// Developed by:
+// Felipe Vieira Vendramini <service@ftwmasters.com.br>
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#endregion
+
+using System;
 using System.Net;
 using System.Net.Sockets;
-using Core.Interfaces;
+using AutoUpdaterCore.Interfaces;
 
-namespace Core.Sockets
+namespace AutoUpdaterCore.Sockets
 {
     /// <summary>
-    /// This class contains the player's network passport information, which includes the remote client socket, 
-    /// packet buffer, player's IP address, a collection of variables for processing packets from the client, and 
-    /// methods used for sending and processing packets.
+    ///     This class contains the player's network passport information, which includes the remote client socket,
+    ///     packet buffer, player's IP address, a collection of variables for processing packets from the client, and
+    ///     methods used for sending and processing packets.
     /// </summary>
     public unsafe class Passport
     {
@@ -23,9 +44,9 @@ namespace Core.Sockets
         public object SendLock { get; private set; } // The lock for sending packets in sequence to the client.
 
         /// <summary>
-        /// This class contains the player's network passport information, which includes the remote client socket, 
-        /// packet buffer, player's IP address, a collection of variables for processing packets from the client, and 
-        /// methods used for sending and processing packets.
+        ///     This class contains the player's network passport information, which includes the remote client socket,
+        ///     packet buffer, player's IP address, a collection of variables for processing packets from the client, and
+        ///     methods used for sending and processing packets.
         /// </summary>
         /// <param name="server">The server the client is currently connected to.</param>
         /// <param name="socket">The client's remote socket.</param>
@@ -40,9 +61,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This function sends a packet to the client using the client's remote socket defined above. The 
-        /// packet is encrypted using the client's selected cipher algorithm and sent through the client's remote
-        /// socket. If the server has a footer, it will write that footer to the end of the packet.
+        ///     This function sends a packet to the client using the client's remote socket defined above. The
+        ///     packet is encrypted using the client's selected cipher algorithm and sent through the client's remote
+        ///     socket. If the server has a footer, it will write that footer to the end of the packet.
         /// </summary>
         /// <param name="packet">The packet being encrypted and sent to the client.</param>
         public int Send(byte[] packet)
@@ -56,8 +77,10 @@ namespace Core.Sockets
                     // Add the footer to the end of the packet:
                     if (Server.FooterLength > 0)
                         fixed (byte* packetPtr = send)
+                        {
                             NativeFunctionCalls.memcpy(packetPtr + send.Length - 8,
                                 Server.Footer, Server.FooterLength);
+                        }
 
                     // Encrypt the packet and attempt to send it to the client:
                     byte[] encryptedPacket = Cipher != null ? Cipher.Encrypt(send, send.Length) : send;
@@ -81,10 +104,10 @@ namespace Core.Sockets
             }
         }
 
-        /// <summary> 
-        /// This method disconnects the client's remote socket, allowing for a natural disconnect. The socket is not
-        /// reused for new connections to the server. If the socket has already been disconnected, this function will 
-        /// catch the socket error and not allow it to run the disconnect function twice.
+        /// <summary>
+        ///     This method disconnects the client's remote socket, allowing for a natural disconnect. The socket is not
+        ///     reused for new connections to the server. If the socket has already been disconnected, this function will
+        ///     catch the socket error and not allow it to run the disconnect function twice.
         /// </summary>
         public void Disconnect()
         {
@@ -102,10 +125,6 @@ namespace Core.Sockets
                     e.SocketErrorCode != SocketError.ConnectionAborted &&
                     e.SocketErrorCode != SocketError.Shutdown)
                     Console.WriteLine(e);
-            }
-            finally
-            {
-                
             }
         }
     }

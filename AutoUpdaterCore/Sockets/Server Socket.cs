@@ -1,15 +1,36 @@
-﻿using System;
+﻿#region Header and Copyright
+
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) Felipe Vieira Vendramini - All rights reserved
+// The copy or distribution of this file or software without the original lines of this header is extrictly
+// forbidden. This code is public and free as is, and if you alter anything you can insert your name
+// in the fields below.
+// 
+// AutoUpdater - AutoUpdaterCore - Server Socket.cs
+// 
+// Description: <Write a description for this file>
+// 
+// Colaborators who worked in this file:
+// Felipe Vieira Vendramini
+// 
+// Developed by:
+// Felipe Vieira Vendramini <service@ftwmasters.com.br>
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#endregion
+
+using System;
 using System.Net;
 using System.Net.Sockets;
-using Core.Interfaces;
-using Core.Sockets.Packets;
+using AutoUpdaterCore.Interfaces;
+using AutoUpdaterCore.Sockets.Packets;
 
-namespace Core.Sockets
+namespace AutoUpdaterCore.Sockets
 {
     /// <summary>
-    /// The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect 
-    /// to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous 
-    /// packet processing requests. The class must be inherited with defined socket events to be implemented.
+    ///     The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect
+    ///     to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous
+    ///     packet processing requests. The class must be inherited with defined socket events to be implemented.
     /// </summary>
     public abstract unsafe class AsynchronousServerSocket : Socket, IAsynchronousSocket
     {
@@ -39,9 +60,9 @@ namespace Core.Sockets
         public const int MAX_PACKET_ID = 11000; // The largest possible packet identity of a data packet.
 
         /// <summary>
-        /// The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect 
-        /// to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous 
-        /// packet processing requests. The class must be inherited with defined socket events to be implemented.
+        ///     The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect
+        ///     to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous
+        ///     packet processing requests. The class must be inherited with defined socket events to be implemented.
         /// </summary>
         /// <param name="name">The name of the server.</param>
         /// <param name="family">Specifies the addressing scheme that the socket instance will use.</param>
@@ -53,14 +74,14 @@ namespace Core.Sockets
             Name = name;
             FooterLength = 0;
             Footer = "";
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
         }
 
         /// <summary>
-        /// The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect 
-        /// to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous 
-        /// packet processing requests. The class must be inherited with defined socket events to be implemented.
+        ///     The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect
+        ///     to the server and process packets. It makes use of Microsoft's .NET socket class to control asynchronous
+        ///     packet processing requests. The class must be inherited with defined socket events to be implemented.
         /// </summary>
         /// <param name="name">The name of the server.</param>
         /// <param name="footer">The footer for each packet.</param>
@@ -74,27 +95,27 @@ namespace Core.Sockets
             Name = name;
             FooterLength = footer.Length;
             Footer = footer;
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
         }
 
         /// <summary>
-        /// This method sets the IP protection level of the socket and initializes the brute-force attack protection
-        /// system for the socket. This method does not need to be called to initialize the socket. If skipped,
-        /// there will be no brute-force attack protection on the socket (dangerous).
+        ///     This method sets the IP protection level of the socket and initializes the brute-force attack protection
+        ///     system for the socket. This method does not need to be called to initialize the socket. If skipped,
+        ///     there will be no brute-force attack protection on the socket (dangerous).
         /// </summary>
         /// <param name="protectionLevel">Specifies the restriction of the socket to a specified IP scope.</param>
         /// <param name="maximum">The maximum amount of connections from one IP address per minute.</param>
         /// <param name="banTime">The amount of time a player is banned for after a brute-force attack in minutes.</param>
         public void SetSecurity(IPProtectionLevel protectionLevel, uint maximum, uint banTime)
         {
-            base.SetIPProtectionLevel(protectionLevel);
+            SetIPProtectionLevel(protectionLevel);
         }
 
         /// <summary>
-        /// This method associates the socket with an IP address and a port. It does this by creating an IP endpoint
-        /// using the address and port, then assigning that IP endpoint to the socket. Only one socket can be
-        /// bound to an IP address and port at the same time.
+        ///     This method associates the socket with an IP address and a port. It does this by creating an IP endpoint
+        ///     using the address and port, then assigning that IP endpoint to the socket. Only one socket can be
+        ///     bound to an IP address and port at the same time.
         /// </summary>
         /// <param name="ipAddress">The IP address the socket will bind and listen to.</param>
         /// <param name="port">The port the socket will bind to.</param>
@@ -115,8 +136,8 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method places the socket into the listening socket state. It listens with a backlog of the
-        /// specified amount and starts accepting incoming connections.
+        ///     This method places the socket into the listening socket state. It listens with a backlog of the
+        ///     specified amount and starts accepting incoming connections.
         /// </summary>
         /// <param name="backlog">The maximum length of the pending connections queue.</param>
         public new void Listen(int backlog)
@@ -134,9 +155,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method begins accepting a client from the pending connections queue. In this method, the client is
-        /// created and the IP address is checked for brute-force attacks. If the client is validated, then the server
-        /// will begin receiving data packets from the client.
+        ///     This method begins accepting a client from the pending connections queue. In this method, the client is
+        ///     created and the IP address is checked for brute-force attacks. If the client is validated, then the server
+        ///     will begin receiving data packets from the client.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void AcceptConnection(IAsyncResult result)
@@ -176,12 +197,6 @@ namespace Core.Sockets
                         clientSocket.Disconnect(false);
                     }
                 }
-                else
-                {
-                    // The connection wasn't authenticated, this connection is most likely part of a 
-                    // brute-force attack on the server's cipher algorithms. Kill the connection.
-
-                }
             }
             catch (SocketException e)
             {
@@ -200,9 +215,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method begins the client and server key exchange. The client sends key exchange data first, which is
-        /// picked up by the server in this socket event and processed. Then, the exchange packet is sent back to the
-        /// client so both the client and server have matching cipher keys, and packets are sent to the server.
+        ///     This method begins the client and server key exchange. The client sends key exchange data first, which is
+        ///     picked up by the server in this socket event and processed. Then, the exchange packet is sent back to the
+        ///     client so both the client and server have matching cipher keys, and packets are sent to the server.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void PrepareReceive(IAsyncResult result)
@@ -227,7 +242,10 @@ namespace Core.Sockets
                         state.Socket.BeginReceive(state.Buffer, 0, sizeof(PacketHeader),
                             SocketFlags.None, AnnounceReceive, state);
                     }
-                    else state.Socket.Disconnect(false);
+                    else
+                    {
+                        state.Socket.Disconnect(false);
+                    }
                 }
                 catch (SocketException e)
                 {
@@ -251,9 +269,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method begins the receiving of a packet from the client's socket. It receives the first four bytes
-        /// of a packet, then requests to receive the body of the packet. If the length of the packet is less than
-        /// the length of the packet header, the client will be disconnected from the server.
+        ///     This method begins the receiving of a packet from the client's socket. It receives the first four bytes
+        ///     of a packet, then requests to receive the body of the packet. If the length of the packet is less than
+        ///     the length of the packet header, the client will be disconnected from the server.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void AnnounceReceive(IAsyncResult result)
@@ -287,13 +305,13 @@ namespace Core.Sockets
                         // Assign the packet header and process the header:
                         fixed (byte* bufferPtr = buffer)
                         {
-                            header = *(PacketHeader*)bufferPtr;
+                            header = *(PacketHeader*) bufferPtr;
                         }
 
                         passport.ExpectedReceiveLength = header.Length - sizeof(PacketHeader) + FooterLength;
 
                         // Is the expected length and identity reasonable?
-                        if (passport.ExpectedReceiveLength > MAX_PACKET_SIZE || (int)header.Identity > MAX_PACKET_ID)
+                        if (passport.ExpectedReceiveLength > MAX_PACKET_SIZE || (int) header.Identity > MAX_PACKET_ID)
                         {
                             // The expected length requested by the client isn't reasonable. Disconnect the client.
                             passport.Disconnect();
@@ -306,7 +324,7 @@ namespace Core.Sockets
                         passport.Packet = new byte[passport.ExpectedReceiveLength + sizeof(PacketHeader)];
                         fixed (byte* packetPtr = passport.Packet)
                         {
-                            *(PacketHeader*)packetPtr = header;
+                            *(PacketHeader*) packetPtr = header;
                         }
 
                         // Request the body of the packet:
@@ -342,11 +360,11 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method completes the receiving of a packet from the client's socket. It attempts to receive the 
-        /// remaining bytes of a packet, then requests to receive the header of the next packet. If the length of 
-        /// the packet is zero, the client will be disconnected from the server. If the length of the buffer is
-        /// not the expected length, then the packet is a fragment and the server will attempt to receive the
-        /// completed packet again.
+        ///     This method completes the receiving of a packet from the client's socket. It attempts to receive the
+        ///     remaining bytes of a packet, then requests to receive the header of the next packet. If the length of
+        ///     the packet is zero, the client will be disconnected from the server. If the length of the buffer is
+        ///     not the expected length, then the packet is a fragment and the server will attempt to receive the
+        ///     completed packet again.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void CompleteReceive(IAsyncResult result)
@@ -363,15 +381,14 @@ namespace Core.Sockets
                     {
                         // Decrypt the packet body and assign variables:
                         if (passport.Cipher != null)
-                        {
                             passport.Cipher.Decrypt(passport.Packet, state.Buffer, length,
                                 passport.CurrentWritePosition);
-                        }
                         else
-                        {
                             fixed (byte* packet = passport.Packet)
-                                NativeFunctionCalls.memcpy(packet + passport.CurrentWritePosition, state.Buffer, length);
-                        }
+                            {
+                                NativeFunctionCalls.memcpy(packet + passport.CurrentWritePosition, state.Buffer,
+                                    length);
+                            }
 
                         int difference = passport.ExpectedReceiveLength - length;
 
@@ -430,9 +447,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method is called once a previously connected and authenticated client has been disconnected 
-        /// from the server. The method calls the disconnect socket event to dispose of the client's initialized
-        /// game structures.
+        ///     This method is called once a previously connected and authenticated client has been disconnected
+        ///     from the server. The method calls the disconnect socket event to dispose of the client's initialized
+        ///     game structures.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void Disconnect(IAsyncResult result)
@@ -443,9 +460,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method is called once a previously connected and authenticated client has been disconnected 
-        /// from the server. The method calls the disconnect socket event to dispose of the client's initialized
-        /// game structures.
+        ///     This method is called once a previously connected and authenticated client has been disconnected
+        ///     from the server. The method calls the disconnect socket event to dispose of the client's initialized
+        ///     game structures.
         /// </summary>
         /// <param name="state">Represents the status of an asynchronous operation.</param>
         public void Disconnect(AsynchronousState state)

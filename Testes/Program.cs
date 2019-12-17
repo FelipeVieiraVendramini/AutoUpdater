@@ -1,5 +1,8 @@
 ﻿using System;
-using Core.Sockets.Packets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Testes
 {
@@ -7,15 +10,6 @@ namespace Testes
     {
         static void Main(string[] args)
         {
-            MsgRequestInfo msg = new MsgRequestInfo();
-            msg.Create(AutoUpdateRequestType.CheckForGameUpdates);
-            Console.WriteLine(PacketDump.Hex(msg));
-
-            MsgRequestInfo decode = new MsgRequestInfo(msg);
-            Console.WriteLine(PacketDump.Hex(msg));
-
-            Console.WriteLine("Hello World!");
-            Console.ReadLine();
         }
     }
 }

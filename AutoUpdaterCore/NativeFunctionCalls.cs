@@ -1,11 +1,33 @@
-﻿using System.Runtime.InteropServices;
+﻿#region Header and Copyright
 
-namespace Core
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) Felipe Vieira Vendramini - All rights reserved
+// The copy or distribution of this file or software without the original lines of this header is extrictly
+// forbidden. This code is public and free as is, and if you alter anything you can insert your name
+// in the fields below.
+// 
+// AutoUpdater - AutoUpdaterCore - NativeFunctionCalls.cs
+// 
+// Description: <Write a description for this file>
+// 
+// Colaborators who worked in this file:
+// Felipe Vieira Vendramini
+// 
+// Developed by:
+// Felipe Vieira Vendramini <service@ftwmasters.com.br>
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#endregion
+
+using System.Runtime.InteropServices;
+
+namespace AutoUpdaterCore
 {
     /// <summary>
-    /// This container provides the servers with platform invocation services (PInvokes) that enables managed code in C# to
-    /// call C-style functions during runtime. The results of these functions should be monitored by the programmer. They can
-    /// cause memory leaks.
+    ///     This container provides the servers with platform invocation services (PInvokes) that enables managed code in C# to
+    ///     call C-style functions during runtime. The results of these functions should be monitored by the programmer. They
+    ///     can
+    ///     cause memory leaks.
     /// </summary>
     public static unsafe class NativeFunctionCalls
     {
@@ -16,20 +38,20 @@ namespace Core
         /// <summary> Allocates a location in memory. </summary>
         /// <param name="size">The length of data to be allocated.</param>
         [DllImport(MSVCRT, CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern unsafe void* malloc(int size);
+        public static extern void* malloc(int size);
 
-        /// <summary> 
-        /// Allocates a block of memory for an array of num elements, each of them size bytes long, and 
-        /// initializes all its bits to zero. 
+        /// <summary>
+        ///     Allocates a block of memory for an array of num elements, each of them size bytes long, and
+        ///     initializes all its bits to zero.
         /// </summary>
         /// <param name="size">The length of data to be allocated.</param>
         [DllImport(MSVCRT, CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern unsafe void* calloc(int size);
+        public static extern void* calloc(int size);
 
         /// <summary> Deallocates a location in memory. </summary>
         /// <param name="memblock">The address location to deallocate.</param>
         [DllImport(MSVCRT, CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern unsafe void free(void* memblock);
+        public static extern void free(void* memblock);
 
         /// <summary> Replaces the value of a location in memory with an initialization value.</summary>
         /// <param name="dst">The destination of the data being replaced.</param>
@@ -98,7 +120,7 @@ namespace Core
         /// <param name="ptr">Pointer to a memory block previously allocated with malloc, calloc or realloc to be reallocated.</param>
         /// <param name="size">New size for the memory block, in bytes.</param>
         [DllImport(MSVCRT, CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-        public static extern unsafe void* realloc(void* ptr, int size);
+        public static extern void* realloc(void* ptr, int size);
 
         /// <summary> Sets the starting seed value for the pseudorandom number generator. </summary>
         /// <param name="seed">Seed for pseudorandom number generation.</param>

@@ -1,14 +1,35 @@
-﻿using System;
-using System.Net.Sockets;
-using Core.Interfaces;
-using Core.Sockets.Packets;
+﻿#region Header and Copyright
 
-namespace Core.Sockets
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) Felipe Vieira Vendramini - All rights reserved
+// The copy or distribution of this file or software without the original lines of this header is extrictly
+// forbidden. This code is public and free as is, and if you alter anything you can insert your name
+// in the fields below.
+// 
+// AutoUpdater - AutoUpdaterCore - Client Socket.cs
+// 
+// Description: <Write a description for this file>
+// 
+// Colaborators who worked in this file:
+// Felipe Vieira Vendramini
+// 
+// Developed by:
+// Felipe Vieira Vendramini <service@ftwmasters.com.br>
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#endregion
+
+using System;
+using System.Net.Sockets;
+using AutoUpdaterCore.Interfaces;
+using AutoUpdaterCore.Sockets.Packets;
+
+namespace AutoUpdaterCore.Sockets
 {
     /// <summary>
-    /// The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a 
-    /// server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous 
-    /// packet processing requests. 
+    ///     The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a
+    ///     server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous
+    ///     packet processing requests.
     /// </summary>
     public unsafe class AsynchronousClientSocket : Socket, IAsynchronousSocket
     {
@@ -37,9 +58,9 @@ namespace Core.Sockets
         public const int MAX_PACKET_SIZE = 2048; // The largest possible length of a data packet.
 
         /// <summary>
-        /// The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a 
-        /// server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous 
-        /// packet processing requests. 
+        ///     The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a
+        ///     server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous
+        ///     packet processing requests.
         /// </summary>
         /// <param name="name">The name of the client.</param>
         /// <param name="family">Specifies the addressing scheme that the socket instance will use.</param>
@@ -51,14 +72,14 @@ namespace Core.Sockets
             Name = name;
             FooterLength = 0;
             Footer = "";
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
         }
 
         /// <summary>
-        /// The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a 
-        /// server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous 
-        /// packet processing requests. 
+        ///     The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a
+        ///     server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous
+        ///     packet processing requests.
         /// </summary>
         /// <param name="name">The name of the client.</param>
         /// <param name="family">Specifies the addressing scheme that the socket instance will use.</param>
@@ -71,17 +92,17 @@ namespace Core.Sockets
             Name = name;
             FooterLength = 0;
             Footer = "";
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
             OnClientConnect = new AsynchronousConnect(connect);
             OnClientDisconnect = new AsynchronousDisconnect(disconnect);
             OnClientReceive = new AsynchronousReceive(receive);
         }
 
         /// <summary>
-        /// The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a 
-        /// server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous 
-        /// packet processing requests. 
+        ///     The asynchronous client class encapsulates an asynchronous client socket. It allows the client to connect to a
+        ///     server and process packets asynchronously. It makes use of Microsoft's .NET socket class to control asynchronous
+        ///     packet processing requests.
         /// </summary>
         /// <param name="name">The name of the client.</param>
         /// <param name="footer">The footer for each packet.</param>
@@ -95,14 +116,14 @@ namespace Core.Sockets
             Name = name;
             FooterLength = footer.Length;
             Footer = footer;
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            base.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
         }
 
         /// <summary>
-        /// This method associates the socket with an IP address and a port. It does this by creating an IP endpoint using
-        /// the local address and port, and requesting a remote IP endpoint using the specified IP address and port. It 
-        /// will make an attempt to connect to the server specified.
+        ///     This method associates the socket with an IP address and a port. It does this by creating an IP endpoint using
+        ///     the local address and port, and requesting a remote IP endpoint using the specified IP address and port. It
+        ///     will make an attempt to connect to the server specified.
         /// </summary>
         /// <param name="ip">The IP address the client will attempt to connect to.</param>
         /// <param name="port">The port the socket will connect to.</param>
@@ -125,9 +146,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method completes the connection attempt. If the attempt failed, an exception will be thrown; else,
-        /// the connection event will be called and the client will begin sending data to and receiving data from the 
-        /// connected server.
+        ///     This method completes the connection attempt. If the attempt failed, an exception will be thrown; else,
+        ///     the connection event will be called and the client will begin sending data to and receiving data from the
+        ///     connected server.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         private void CompleteConnect(IAsyncResult result)
@@ -195,9 +216,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method begins the client and server key exchange. The client sends key exchange data first, which is
-        /// picked up by the server in this socket event and processed. Then, the exchange packet is sent back to the
-        /// client so both the client and server have matching cipher keys, and packets are sent to the server.
+        ///     This method begins the client and server key exchange. The client sends key exchange data first, which is
+        ///     picked up by the server in this socket event and processed. Then, the exchange packet is sent back to the
+        ///     client so both the client and server have matching cipher keys, and packets are sent to the server.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void PrepareReceive(IAsyncResult result)
@@ -223,7 +244,10 @@ namespace Core.Sockets
                         state.Socket.BeginReceive(state.Buffer, 0, sizeof(PacketHeader),
                             SocketFlags.None, AnnounceReceive, state);
                     }
-                    else state.Socket.Disconnect(false);
+                    else
+                    {
+                        state.Socket.Disconnect(false);
+                    }
                 }
                 catch (SocketException e)
                 {
@@ -247,9 +271,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method begins the receiving of a packet from the server's socket. It receives the first four bytes
-        /// of a packet, then requests to receive the body of the packet. If the length of the packet is less than
-        /// the length of the packet header, the client will be disconnected from the server.
+        ///     This method begins the receiving of a packet from the server's socket. It receives the first four bytes
+        ///     of a packet, then requests to receive the body of the packet. If the length of the packet is less than
+        ///     the length of the packet header, the client will be disconnected from the server.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void AnnounceReceive(IAsyncResult result)
@@ -281,15 +305,15 @@ namespace Core.Sockets
                     if (length < MAX_PACKET_SIZE && passport != null)
                     {
                         // Decrypt the packet header:
-                        byte[] buffer = (passport.Cipher != null
+                        byte[] buffer = passport.Cipher != null
                             ? passport.Cipher.Decrypt(state.Buffer, state.Buffer.Length)
-                            : state.Buffer);
+                            : state.Buffer;
                         PacketHeader header;
 
                         // Assign the packet header and process the header:
                         fixed (byte* bufferPtr = buffer)
                         {
-                            header = *(PacketHeader*)bufferPtr;
+                            header = *(PacketHeader*) bufferPtr;
                         }
 
                         passport.ExpectedReceiveLength = header.Length - sizeof(PacketHeader) + FooterLength;
@@ -307,11 +331,13 @@ namespace Core.Sockets
                         passport.Packet = new byte[passport.ExpectedReceiveLength + sizeof(PacketHeader)];
                         fixed (byte* packetPtr = passport.Packet)
                         {
-                            *(PacketHeader*)packetPtr = header;
+                            *(PacketHeader*) packetPtr = header;
                         }
 
                         fixed (byte* packet = passport.Packet)
+                        {
                             NativeFunctionCalls.memcpy(packet, buffer, header.Length);
+                        }
 
                         int difference = passport.ExpectedReceiveLength - length;
 
@@ -336,7 +362,10 @@ namespace Core.Sockets
                                 SocketFlags.None, AnnounceReceive, state);
                         }
                     }
-                    else if (passport != null) passport.Disconnect();
+                    else if (passport != null)
+                    {
+                        passport.Disconnect();
+                    }
                 }
                 catch (SocketException e)
                 {
@@ -360,11 +389,11 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method completes the receiving of a packet from the server's socket. It attempts to receive the 
-        /// remaining bytes of a packet, then requests to receive the header of the next packet. If the length of 
-        /// the packet is zero, the client will be disconnected from the server. If the length of the buffer is
-        /// not the expected length, then the packet is a fragment and the server will attempt to receive the
-        /// completed packet again.
+        ///     This method completes the receiving of a packet from the server's socket. It attempts to receive the
+        ///     remaining bytes of a packet, then requests to receive the header of the next packet. If the length of
+        ///     the packet is zero, the client will be disconnected from the server. If the length of the buffer is
+        ///     not the expected length, then the packet is a fragment and the server will attempt to receive the
+        ///     completed packet again.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void CompleteReceive(IAsyncResult result)
@@ -385,8 +414,11 @@ namespace Core.Sockets
                                 passport.CurrentWritePosition);
                         else
                             fixed (byte* packet = passport.Packet)
+                            {
                                 NativeFunctionCalls.memcpy(packet + passport.CurrentWritePosition, state.Buffer,
                                     length);
+                            }
+
                         int difference = passport.ExpectedReceiveLength - length;
 
                         // If the difference between the expected receive length and the actual receive length is
@@ -444,9 +476,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method is called once a previously connected and authenticated client has been disconnected 
-        /// from the server. The method calls the disconnect socket event to dispose of the client's initialized
-        /// game structures.
+        ///     This method is called once a previously connected and authenticated client has been disconnected
+        ///     from the server. The method calls the disconnect socket event to dispose of the client's initialized
+        ///     game structures.
         /// </summary>
         /// <param name="result">Represents the status of an asynchronous operation.</param>
         public void Disconnect(IAsyncResult result)
@@ -457,9 +489,9 @@ namespace Core.Sockets
         }
 
         /// <summary>
-        /// This method is called once a previously connected and authenticated client has been disconnected 
-        /// from the server. The method calls the disconnect socket event to dispose of the client's initialized
-        /// game structures.
+        ///     This method is called once a previously connected and authenticated client has been disconnected
+        ///     from the server. The method calls the disconnect socket event to dispose of the client's initialized
+        ///     game structures.
         /// </summary>
         /// <param name="state">Represents the status of an asynchronous operation.</param>
         public void Disconnect(AsynchronousState state)

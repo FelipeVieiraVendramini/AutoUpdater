@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A81C1881-8BC6-4338-8938-AD0F8EBD13BC}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Testes</RootNamespace>
-    <AssemblyName>Testes</AssemblyName>
+    <ProjectGuid>{D9D61F0E-383B-471D-9BDF-57D5E942E05A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoUpdaterCore</RootNamespace>
+    <AssemblyName>AutoUpdaterCore</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,15 +21,16 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,11 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="IniFileName.cs" />
+    <Compile Include="Interfaces\IAsynchronousSocket.cs" />
+    <Compile Include="Interfaces\ICipher.cs" />
+    <Compile Include="NativeFunctionCalls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <Compile Include="Sockets\Client Socket.cs" />
+    <Compile Include="Sockets\Packets\MsgRequestInfo.cs" />
+    <Compile Include="Sockets\Packets\Packet Dump.cs" />
+    <Compile Include="Sockets\Packets\Packet Type.cs" />
+    <Compile Include="Sockets\Packets\Packet.cs" />
+    <Compile Include="Sockets\Passport.cs" />
+    <Compile Include="Sockets\Server Socket.cs" />
+    <Compile Include="Sockets\State.cs" />
+    <Compile Include="Sockets\StringPacker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
