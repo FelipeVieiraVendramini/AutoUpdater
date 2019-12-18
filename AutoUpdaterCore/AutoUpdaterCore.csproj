@@ -52,6 +52,7 @@
     <Compile Include="Security\Asymmetric Crypto Handler.cs" />
     <Compile Include="Security\Symmetric Crypto Handler.cs" />
     <Compile Include="Sockets\Client Socket.cs" />
+    <Compile Include="Sockets\Packets\MsgDownloadInfo.cs" />
     <Compile Include="Sockets\Packets\MsgRequestInfo.cs" />
     <Compile Include="Sockets\Packets\Packet Dump.cs" />
     <Compile Include="Sockets\Packets\Packet Type.cs" />

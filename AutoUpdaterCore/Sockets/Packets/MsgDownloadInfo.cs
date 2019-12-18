@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoPatchServer - Program.cs
+// AutoUpdater - AutoUpdaterCore - MsgDownloadInfo.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -19,31 +19,17 @@
 
 #endregion
 
-using System;
-using AutoUpdaterCore.Windows;
+using System.Runtime.InteropServices;
 
-namespace AutoPatchServer
+namespace AutoUpdaterCore.Sockets.Packets
 {
-    class Program
+    public class MsgDownloadInfo
     {
-        public static InputConsoleBox StatisticBox = new InputConsoleBox(0, 9);
-
-        private static readonly InputConsoleBox m_outputBox = new InputConsoleBox(9, 16)
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct PacketInfo
         {
-            AutoDraw = true
-        };
-
-        private static readonly InputConsoleBox m_inputBox = new InputConsoleBox(26, 1)
-        {
-            InputPrompt = "Command: "
-        };
-
-        static void Main(string[] args)
-        {
-            Console.SetWindowSize(80, 27);
-            Console.SetBufferSize(80, 27);
-
-
+            public ushort Size;
+            public PacketType Type;
         }
     }
 }
