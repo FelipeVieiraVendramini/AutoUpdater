@@ -42,6 +42,8 @@
             this.lblCenterStatus = new System.Windows.Forms.Label();
             this.panelProgressbar = new System.Windows.Forms.Panel();
             this.pbDownload = new System.Windows.Forms.ProgressBar();
+            this.lnkPrivacy = new System.Windows.Forms.LinkLabel();
+            this.lnkTos = new System.Windows.Forms.LinkLabel();
             this.panelStatus.SuspendLayout();
             this.panelProgressbar.SuspendLayout();
             this.SuspendLayout();
@@ -216,6 +218,32 @@
             this.pbDownload.Size = new System.Drawing.Size(520, 35);
             this.pbDownload.TabIndex = 0;
             // 
+            // lnkPrivacy
+            // 
+            this.lnkPrivacy.AutoSize = true;
+            this.lnkPrivacy.BackColor = System.Drawing.Color.Transparent;
+            this.lnkPrivacy.LinkColor = System.Drawing.Color.Yellow;
+            this.lnkPrivacy.Location = new System.Drawing.Point(379, 561);
+            this.lnkPrivacy.Name = "lnkPrivacy";
+            this.lnkPrivacy.Size = new System.Drawing.Size(55, 13);
+            this.lnkPrivacy.TabIndex = 4;
+            this.lnkPrivacy.TabStop = true;
+            this.lnkPrivacy.Text = "linkLabel1";
+            this.lnkPrivacy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkPrivacy_LinkClicked);
+            // 
+            // lnkTos
+            // 
+            this.lnkTos.AutoSize = true;
+            this.lnkTos.BackColor = System.Drawing.Color.Transparent;
+            this.lnkTos.LinkColor = System.Drawing.Color.Yellow;
+            this.lnkTos.Location = new System.Drawing.Point(89, 561);
+            this.lnkTos.Name = "lnkTos";
+            this.lnkTos.Size = new System.Drawing.Size(55, 13);
+            this.lnkTos.TabIndex = 4;
+            this.lnkTos.TabStop = true;
+            this.lnkTos.Text = "linkLabel1";
+            this.lnkTos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTos_LinkClicked);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -223,6 +251,8 @@
             this.BackgroundImage = global::AutoUpdater.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.lnkTos);
+            this.Controls.Add(this.lnkPrivacy);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSite);
             this.Controls.Add(this.btnRanking);
@@ -262,6 +292,8 @@
         private System.Windows.Forms.Panel panelProgressbar;
         private System.Windows.Forms.Label lblCenterStatus;
         private System.Windows.Forms.ProgressBar pbDownload;
+        private System.Windows.Forms.LinkLabel lnkPrivacy;
+        private System.Windows.Forms.LinkLabel lnkTos;
     }
 }
 

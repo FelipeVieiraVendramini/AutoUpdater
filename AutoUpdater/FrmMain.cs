@@ -201,6 +201,9 @@ namespace AutoUpdater
                         continue;
                 }
             }
+
+            lnkPrivacy.Text = LanguageManager.GetString("StrTopLabel");
+            lnkTos.Text = LanguageManager.GetString("StrTosLabel");
         }
 
         #region Invoke to Update Interface
@@ -492,13 +495,20 @@ namespace AutoUpdater
                 }
                 else
                 {
-                    NoDownload(false);
+                    NoDownload(UpdateReturnMessage.OpenClientError, false);
                     return;
                 }
             }
 
-            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString(""));
+            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrConnectingToServer"));
+
+#if !DEBUG
             string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
+#else
+            string autoPatch = "127.0.0.1:9528";
+#endif
+
+
             bool connected = false;
             if (string.IsNullOrEmpty(autoPatch))
             {
@@ -512,15 +522,16 @@ namespace AutoUpdater
 
             if (m_patchServer == null || !connected)
             {
-                if (MessageBox.Show(this, LanguageManager.GetString("StrCouldNotConnectToAutoPatch")) == DialogResult.Yes)
+                if (MessageBox.Show(this, LanguageManager.GetString("StrCouldNotConnectToAutoPatch"), LanguageManager.GetString("StrCouldNotConnectToAutoPatchTitle"),
+                        MessageBoxButtons.YesNo) == DialogResult.Yes)
                     LaunchSite(m_szDownloadSite);
 
                 Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrCouldNotFindUpdaterServer"));
-                NoDownload();
+                NoDownload(UpdateReturnMessage.ConnectionError);
                 return;
             }
             Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrUpdaterServerFound"));
-            NoDownload();
+            NoDownload(UpdateReturnMessage.Success);
         }
 
         private bool AttemptConnectionFromFile()
@@ -560,22 +571,47 @@ namespace AutoUpdater
             }
         }
 
-        #endregion
+#endregion
 
-        #region Update Routines
+#region Update Routines
 
-        public void NoDownload(bool allowStart = true)
+        public void NoDownload(UpdateReturnMessage msg, bool allowStart = true)
         {
             if (!allowStart)
                 return;
 
-            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrClientUpdatedOK"));
+            switch (msg)
+            {
+                case UpdateReturnMessage.Success:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrClientUpdatedOK"));
+                    break;
+                case UpdateReturnMessage.UnknownFail:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrClientUpdatedError"));
+                    break;
+                case UpdateReturnMessage.ConnectionError:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrConnectionError"));
+                    break;
+                case UpdateReturnMessage.OpenClientError:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrOpenClientError"));
+                    break;
+            }
+            
             btnExit.Enabled = true;
             btnPlayHigh.Enabled = true;
             btnPlayLow.Enabled = true;
         }
 
         #endregion
+
+        private void lnkPrivacy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FrmWebBrowser("https://ftwmasters.com.br/panel/Home/TermsOfPrivacy").ShowDialog(this);
+        }
+
+        private void lnkTos_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FrmWebBrowser("https://ftwmasters.com.br/panel/Home/TermsOfUse").ShowDialog(this);
+        }
     }
 
     public enum LabelAsyncOperation
@@ -591,5 +627,13 @@ namespace AutoUpdater
         Value,
         Min,
         Max
+    }
+
+    public enum UpdateReturnMessage
+    {
+        Success,
+        ConnectionError,
+        OpenClientError,
+        UnknownFail
     }
 }

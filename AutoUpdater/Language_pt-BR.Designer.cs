@@ -70,11 +70,38 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível atualizar o cliente. Talvez você não consiga entrar no jogo..
+        /// </summary>
+        public static string StrClientUpdatedError {
+            get {
+                return ResourceManager.GetString("StrClientUpdatedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Cliente atualizado com sucesso! Bom jogo..
         /// </summary>
         public static string StrClientUpdatedOK {
             get {
                 return ResourceManager.GetString("StrClientUpdatedOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Conectando-se ao servidor....
+        /// </summary>
+        public static string StrConnectingToServer {
+            get {
+                return ResourceManager.GetString("StrConnectingToServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Houve um erro na conexão com o servidor. Tente novamente mais tarde..
+        /// </summary>
+        public static string StrConnectionError {
+            get {
+                return ResourceManager.GetString("StrConnectionError", resourceCulture);
             }
         }
         
@@ -97,6 +124,24 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível conectar-se ao servidor de atualizações. Deseja baixar manualmente as atualizações?.
+        /// </summary>
+        public static string StrCouldNotConnectToAutoPatch {
+            get {
+                return ResourceManager.GetString("StrCouldNotConnectToAutoPatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Erro de conexão.
+        /// </summary>
+        public static string StrCouldNotConnectToAutoPatchTitle {
+            get {
+                return ResourceManager.GetString("StrCouldNotConnectToAutoPatchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível se conectar ao servidor do atualizador..
         /// </summary>
         public static string StrCouldNotFindUpdaterServer {
@@ -115,11 +160,38 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível atualizar devido a instâncias do cliente do jogo em aberto..
+        /// </summary>
+        public static string StrOpenClientError {
+            get {
+                return ResourceManager.GetString("StrOpenClientError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por instâncias do jogo em aberto.
         /// </summary>
         public static string StrSearchForOpenInstances {
             get {
                 return ResourceManager.GetString("StrSearchForOpenInstances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Privacidade.
+        /// </summary>
+        public static string StrTopLabel {
+            get {
+                return ResourceManager.GetString("StrTopLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Serviço.
+        /// </summary>
+        public static string StrTosLabel {
+            get {
+                return ResourceManager.GetString("StrTosLabel", resourceCulture);
             }
         }
         
