@@ -24,6 +24,7 @@ using System.Runtime.InteropServices;
 
 namespace AutoUpdaterCore.Sockets.Packets
 {
+    [Obsolete("Should not be used for anything", true)]
     public abstract class Packet<TE> where TE : struct
     {
         public TE Info;

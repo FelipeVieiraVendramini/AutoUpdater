@@ -404,7 +404,6 @@ namespace AutoUpdaterCore.Windows
                             _inputCursorPos = 0;
                             _currentInputBuffer = "";
                             return ret;
-                            break;
                         }
                         case ConsoleKey.LeftArrow:
                         {

@@ -27,6 +27,8 @@ namespace AutoUpdater
 {
     static class Program
     {
+        public static FrmMain FrmMain;
+
         /// <summary>
         ///     Ponto de entrada principal para o aplicativo.
         /// </summary>
@@ -40,7 +42,7 @@ namespace AutoUpdater
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new FrmMain());
+                    Application.Run(FrmMain = new FrmMain());
                 }
                 else
                 {

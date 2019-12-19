@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoUpdater - Kernel.cs
+// AutoUpdater - AutoPatchServer - Kernel.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -19,23 +19,17 @@
 
 #endregion
 
-using System;
-using System.Reflection;
 using AutoUpdaterCore;
 
-namespace AutoUpdater
+namespace AutoPatchServer
 {
     public static class Kernel
     {
-        public static ushort ActualVersion = 1000;
-        public static string Version;
+        public static string DownloadUrl = "https://ftwmasters.com.br/patches";
+        public static int ListenPort = 9528;
+        public static int LatestUpdaterPatch = 10000;
+        public static int LatestGamePatch = 4000;
 
-        static Kernel()
-        {
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Log = new LogWriter(Environment.CurrentDirectory);
-        }
-
-        public static LogWriter Log;
+        public static MyXml MyXml;
     }
 }

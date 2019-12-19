@@ -19,42 +19,31 @@
 
 #endregion
 
-using System.Runtime.InteropServices;
-
 namespace AutoUpdaterCore.Sockets.Packets
 {
-    public class MsgRequestInfo : Packet<MsgRequestInfo.PacketInfo>
+    public class MsgRequestInfo : PacketStructure
     {
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct PacketInfo
+        public MsgRequestInfo(byte[] buffer)
+            : base(buffer)
         {
-            public ushort Size;
-            public PacketType Type;
-            public AutoUpdateRequestType Mode;
         }
 
         public MsgRequestInfo()
-        {
-            Info.Type = PacketType.MsgRequestInfo;
-        }
-
-        public MsgRequestInfo(byte[] msg)
-            : base(msg)
+            : base(PacketType.MsgRequestInfo, 6, 6)
         {
         }
 
-        public bool Create(AutoUpdateRequestType type)
+        public AutoUpdateRequestType Mode
         {
-            Info.Mode = type;
-
-            Info.Size = (ushort) Marshal.SizeOf(Info);
-            return true;
+            get => (AutoUpdateRequestType) ReadUShort(4);
+            set => WriteUShort((ushort) value, 4);
         }
     }
 
     public enum AutoUpdateRequestType : ushort
     {
         CheckForLauncherUpdates, // sent from client
+        LauncherUpdatesOk, // sent from server
         CheckForGameUpdates, // sent from client
         GameUpdatesOk // sent from server
     }

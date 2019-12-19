@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+
+<Config>
+  <DownloadUrl>https://ftwmasters.com.br/patches</DownloadUrl>
+  <ListenPort>9528</ListenPort>
+  <LatestUpdaterVersion>10004</LatestUpdaterVersion>
+  <LatestGameVersion>4011</LatestGameVersion>
+  <AllowedPatches>
+    <Count>0</Count>
+    <!--<Patch0>4001</Patch0>-->
+  </AllowedPatches>
+  <BundlePatches>
+    <Count>0</Count>
+	  <!--
+	  <Patch>
+        <From></From>
+        <To></To>
+        <FileName></FileName>
+      </Patch>
+	  -->
+  </BundlePatches>
+</Config>

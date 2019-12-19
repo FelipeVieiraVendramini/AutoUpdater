@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoUpdater - Kernel.cs
+// AutoUpdater - AutoPatchServer - User.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -19,23 +19,22 @@
 
 #endregion
 
-using System;
-using System.Reflection;
-using AutoUpdaterCore;
+using System.Net.Sockets;
+using AutoUpdaterCore.Interfaces;
+using AutoUpdaterCore.Sockets;
 
-namespace AutoUpdater
+namespace AutoPatchServer.Sockets.Updater
 {
-    public static class Kernel
+    public sealed class User : Passport
     {
-        public static ushort ActualVersion = 1000;
-        public static string Version;
+        public string MacAddress = "00-00-00-00-00-00";
 
-        static Kernel()
+        private AsynchronousServerSocket m_socket;
+
+        public User(AsynchronousServerSocket server, Socket socket, ICipher cipher)
+            : base(server, socket, cipher)
         {
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Log = new LogWriter(Environment.CurrentDirectory);
+            m_socket = server;
         }
-
-        public static LogWriter Log;
     }
 }

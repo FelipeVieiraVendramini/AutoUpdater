@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoUpdater - Kernel.cs
+// AutoUpdater - AutoUpdaterCore - PatchStructure.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -19,23 +19,14 @@
 
 #endregion
 
-using System;
-using System.Reflection;
-using AutoUpdaterCore;
-
-namespace AutoUpdater
+namespace AutoUpdaterCore.Interfaces
 {
-    public static class Kernel
+    public class PatchStructure
     {
-        public static ushort ActualVersion = 1000;
-        public static string Version;
-
-        static Kernel()
-        {
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Log = new LogWriter(Environment.CurrentDirectory);
-        }
-
-        public static LogWriter Log;
+        public int Order { get; set; }
+        public int From { get; set; }
+        public int To { get; set; }
+        public string FileName { get; set; }
+        public bool IsGameUpdate { get; set; }
     }
 }
