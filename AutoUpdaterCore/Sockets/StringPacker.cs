@@ -60,7 +60,7 @@ namespace AutoUpdaterCore.Sockets
 
         public void Add(params string[] strs)
         {
-            m_lStrings.AddRange(m_lStrings);
+            m_lStrings.AddRange(strs);
         }
 
         public byte[] ToArray()

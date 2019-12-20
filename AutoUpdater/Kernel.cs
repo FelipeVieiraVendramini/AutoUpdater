@@ -37,5 +37,7 @@ namespace AutoUpdater
         }
 
         public static LogWriter Log;
+
+        public static bool HasAgreedPrivacy = false;
     }
 }

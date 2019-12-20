@@ -23,10 +23,17 @@ namespace AutoUpdaterCore.Interfaces
 {
     public class PatchStructure
     {
+        private string m_szName = "";
+
         public int Order { get; set; }
         public int From { get; set; }
         public int To { get; set; }
-        public string FileName { get; set; }
+
+        public string FileName
+        {
+            get => string.IsNullOrEmpty(m_szName) ? "" : $"{m_szName}.exe";
+            set => m_szName = value;
+        }
         public bool IsGameUpdate { get; set; }
     }
 }

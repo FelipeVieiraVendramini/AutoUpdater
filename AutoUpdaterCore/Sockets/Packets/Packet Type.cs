@@ -34,6 +34,7 @@ namespace AutoUpdaterCore.Sockets.Packets
     public enum PacketType : ushort
     {
         MsgRequestInfo = 25000,
-        MsgDownloadInfo = 25001
+        MsgDownloadInfo = 25001,
+        MsgClientInfo = 25002
     }
 }

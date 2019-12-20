@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <AssemblyVersion>1.2019.354.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -56,6 +57,12 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmTermsOfPrivacy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTermsOfPrivacy.Designer.cs">
+      <DependentUpon>FrmTermsOfPrivacy.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmWebBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +83,9 @@
     <Compile Include="Sockets\Updater\PatcherPacketHandler.cs" />
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTermsOfPrivacy.resx">
+      <DependentUpon>FrmTermsOfPrivacy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmWebBrowser.resx">
       <DependentUpon>FrmWebBrowser.cs</DependentUpon>

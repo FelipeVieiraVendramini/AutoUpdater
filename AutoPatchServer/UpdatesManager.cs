@@ -41,6 +41,7 @@ namespace AutoPatchServer
             if (patch.To >= UPDATER_VERSION_MIN)
                 patch.IsGameUpdate = true;
 
+            bool added = false;
             if (m_patchLibrary.ContainsKey(patch.From))
             {
                 if (m_patchLibrary[patch.From].To < patch.To)
@@ -58,11 +59,16 @@ namespace AutoPatchServer
                             Kernel.MyXml.AddNewNode(patch.To.ToString(), "To", "Config", "BundlePatches", $"Patch{count}");
                             Kernel.MyXml.AddNewNode(patch.FileName, "FileName", "Config", "BundlePatches", $"Patch{count++}");
                             Kernel.MyXml.ChangeValue(patch.FileName, "Config", "BundlePatches", $"Patch{count}", "FileName");
+                            Kernel.MyXml.ChangeValue(count.ToString(), "Config", "BundlePatches", "Count");
+                            patch.Order = count - 1;
                         }
                         else
                         {
                             Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "AllowedPatches", $"Patch{addTo}");
+                            patch.Order = addTo;
                         }
+
+                        added = true;
                     }
                 }
             }
@@ -79,14 +85,32 @@ namespace AutoPatchServer
                         Kernel.MyXml.AddNewNode(patch.From.ToString(), $"Patch{count}", "Config", "BundlePatches", "From");
                         Kernel.MyXml.AddNewNode(patch.To.ToString(), $"Patch{count}", "Config", "BundlePatches", "To");
                         Kernel.MyXml.AddNewNode(patch.FileName, $"Patch{count}", "Config", "BundlePatches", "FileName");
-                        Kernel.MyXml.ChangeValue(patch.FileName, "Config", "BundlePatches", $"Patch{count}", "FileName");
+                        Kernel.MyXml.ChangeValue(patch.FileName, "Config", "BundlePatches", $"Patch{count++}", "FileName");
+                        Kernel.MyXml.ChangeValue(count.ToString(), "Config", "BundlePatches", "Count");
+                        patch.Order = count - 1;
                     }
                     else
                     {
                         int count = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count"));
                         Kernel.MyXml.AddNewNode(patch.To.ToString(), $"Patch{count++}", "Config", "AllowedPatches");
                         Kernel.MyXml.ChangeValue(count.ToString(), "Config", "AllowedPatches", "Count");
+                        patch.Order = count - 1;
                     }
+                    added = true;
+                }
+            }
+
+            if (added)
+            {
+                if (patch.IsGameUpdate && patch.To > Kernel.LatestUpdaterPatch)
+                {
+                    Kernel.LatestUpdaterPatch = patch.To;
+                    Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "LatestUpdaterVersion");
+                }
+                else if (!patch.IsGameUpdate && patch.To > Kernel.LatestGamePatch)
+                {
+                    Kernel.LatestGamePatch = patch.To;
+                    Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "LatestGameVersion");
                 }
             }
         }
@@ -104,12 +128,18 @@ namespace AutoPatchServer
                 result = removed.Order;
             else result = -1;
 
-            if (!replace)
+            if (!replace && removed != null)
             {
                 if (removed.From > 0)
+                {
                     Kernel.MyXml.DeleteNode("Config", "BundlePatches", $"Patch{removed.Order}");
+                    Kernel.MyXml.ChangeValue((int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", "Count"))-1).ToString(),"Config", "BundlePatches", "Count");
+                }
                 else
+                {
                     Kernel.MyXml.DeleteNode("Config", "AllowedPatches", $"Patch{removed.Order}");
+                    Kernel.MyXml.ChangeValue((int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count")) - 1).ToString(), "Config", "AllowedPatches", "Count");
+                }
             }
 
             return result;
@@ -117,6 +147,9 @@ namespace AutoPatchServer
 
         public static int LatestVersion(bool isUpdate)
         {
+            if (m_patchLibrary.Values.Count(x => x.IsGameUpdate == isUpdate) == 0)
+                return 0;
+
             if (isUpdate)
                 return m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdate).Max(x => x.To);
             return m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdate).Max(x => x.To);
@@ -127,7 +160,7 @@ namespace AutoPatchServer
             List<PatchStructure> result = new List<PatchStructure>();
             bool isUpdater = actualVersion >= UPDATER_VERSION_MIN && actualVersion <= UPDATER_VERSION_MAX;
             var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdater && x.To > actualVersion)
-                .OrderBy(x => x.To);
+                .OrderBy(x => x.To).ToList();
             int latestVersion = 0;
             int currently = latestVersion = LatestVersion(isUpdater);
 
@@ -138,6 +171,8 @@ namespace AutoPatchServer
 
                 if (patch.To > currently)
                     continue;
+
+                result.Add(patch);
 
                 if (patch.From == 0)
                     currently--;

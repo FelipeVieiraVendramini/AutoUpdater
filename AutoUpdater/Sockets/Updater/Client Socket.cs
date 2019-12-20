@@ -20,9 +20,11 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using AutoUpdaterCore.Sockets;
 using AutoUpdaterCore.Sockets.Packets;
+using AutoUpdaterCore.Windows;
 
 namespace AutoUpdater.Sockets.Updater
 {
@@ -51,7 +53,16 @@ namespace AutoUpdater.Sockets.Updater
             var pServer = new PatchServer(this, pState.Socket);
             pState.Client = pServer;
 
-            pServer.Send(new MsgRequestInfo{ Mode = AutoUpdateRequestType.CheckForLauncherUpdates });
+            Program.FrmMain.Edit(Program.FrmMain.lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrCheckingPrivacyTerms"));
+            
+            MsgClientInfo msg = new MsgClientInfo();
+            msg.MacAddress = Program.FrmMain.GetMacAddress();
+            msg.Append(SystemProperties.GetObjects(MsgClientInfo.OPERATING_SYSTEM, MsgClientInfo.OperatingSystem).Values.ToArray());
+            msg.Append(SystemProperties.GetObjects(MsgClientInfo.BASE_BOARD, MsgClientInfo.BaseBoard).Values.ToArray());
+            msg.Append(SystemProperties.GetObjects(MsgClientInfo.PROCESSOR, MsgClientInfo.Processor).Values.ToArray());
+            msg.Append(SystemProperties.GetObjects(MsgClientInfo.PHYSICAL_MEMORY, MsgClientInfo.PhysicalMemory).Values.ToArray());
+            msg.Append(SystemProperties.GetObjects(MsgClientInfo.VIDEO_CONTROLLER, MsgClientInfo.VideoController).Values.ToArray());
+            pServer.Send(msg);
         }
 
         /// <summary>

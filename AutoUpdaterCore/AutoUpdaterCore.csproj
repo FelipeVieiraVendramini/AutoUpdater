@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <AssemblyVersion>1.2019.354.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,8 +59,9 @@
     <Compile Include="Security\Asymmetric Crypto Handler.cs" />
     <Compile Include="Security\Symmetric Crypto Handler.cs" />
     <Compile Include="Sockets\Client Socket.cs" />
-    <Compile Include="Sockets\Packets\MsgDownloadInfo.cs" />
-    <Compile Include="Sockets\Packets\MsgRequestInfo.cs" />
+    <Compile Include="Sockets\Packets\25002 - MsgClientInfo.cs" />
+    <Compile Include="Sockets\Packets\25001 - MsgDownloadInfo.cs" />
+    <Compile Include="Sockets\Packets\25000 - MsgRequestInfo.cs" />
     <Compile Include="Sockets\Packets\Packet Attribute.cs" />
     <Compile Include="Sockets\Packets\Packet Dump.cs" />
     <Compile Include="Sockets\Packets\Packet Processor.cs" />

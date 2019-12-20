@@ -34,8 +34,9 @@ namespace AutoUpdaterCore.Windows
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select * from " + key);
             try
             {
-                foreach (ManagementObject share in searcher.Get())
+                foreach (var o in searcher.Get())
                 {
+                    var share = (ManagementObject)o;
                     if (share.Properties.Count <= 0) return new Dictionary<string, string>();
 
                     foreach (PropertyData PC in share.Properties)

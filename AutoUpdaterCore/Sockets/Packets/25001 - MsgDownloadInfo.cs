@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoUpdaterCore - MsgDownloadInfo.cs
+// AutoUpdater - AutoUpdaterCore - 25001 - MsgDownloadInfo.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -19,18 +19,23 @@
 
 #endregion
 
+#region References
+
 using System.Collections.Generic;
+
+#endregion
 
 namespace AutoUpdaterCore.Sockets.Packets
 {
     public class MsgDownloadInfo : PacketStructure
     {
-        private StringPacker m_packer = new StringPacker();
+        private const int _STR_OFFSET = 8;
+        private readonly StringPacker m_packer = new StringPacker();
 
         public MsgDownloadInfo(byte[] buffer)
             : base(buffer)
         {
-            m_packer = new StringPacker(buffer, 6);
+            m_packer = new StringPacker(buffer, _STR_OFFSET);
         }
 
         public MsgDownloadInfo()
@@ -42,6 +47,12 @@ namespace AutoUpdaterCore.Sockets.Packets
         {
             get => (UpdateDownloadType) ReadUShort(4);
             set => WriteUShort((ushort) value, 4);
+        }
+
+        public ushort LatestVersion
+        {
+            get => ReadUShort(6);
+            set => WriteUShort(value, 6);
         }
 
         public void Append(params string[] strs)
@@ -59,7 +70,7 @@ namespace AutoUpdaterCore.Sockets.Packets
             byte[] pStr = m_packer.ToArray();
             Resize(10 + pStr.Length);
             WriteHeader(Length, PacketType.MsgDownloadInfo);
-            WriteArray(pStr, pStr.Length, 6);
+            WriteArray(pStr, pStr.Length, _STR_OFFSET);
             return base.Build();
         }
     }

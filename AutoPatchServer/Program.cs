@@ -20,9 +20,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
+using AutoPatchServer.Sockets.Updater;
 using AutoUpdaterCore;
 using AutoUpdaterCore.Interfaces;
 using AutoUpdaterCore.Windows;
@@ -53,6 +55,10 @@ namespace AutoPatchServer
             WriteLog($"Initializing update server...");
             WriteLog($"Reading config file...");
             ReadConfigFile();
+
+            UpdateSocket socket = new UpdateSocket();
+            socket.Bind("0.0.0.0", Kernel.ListenPort);
+            socket.Listen(10);
 
             HandleCommands();
             uiThread.Abort(0);
@@ -99,6 +105,7 @@ namespace AutoPatchServer
                             }, false);
                         }
                         break;
+
                     case "remove":
                         if (parsed.Length < 2)
                             break;
@@ -107,6 +114,30 @@ namespace AutoPatchServer
                         {
                             UpdatesManager.RemovePatch(remVersion, false);
                         }
+                        break;
+
+                    case "test":
+                        if (parsed.Length < 2)
+                            break;
+
+                        if (parsed[1] == "download_list")
+                        {
+                            if (parsed.Length < 3 || !int.TryParse(parsed[2], out int idPatch))
+                                break;
+
+                            foreach (var patch in UpdatesManager.GetDownloadList(idPatch))
+                            {
+                                if (patch.From > 0)
+                                {
+                                    WriteLog($"Patch[From:{patch.From}][To:{patch.To}][File:{patch.FileName}]");
+                                }
+                                else
+                                {
+                                    WriteLog($"Patch[To:{patch.To}][File:{patch.FileName}]");
+                                }
+                            }
+                        }
+
                         break;
                 }
             }
@@ -123,6 +154,7 @@ namespace AutoPatchServer
                 create.AddNewNode("9528", "ListenPort", "Config");
                 create.AddNewNode("10000", "LatestUpdaterVersion", "Config");
                 create.AddNewNode("4000", "LatestGameVersion", "Config");
+                create.AddNewNode("2019-10-22 00:00:00", "PrivacyTermsUpdate", "Config");
                 create.AddNewNode("", "AllowedPatches", "Config");
                 create.AddNewNode("0", "Count", "Config", "AllowedPatches");
                 create.AddNewNode("", "BundlePatches", "Config");
@@ -133,6 +165,7 @@ namespace AutoPatchServer
             if (int.TryParse(Kernel.MyXml.GetValue("Config", "ListenPort"), out int port))
                 Kernel.ListenPort = port;
             WriteLog($"Server will listen to port: {Kernel.ListenPort}", LogType.CONSOLE);
+            WriteLog("If you want to change the server port, write `exit` and edit AutoUpdater.xml file.", LogType.CONSOLE);
 
             if (int.TryParse(Kernel.MyXml.GetValue("Config", "LatestUpdaterVersion"), out int updater))
                 Kernel.LatestUpdaterPatch = updater;
@@ -145,6 +178,10 @@ namespace AutoPatchServer
             if (!string.IsNullOrEmpty(Kernel.MyXml.GetValue("Config", "DownloadUrl")))
                 Kernel.DownloadUrl = Kernel.MyXml.GetValue("Config", "DownloadUrl");
             WriteLog($"Client will download files from: {Kernel.DownloadUrl}", LogType.CONSOLE);
+            if (!string.IsNullOrEmpty(Kernel.MyXml.GetValue("Config", "PrivacyTermsUpdate")))
+                Kernel.PrivacyTermsUpdate = DateTime.Parse(Kernel.MyXml.GetValue("Config", "PrivacyTermsUpdate"));
+            WriteLog($"Privacy Terms last updated: {Kernel.PrivacyTermsUpdate}", LogType.CONSOLE);
+
 
             int count = 0;
             if (int.TryParse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count"), out count))
@@ -155,7 +192,8 @@ namespace AutoPatchServer
                     UpdatesManager.AddPatch(new PatchStructure
                     {
                         Order = i,
-                        To = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", name))
+                        To = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", name)),
+                        FileName = Kernel.MyXml.GetValue("Config", "AllowedPatches", name)
                     }, true);
                 }
             }

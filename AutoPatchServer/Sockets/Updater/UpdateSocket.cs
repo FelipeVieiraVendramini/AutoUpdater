@@ -34,6 +34,10 @@ namespace AutoPatchServer.Sockets.Updater
         public UpdateSocket()
             : base("FtwUpdateSocket", AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         {
+            OnClientConnect = Connect;
+            OnClientReceive = Receive;
+            OnClientDisconnect = Disconnect;
+
             m_processor = new PacketProcessor<PacketHandlerType, PacketType, Action<User, byte[]>>
                 (new UpdaterPacketHandler());
         }

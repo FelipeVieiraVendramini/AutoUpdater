@@ -20,6 +20,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using AutoUpdaterCore.Interfaces;
 using AutoUpdaterCore.Sockets.Packets;
 
 namespace AutoPatchServer.Sockets.Updater
@@ -29,13 +31,78 @@ namespace AutoPatchServer.Sockets.Updater
         [PacketHandlerType(PacketType.MsgRequestInfo)]
         public void ProcessRequestInfo(User user, byte[] buffer)
         {
-
+            MsgRequestInfo msg = new MsgRequestInfo(buffer);
+            List<PatchStructure> updates = UpdatesManager.GetDownloadList(msg.CurrentVersion);
+            switch (msg.Mode)
+            {
+                case AutoUpdateRequestType.CheckForLauncherUpdates:
+                    if (updates.Count > 0)
+                    {
+                        MsgDownloadInfo pMsg = new MsgDownloadInfo
+                        {
+                            Mode = UpdateDownloadType.UpdaterPatch,
+                            LatestVersion = (ushort) Kernel.LatestUpdaterPatch
+                        };
+                        pMsg.Append(Kernel.DownloadUrl);
+                        foreach (var patch in updates)
+                        {
+                            pMsg.Append(patch.FileName);
+                        }
+                        user.Send(pMsg);
+                    }
+                    else
+                    {
+                        msg.Mode = AutoUpdateRequestType.LauncherUpdatesOk;
+                        user.Send(msg);
+                    }
+                    break;
+                case AutoUpdateRequestType.CheckForGameUpdates:
+                    if (updates.Count > 0)
+                    {
+                        MsgDownloadInfo pMsg = new MsgDownloadInfo
+                        {
+                            Mode = UpdateDownloadType.GameClientPatch,
+                            LatestVersion = (ushort)Kernel.LatestGamePatch
+                        };
+                        pMsg.Append(Kernel.DownloadUrl);
+                        foreach (var patch in updates)
+                        {
+                            pMsg.Append(patch.FileName);
+                        }
+                        user.Send(pMsg);
+                    }
+                    else
+                    {
+                        msg.Mode = AutoUpdateRequestType.LauncherUpdatesOk;
+                        user.Send(msg);
+                    }
+                    break;
+            }
         }
 
         [PacketHandlerType(PacketType.MsgDownloadInfo)]
         public void ProcessDownloadInfo(User user, byte[] buffer)
         {
+            /**
+             * Should not be sent back. Just ignore.
+             */
+        }
 
+        [PacketHandlerType(PacketType.MsgClientInfo)]
+        public void ProcessClientInfo(User user, byte[] buffer)
+        {
+            /**
+             * Todo store user data securely
+             * Todo develop something to encrypt data
+             */
+
+            /**
+             * Sends the latest update! Since it's web host we wont have problems with this. The client
+             * will just display the page! :D
+             */
+            MsgClientInfo back = new MsgClientInfo();
+            back.Append(Kernel.PrivacyTermsUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
+            user.Send(back);
         }
 
         /// <summary>

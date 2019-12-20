@@ -56,8 +56,8 @@ namespace AutoUpdaterCore.Sockets
         public int FooterLength { get; set; } // The length of the footer for each packet.
         public string Footer { get; set; } // The text for the footer at the end of each packet.
         public const int EXCHANGE_BUFFER_SIZE = 1024; // The largest possible length of the exchange buffer.
-        public const int MAX_PACKET_SIZE = 2048; // The largest possible length of a data packet.
-        public const int MAX_PACKET_ID = 11000; // The largest possible packet identity of a data packet.
+        public const int MAX_PACKET_SIZE = 20480; // The largest possible length of a data packet.
+        public const int MAX_PACKET_ID = 30000; // The largest possible packet identity of a data packet.
 
         /// <summary>
         ///     The asynchronous socket class encapsulates an asynchronous server socket. It allows multiple clients to connect

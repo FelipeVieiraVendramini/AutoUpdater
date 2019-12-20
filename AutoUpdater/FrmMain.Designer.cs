@@ -290,10 +290,10 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Panel panelStatus;
         private System.Windows.Forms.Panel panelProgressbar;
-        private System.Windows.Forms.Label lblCenterStatus;
         private System.Windows.Forms.ProgressBar pbDownload;
         private System.Windows.Forms.LinkLabel lnkPrivacy;
         private System.Windows.Forms.LinkLabel lnkTos;
+        internal System.Windows.Forms.Label lblCenterStatus;
     }
 }
 

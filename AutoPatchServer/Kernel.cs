@@ -19,6 +19,7 @@
 
 #endregion
 
+using System;
 using AutoUpdaterCore;
 
 namespace AutoPatchServer
@@ -29,6 +30,8 @@ namespace AutoPatchServer
         public static int ListenPort = 9528;
         public static int LatestUpdaterPatch = 10000;
         public static int LatestGamePatch = 4000;
+
+        public static DateTime PrivacyTermsUpdate = DateTime.MinValue;
 
         public static MyXml MyXml;
     }

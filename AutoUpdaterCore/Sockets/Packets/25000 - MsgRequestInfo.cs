@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoUpdaterCore - MsgRequestInfo.cs
+// AutoUpdater - AutoUpdaterCore - 25000 - MsgRequestInfo.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -29,7 +29,7 @@ namespace AutoUpdaterCore.Sockets.Packets
         }
 
         public MsgRequestInfo()
-            : base(PacketType.MsgRequestInfo, 6, 6)
+            : base(PacketType.MsgRequestInfo, 8, 8)
         {
         }
 
@@ -37,6 +37,12 @@ namespace AutoUpdaterCore.Sockets.Packets
         {
             get => (AutoUpdateRequestType) ReadUShort(4);
             set => WriteUShort((ushort) value, 4);
+        }
+
+        public ushort CurrentVersion
+        {
+            get => ReadUShort(6);
+            set => WriteUShort(value, 6);
         }
     }
 

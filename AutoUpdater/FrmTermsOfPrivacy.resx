@@ -117,65 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StrAutoUpdateVersion" xml:space="preserve">
-    <value>Versão do Atualizador: {0} - Compilação: {1}</value>
-  </data>
-  <data name="StrCheckingPrivacyTerms" xml:space="preserve">
-    <value>Verificando termos de privacidade...</value>
-  </data>
-  <data name="StrClientUpdatedError" xml:space="preserve">
-    <value>Não foi possível atualizar o cliente. Talvez você não consiga entrar no jogo.</value>
-  </data>
-  <data name="StrClientUpdatedOK" xml:space="preserve">
-    <value>Cliente atualizado com sucesso! Bom jogo.</value>
-  </data>
-  <data name="StrConnectingToServer" xml:space="preserve">
-    <value>Conectando-se ao servidor...</value>
-  </data>
-  <data name="StrConnectionError" xml:space="preserve">
-    <value>Houve um erro na conexão com o servidor. Tente novamente mais tarde.</value>
-  </data>
-  <data name="StrConquerRunning" xml:space="preserve">
-    <value>O cliente do World Conquer já está em execução! Para prosseguir com a instalação dos pacotes, por favor feche os clientes que estão abertos e pressione "Sim". Ao pressionar "Sim" o atualizador forçará o cliente de qualquer cliente do Conquer em andamento, isto inclui também versões oficiais.</value>
-  </data>
-  <data name="StrConquerRunningTitle" xml:space="preserve">
-    <value>Feche os clientes para continuar</value>
-  </data>
-  <data name="StrCouldNotConnectToAutoPatch" xml:space="preserve">
-    <value>Não foi possível conectar-se ao servidor de atualizações. Deseja baixar manualmente as atualizações?</value>
-  </data>
-  <data name="StrCouldNotConnectToAutoPatchTitle" xml:space="preserve">
-    <value>Erro de conexão</value>
-  </data>
-  <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
-    <value>Não foi possível se conectar ao servidor do atualizador.</value>
-  </data>
-  <data name="StrErrorPrivacyNotAccepted" xml:space="preserve">
-    <value>Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade.</value>
-  </data>
-  <data name="StrGameVersion" xml:space="preserve">
-    <value>Versão: {0}</value>
-  </data>
-  <data name="StrOpenClientError" xml:space="preserve">
-    <value>Não foi possível atualizar devido a instâncias do cliente do jogo em aberto.</value>
-  </data>
-  <data name="StrSearchForOpenInstances" xml:space="preserve">
-    <value>Procurando por instâncias do jogo em aberto</value>
-  </data>
-  <data name="StrTermsOfPrivacyDesc" xml:space="preserve">
-    <value>Para começar ou continuar a jogar você deve aceitar nossos %privacy_terms%. 
+  <data name="lblTermsOfServiceDesc.Text" xml:space="preserve">
+    <value>Para começar ou continuar a jogar você deve aceitar nossos termos de privacidade. 
 Por favor clique no link acima e leia cuidadosamente, nosso Launcher realiza uma varredura pelos processos em seu sistema operacional. Se você não concorda, por favor feche o inicializador e desinstale o jogo.</value>
-  </data>
-  <data name="StrTermsOfPrivacyTitle" xml:space="preserve">
-    <value>Termos de Privacidade</value>
-  </data>
-  <data name="StrTopLabel" xml:space="preserve">
-    <value>Termos de Privacidade</value>
-  </data>
-  <data name="StrTosLabel" xml:space="preserve">
-    <value>Termos de Serviço</value>
-  </data>
-  <data name="StrUpdaterServerFound" xml:space="preserve">
-    <value>Conectado com sucesso! Procurando por atualizações.</value>
   </data>
 </root>

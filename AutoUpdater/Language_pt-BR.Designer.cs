@@ -70,6 +70,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Verificando termos de privacidade....
+        /// </summary>
+        public static string StrCheckingPrivacyTerms {
+            get {
+                return ResourceManager.GetString("StrCheckingPrivacyTerms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível atualizar o cliente. Talvez você não consiga entrar no jogo..
         /// </summary>
         public static string StrClientUpdatedError {
@@ -151,6 +160,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade..
+        /// </summary>
+        public static string StrErrorPrivacyNotAccepted {
+            get {
+                return ResourceManager.GetString("StrErrorPrivacyNotAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Versão: {0}.
         /// </summary>
         public static string StrGameVersion {
@@ -174,6 +192,25 @@ namespace AutoUpdater {
         public static string StrSearchForOpenInstances {
             get {
                 return ResourceManager.GetString("StrSearchForOpenInstances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Para começar ou continuar a jogar você deve aceitar nossos %privacy_terms%. 
+        ///Por favor clique no link acima e leia cuidadosamente, nosso Launcher realiza uma varredura pelos processos em seu sistema operacional. Se você não concorda, por favor feche o inicializador e desinstale o jogo..
+        /// </summary>
+        public static string StrTermsOfPrivacyDesc {
+            get {
+                return ResourceManager.GetString("StrTermsOfPrivacyDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Privacidade.
+        /// </summary>
+        public static string StrTermsOfPrivacyTitle {
+            get {
+                return ResourceManager.GetString("StrTermsOfPrivacyTitle", resourceCulture);
             }
         }
         
