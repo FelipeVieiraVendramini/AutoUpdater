@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -31,8 +32,10 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutoUpdater.Properties;
 using AutoUpdater.Sockets;
@@ -114,6 +117,10 @@ namespace AutoUpdater
             0x7E, 0x14, 0x5B, 0xA2, 0x96, 0xE8, 0xDE, 0x45, 0x98, 0xD7
         };
 
+        private const double _KBYTE = 1024;
+        private const double _MBYTE = _KBYTE * 1024;
+        private const double _GBYTE = _MBYTE * 1024;
+
         private readonly IniFileName m_ifConfig;
         private int m_nAutoPatchPort = 9528;
         private int m_nLoginPort = 9958;
@@ -131,10 +138,29 @@ namespace AutoUpdater
         private string m_szQueryAutoPatch = string.Empty;
         private string m_szRankingSite = string.Empty;
         private string m_szRegisterSite = string.Empty;
-        string m_szPrivacyTerms = "https://ftwmasters.com.br/panel/Home/TermsOfPrivacy";
-        string m_szTermsOfService = "https://ftwmasters.com.br/panel/Home/TermsOfUse";
+        private string m_szPrivacyTerms = "https://ftwmasters.com.br/panel/Home/TermsOfPrivacy";
+        private string m_szTermsOfService = "https://ftwmasters.com.br/panel/Home/TermsOfUse";
+
+        private string m_szOpenAfterClose = "";
+
+        private bool m_bInternalCloseRequest = false;
+        private UpdateDownloadType m_actuallyDownloading = UpdateDownloadType.None;
 
         private ushort m_usCurrentVersion;
+        private ushort m_usClientVersion;
+
+        private Queue<string> m_queueNextDownloads = new Queue<string>();
+        private Queue<string> m_queueDoneDownloads = new Queue<string>();
+
+        private int m_nCurrentlyBytesDownloaded = 0;
+        private int m_nCurrentDownloading = 0;
+        private int m_nTotalDownloads = 0;
+        private long m_nTotalDownloadSize = 0;
+
+        private WebClient m_wcClient;
+        private Stopwatch m_swStopwatch = new Stopwatch();
+
+        List<Process> m_lOpenClients = new List<Process>();
 
         public FrmMain()
         {
@@ -220,6 +246,7 @@ namespace AutoUpdater
 
         private void LoadVersion()
         {
+            m_usClientVersion = Convert.ToUInt16(m_ifConfig.GetEntryValue("Client", "Version").ToString());
             using (var reader = new StreamReader("version.dat"))
             {
                 string szVersion = reader.ReadLine();
@@ -228,7 +255,7 @@ namespace AutoUpdater
                 Kernel.ActualVersion = m_usCurrentVersion = ushort.Parse(szVersion);
                 Edit(lblGameVersion, LabelAsyncOperation.Text, LanguageManager.GetString("StrGameVersion", m_usCurrentVersion));
             }
-            Edit(lblUpdaterVersion, LabelAsyncOperation.Text, LanguageManager.GetString("StrAutoUpdateVersion", Kernel.ActualVersion, Kernel.Version));
+            Edit(lblUpdaterVersion, LabelAsyncOperation.Text, LanguageManager.GetString("StrAutoUpdateVersion", m_usClientVersion, Kernel.Version));
         }
 
         #endregion
@@ -260,6 +287,8 @@ namespace AutoUpdater
 
         public void NoDownload(UpdateReturnMessage msg, bool allowStart = true)
         {
+            HideDownloadBar();
+
             if (!allowStart)
                 return;
 
@@ -279,12 +308,175 @@ namespace AutoUpdater
                     break;
             }
 
-            btnExit.Enabled = true;
-            btnPlayHigh.Enabled = true;
-            btnPlayLow.Enabled = true;
+            Edit(btnExit, ButtonAsyncOperation.Enable, true);
+            Edit(btnPlayLow, ButtonAsyncOperation.Enable, true);
+            Edit(btnPlayHigh, ButtonAsyncOperation.Enable, true);
+        }
+
+        public void PrepairToDownload(UpdateDownloadType type, List<string> strs, PatchServer server)
+        {
+            HideDownloadBar();
+            if (strs.Count < 2)
+            {
+                if (type == UpdateDownloadType.UpdaterPatch)
+                {
+                    MsgRequestInfo mri = new MsgRequestInfo();
+                    mri.CurrentVersion = m_usCurrentVersion;
+                    server.Send(mri);
+
+                    Kernel.Stage = AutoPatchStage.WaitingForGamePatchs;
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLookingForGameUpdates"));
+                }
+                else
+                {
+                    NoDownload(UpdateReturnMessage.Success);
+                }
+                return;
+            }
+
+            m_actuallyDownloading = type;
+            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrCalculatingDownloadSize"));
+
+            string domain = strs[0];
+            if (!domain.EndsWith("/"))
+                domain += "/";
+
+            m_nTotalDownloadSize = 0;
+            m_nCurrentDownloading = 0;
+            m_nTotalDownloads = 0;
+
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+            Edit(lblDownloadStatus, LabelAsyncOperation.Visible, true);
+
+            for (int i = 1; i < strs.Count; i++)
+            {
+                if (!RemoteFileExists($"{domain}{strs[i]}"))
+                    continue;
+                m_nTotalDownloadSize += FetchFileSize($"{domain}{strs[i]}");
+                m_nTotalDownloads++;
+                m_queueNextDownloads.Enqueue($"{domain}{strs[i]}");
+                Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+            }
+
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+            Edit(pbDownload, ProgressBarAsyncOperation.Value, 0);
+            Edit(pbDownload, ProgressBarAsyncOperation.Max, m_nTotalDownloadSize);
+            ShowDownloadBar();
+            StartDownloading();
+        }
+
+        public void ShowDownloadBar()
+        {
+            Edit(lblDownloadStatus, LabelAsyncOperation.Visible, true);
+            Edit(panelStatus, PanelAsyncOperation.Visible, false);
+            Edit(panelProgressbar, PanelAsyncOperation.Visible, true);
+        }
+
+        public void HideDownloadBar()
+        {
+            Edit(lblDownloadStatus, LabelAsyncOperation.Visible, false);
+            Edit(panelStatus, PanelAsyncOperation.Visible, true);
+            Edit(panelProgressbar, PanelAsyncOperation.Visible, false);
+        }
+
+        private string GetTempDownloadPath(string name)
+        {
+            string path = Environment.CurrentDirectory + "\\AutoPatch";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            new DirectoryInfo(path).Attributes &= ~FileAttributes.ReadOnly;
+            path += "\\temp";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            new DirectoryInfo(path).Attributes &= ~FileAttributes.ReadOnly;
+            return $"{path}\\{name}";
         }
 
         #endregion
+
+        #region Downloading
+
+        private void StartDownloading()
+        {
+            if (m_queueNextDownloads.Count == 0)
+            {
+                if (m_queueDoneDownloads.Count > 0)
+                    BeginInstall();
+                else RequestPatches(AutoUpdateRequestType.CheckForGameUpdates, m_patchServer);
+                return;
+            }
+
+            string download = m_queueNextDownloads.Dequeue();
+            string[] parsed = download.Split('/');
+            string fileName = parsed[parsed.Length - 1];
+            m_nCurrentDownloading++;
+            m_queueDoneDownloads.Enqueue(download);
+
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                LanguageManager.GetString("StrLabelDownloading", m_nCurrentDownloading, m_nTotalDownloads,
+                    ParseFileSize(pbDownload.Value), ParseFileSize(m_nTotalDownloadSize), ParseDownloadSpeed(0)));
+
+            m_swStopwatch = new Stopwatch();
+            m_swStopwatch.Start();
+            m_wcClient = new WebClient();
+            m_wcClient.DownloadProgressChanged += DownloadFileProgressChanged;
+            m_wcClient.DownloadFileCompleted += ClientOnDownloadFileCompleted;
+            m_wcClient.DownloadFileAsync(new Uri(download), GetTempDownloadPath(fileName));
+        }
+
+        private void ClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            m_nCurrentlyBytesDownloaded = 0;
+            m_wcClient.Dispose();
+            m_swStopwatch.Stop();
+            StartDownloading();
+        }
+
+        private void DownloadFileProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Edit(pbDownload, ProgressBarAsyncOperation.Value, pbDownload.Value + (e.BytesReceived - m_nCurrentlyBytesDownloaded));
+            m_nCurrentlyBytesDownloaded = (int)e.BytesReceived;
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                LanguageManager.GetString("StrLabelDownloading", m_nCurrentDownloading, m_nTotalDownloads,
+                    ParseFileSize(pbDownload.Value), ParseFileSize(m_nTotalDownloadSize), ParseDownloadSpeed((long)(e.BytesReceived / m_swStopwatch.Elapsed.TotalSeconds))));
+        }
+
+        private void BeginInstall()
+        {
+            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrStartInstallUpdates"));
+            string fullPath;
+            while (m_queueDoneDownloads.Count > 0 && !string.IsNullOrEmpty(fullPath = m_queueDoneDownloads.Dequeue()))
+            {
+                string[] parsed = fullPath.Split('/');
+                string fileName = parsed[parsed.Length - 1];
+                Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrInstallingUpdates", fileName));
+
+                string localPath = GetTempDownloadPath(fileName);
+                Process process = Process.Start(localPath, $"-d \"{Environment.CurrentDirectory}\"");
+                //while (process?.HasExited == false) Task.Delay(100);
+                process?.WaitForExit();
+                process?.Close();
+                process?.Dispose();
+                LoadVersion();
+            }
+
+            DeleteTempFolder();
+
+            Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrPatchsInstalled"));
+
+            Kernel.Stage = AutoPatchStage.WaitingForUpdaterPatchs;
+            RequestPatches(AutoUpdateRequestType.CheckForLauncherUpdates, m_patchServer);
+        }
+
+        private void DeleteTempFolder()
+        {
+            string temp = GetTempDownloadPath("");
+            Directory.Delete(temp.Substring(0, temp.Length - 1), true);
+        }
+
+        #endregion
+
+        #region Links
 
         private void lnkPrivacy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -295,6 +487,8 @@ namespace AutoUpdater
         {
             new FrmWebBrowser(m_szTermsOfService).ShowDialog(this);
         }
+
+        #endregion
 
         #region Invoke to Update Interface
 
@@ -315,6 +509,9 @@ namespace AutoUpdater
                         break;
                     case LabelAsyncOperation.TextColor:
                         control.ForeColor = (Color) value;
+                        break;
+                    case LabelAsyncOperation.Visible:
+                        control.Visible = (bool) value;
                         break;
                 }
             }
@@ -337,13 +534,62 @@ namespace AutoUpdater
                 switch (op)
                 {
                     case ProgressBarAsyncOperation.Value:
-                        control.Value = (int) value;
+                        control.Value = (int)((long)value);
                         break;
                     case ProgressBarAsyncOperation.Min:
-                        control.Minimum = (int) value;
+                        control.Minimum = (int)((long)value);
                         break;
                     case ProgressBarAsyncOperation.Max:
-                        control.Minimum = (int) value;
+                        control.Maximum = (int)((long)value);
+                        break;
+                }
+            }
+            catch
+            {
+                // do nothing, just dont update
+            }
+        }
+
+        public void Edit(Panel control, PanelAsyncOperation op, object value)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<Panel, PanelAsyncOperation, object>(Edit), control, op, value);
+                return;
+            }
+
+            try
+            {
+                switch (op)
+                {
+                    case PanelAsyncOperation.Visible:
+                        control.Visible = (bool)value;
+                        break;
+                }
+            }
+            catch
+            {
+                // do nothing, just dont update
+            }
+        }
+
+        public void Edit(Button control, ButtonAsyncOperation op, object value)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<Button, ButtonAsyncOperation, object>(Edit), control, op, value);
+                return;
+            }
+
+            try
+            {
+                switch (op)
+                {
+                    case ButtonAsyncOperation.Visible:
+                        control.Visible = (bool)value;
+                        break;
+                    case ButtonAsyncOperation.Enable:
+                        control.Enabled = (bool) value;
                         break;
                 }
             }
@@ -359,6 +605,7 @@ namespace AutoUpdater
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            DeleteTempFolder();
             LoadVersion();
             ConnectToAutoUpdateServer();
         }
@@ -443,10 +690,14 @@ namespace AutoUpdater
 
         private void btnPlayHigh_Click(object sender, EventArgs e)
         {
+            SetGameMode(GameMode.HighDefinition);
+            Play();
         }
 
         private void btnPlayLow_Click(object sender, EventArgs e)
         {
+            SetGameMode(GameMode.LowDefinition);
+            Play();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -477,11 +728,7 @@ namespace AutoUpdater
         }
 
         #endregion
-
-        #region Game Startup
-
-        #endregion
-
+        
         #region Remote File Check
 
         public bool RemoteFileExists(string url)
@@ -489,6 +736,7 @@ namespace AutoUpdater
             HttpWebResponse response = null;
             var request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "HEAD";
+            request.UserAgent = "World-Conquer-Online-Auto-Patcher";
             try
             {
                 response = (HttpWebResponse) request.GetResponse();
@@ -520,6 +768,56 @@ namespace AutoUpdater
             {
                 return null;
             }
+        }
+
+        public long FetchFileSize(string url)
+        {
+            if (!RemoteFileExists(url))
+                return 0;
+
+            WebRequest req = WebRequest.Create(url);
+            req.Method = "HEAD";
+            req.Timeout = 1000;
+            WebResponse resp = null;
+            try
+            {
+                resp = req.GetResponse();
+                if (long.TryParse(resp.Headers.Get("Content-Length"), out var contentLength))
+                {
+                    return contentLength;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                resp?.Close();
+            }
+            return 0;
+        }
+
+        public string ParseFileSize(long size)
+        {
+            if (size > _GBYTE)
+                return $"{size / _GBYTE:N2} GB";
+            if (size > _MBYTE)
+                return $"{size / _MBYTE:N2} MB";
+            if (size > _KBYTE)
+                return $"{size/_KBYTE:N2} KB";
+            return $"{size} B";
+        }
+
+        public string ParseDownloadSpeed(long amount)
+        {
+            if (amount > _GBYTE)
+                return $"{amount / _GBYTE:N2} GB/s";
+            if (amount > _MBYTE)
+                return $"{amount / _MBYTE:N2} MB/s";
+            if (amount > _KBYTE)
+                return $"{amount / _KBYTE:N2} KB/s";
+            return $"{amount} B/s";
         }
 
         #endregion
@@ -633,7 +931,7 @@ namespace AutoUpdater
             switch (mode)
             {
                 case AutoUpdateRequestType.CheckForLauncherUpdates:
-                    msg.CurrentVersion = Kernel.ActualVersion;
+                    msg.CurrentVersion = m_usClientVersion;
                     break;
                 case AutoUpdateRequestType.CheckForGameUpdates:
                     msg.CurrentVersion = m_usCurrentVersion;
@@ -643,6 +941,8 @@ namespace AutoUpdater
         }
 
         #endregion
+
+        #region Internal Packet processing
 
         public void ProcessPacket(PatchServer server, byte[] buffer)
         {
@@ -671,13 +971,15 @@ namespace AutoUpdater
                     string strPrivacyDate = m_ifConfig.GetEntryValue("Config", "TermsOfPrivacy").ToString();
                     if (!DateTime.TryParse(strPrivacyDate, out DateTime date) 
                         || !DateTime.TryParse(list[0], out DateTime serverTime) 
-                        || serverTime.ToString("yyyyMMddHHmm") != date.ToString("yyyyMMddHHmm"))
+                        || serverTime > date)
                     {
                         if (new FrmTermsOfPrivacy(m_szPrivacyTerms).ShowDialog(this) != DialogResult.OK)
                         {
                             NoDownload(UpdateReturnMessage.PrivacyNotAccepted, false);
                             return;
                         }
+
+                        m_ifConfig.SetValue("Config", "TermsOfPrivacy", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     }
 
                     Kernel.HasAgreedPrivacy = true;
@@ -685,13 +987,120 @@ namespace AutoUpdater
                     break;
             }
         }
+
+        #endregion
+
+        #region Form Close events
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (m_bInternalCloseRequest)
+                return;
+
+            if (MessageBox.Show(this, LanguageManager.GetString("StrCloseWindowMsg"),
+                    LanguageManager.GetString("StrCloseWindowTitle"),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) ==
+                DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+        }
+
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(m_szOpenAfterClose))
+                Process.Start(m_szOpenAfterClose);
+
+            foreach (var game in m_lOpenClients)
+            {
+                try
+                {
+                    game.Kill();
+                    game.Close();
+                    game.Dispose();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        #endregion
+
+        #region Start Game
+
+        private void Play()
+        {
+            const string fileName = "Conquer.exe";
+            string[] filesToCheck =
+            {
+                fileName
+            };
+            string path = $"{Environment.CurrentDirectory}\\{fileName}";
+
+            foreach (var file in filesToCheck)
+            {
+                string verifyPath = $"{Environment.CurrentDirectory}\\{file}";
+                if (!File.Exists(verifyPath))
+                {
+                    MessageBox.Show(this, LanguageManager.GetString("StrFileMissing", file),
+                        LanguageManager.GetString("StrFileMissingTitle"),
+                        MessageBoxButtons.OK);
+                    return;
+                }
+            }
+
+            Process game = new Process
+            {
+                StartInfo =
+                {
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = path,
+                    Arguments = "blacknull"
+                }
+            };
+            game.Start();
+            m_lOpenClients.Add(game);
+        }
+
+        private void SetGameMode(GameMode mode)
+        {
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\ini\GameSetUp.ini");
+
+            int lowTimes = 0;
+            int highTimes = 0;
+            try
+            {
+                lowTimes = int.Parse(ini.GetEntryValue("GameMode", "LowTimes").ToString());
+                highTimes = int.Parse(ini.GetEntryValue("GameMode", "HighTimes").ToString());
+            }
+            catch
+            {
+
+            }
+
+            ini.SetValue("GameMode", "LowTimes", lowTimes);
+            ini.SetValue("GameMode", "GameModeRecord", (int)mode);
+            ini.SetValue("GameMode", "HighTimes", highTimes);
+        }
+
+        #endregion
+    }
+
+    public enum GameMode
+    {
+        LowDefinition,
+        HighDefinition
     }
 
     public enum LabelAsyncOperation
     {
         None,
         Text,
-        TextColor
+        TextColor,
+        Visible
     }
 
     public enum ProgressBarAsyncOperation
@@ -700,6 +1109,19 @@ namespace AutoUpdater
         Value,
         Min,
         Max
+    }
+
+    public enum PanelAsyncOperation
+    {
+        None,
+        Visible
+    }
+
+    public enum ButtonAsyncOperation
+    {
+        None,
+        Visible,
+        Enable
     }
 
     public enum UpdateReturnMessage

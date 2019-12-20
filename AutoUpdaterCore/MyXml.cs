@@ -49,12 +49,22 @@ namespace AutoUpdaterCore
             m_xml.Load(path);
         }
 
-        public void AddNewNode(string value, string node, params string[] xpath)
+        public void AddNewNode(string value, string idNode, string node, params string[] xpath)
         {
             if (!CheckNodeExists(xpath))
                 return; // must create one by one
 
-            if (CheckNodeExists(TransformXPath(xpath), node))
+            string query = "";
+            if (string.IsNullOrEmpty(idNode))
+            {
+                query = TransformXPath(xpath) + $"/{node}";
+            }
+            else
+            {
+                query = TransformXPath(xpath) + $"/{node}[@id='{idNode}']";
+            }
+
+            if (CheckNodeExists(query))
             {
                 ChangeValue(value, TransformXPath(xpath), node);
                 return;
@@ -63,6 +73,14 @@ namespace AutoUpdaterCore
             XmlNode appendTo = GetNode(xpath);
             XmlNode newNode = m_xml.CreateNode(XmlNodeType.Element, node, "");
             newNode.InnerText = value;
+            if (!string.IsNullOrEmpty(idNode))
+            {
+                XmlAttribute attrib = m_xml.CreateAttribute("id");
+                attrib.Value = idNode;
+                
+                // ReSharper disable once PossibleNullReferenceException
+                newNode.Attributes.Append(attrib);
+            }
             appendTo.AppendChild(newNode);
             m_xml.Save(m_path);
         }
@@ -106,6 +124,13 @@ namespace AutoUpdaterCore
             if (!CheckNodeExists(xpath))
                 return "";
             return GetNode(xpath)?.InnerText ?? "";
+        }
+
+        public XmlNodeList GetAllNodes(params string[] xpath)
+        {
+            if (!CheckNodeExists(xpath))
+                return null;
+            return GetNode(xpath).ChildNodes;
         }
 
         public bool CheckNodeExists(params string[] xpath)

@@ -39,5 +39,15 @@ namespace AutoUpdater
         public static LogWriter Log;
 
         public static bool HasAgreedPrivacy = false;
+
+        public static AutoPatchStage Stage = AutoPatchStage.None;
+    }
+
+    public enum AutoPatchStage
+    {
+        None,
+        WaitingForUpdaterPatchs,
+        WaitingForGamePatchs,
+        UpdatesOk
     }
 }

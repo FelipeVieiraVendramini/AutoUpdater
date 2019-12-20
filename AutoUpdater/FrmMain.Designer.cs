@@ -44,6 +44,8 @@
             this.pbDownload = new System.Windows.Forms.ProgressBar();
             this.lnkPrivacy = new System.Windows.Forms.LinkLabel();
             this.lnkTos = new System.Windows.Forms.LinkLabel();
+            this.lblDownloadStatus = new System.Windows.Forms.Label();
+            this.webNews = new System.Windows.Forms.WebBrowser();
             this.panelStatus.SuspendLayout();
             this.panelProgressbar.SuspendLayout();
             this.SuspendLayout();
@@ -244,6 +246,32 @@
             this.lnkTos.Text = "linkLabel1";
             this.lnkTos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkTos_LinkClicked);
             // 
+            // lblDownloadStatus
+            // 
+            this.lblDownloadStatus.AutoSize = true;
+            this.lblDownloadStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblDownloadStatus.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblDownloadStatus.Location = new System.Drawing.Point(47, 442);
+            this.lblDownloadStatus.Name = "lblDownloadStatus";
+            this.lblDownloadStatus.Size = new System.Drawing.Size(38, 13);
+            this.lblDownloadStatus.TabIndex = 5;
+            this.lblDownloadStatus.Text = "NONE";
+            this.lblDownloadStatus.Visible = false;
+            // 
+            // webNews
+            // 
+            this.webNews.AllowNavigation = false;
+            this.webNews.AllowWebBrowserDrop = false;
+            this.webNews.IsWebBrowserContextMenuEnabled = false;
+            this.webNews.Location = new System.Drawing.Point(39, 103);
+            this.webNews.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webNews.Name = "webNews";
+            this.webNews.ScriptErrorsSuppressed = true;
+            this.webNews.ScrollBarsEnabled = false;
+            this.webNews.Size = new System.Drawing.Size(549, 310);
+            this.webNews.TabIndex = 6;
+            this.webNews.Url = new System.Uri("https://ftwmasters.com.br/panel/", System.UriKind.Absolute);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -251,6 +279,8 @@
             this.BackgroundImage = global::AutoUpdater.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.webNews);
+            this.Controls.Add(this.lblDownloadStatus);
             this.Controls.Add(this.lnkTos);
             this.Controls.Add(this.lnkPrivacy);
             this.Controls.Add(this.btnExit);
@@ -269,6 +299,8 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto Updater";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.panelStatus.ResumeLayout(false);
             this.panelProgressbar.ResumeLayout(false);
@@ -294,6 +326,8 @@
         private System.Windows.Forms.LinkLabel lnkPrivacy;
         private System.Windows.Forms.LinkLabel lnkTos;
         internal System.Windows.Forms.Label lblCenterStatus;
+        private System.Windows.Forms.Label lblDownloadStatus;
+        private System.Windows.Forms.WebBrowser webNews;
     }
 }
 

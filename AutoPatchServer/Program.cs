@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Xml;
 using AutoPatchServer.Sockets.Updater;
 using AutoUpdaterCore;
 using AutoUpdaterCore.Interfaces;
@@ -150,15 +151,15 @@ namespace AutoPatchServer
             if (!File.Exists(path))
             {
                 MyXml create = new MyXml(path);
-                create.AddNewNode("https://ftwmasters.com.br/patches", "DownloadUrl", "Config");
-                create.AddNewNode("9528", "ListenPort", "Config");
-                create.AddNewNode("10000", "LatestUpdaterVersion", "Config");
-                create.AddNewNode("4000", "LatestGameVersion", "Config");
-                create.AddNewNode("2019-10-22 00:00:00", "PrivacyTermsUpdate", "Config");
-                create.AddNewNode("", "AllowedPatches", "Config");
-                create.AddNewNode("0", "Count", "Config", "AllowedPatches");
-                create.AddNewNode("", "BundlePatches", "Config");
-                create.AddNewNode("0", "Count", "Config", "BundlePatches");
+                create.AddNewNode("https://ftwmasters.com.br/patches", null, "DownloadUrl", "Config");
+                create.AddNewNode("9528", null, "ListenPort", "Config");
+                create.AddNewNode("10000", null, "LatestUpdaterVersion", "Config");
+                create.AddNewNode("4000", null, "LatestGameVersion", "Config");
+                create.AddNewNode("2019-10-22 00:00:00", null, "PrivacyTermsUpdate", "Config");
+                create.AddNewNode("", null, "AllowedPatches", "Config");
+                //create.AddNewNode("0", null, "Count", "Config", "AllowedPatches");
+                create.AddNewNode("", null, "BundlePatches", "Config");
+                //create.AddNewNode("0", null, "Count", "Config", "BundlePatches");
             }
 
             Kernel.MyXml = new MyXml(path);
@@ -182,35 +183,23 @@ namespace AutoPatchServer
                 Kernel.PrivacyTermsUpdate = DateTime.Parse(Kernel.MyXml.GetValue("Config", "PrivacyTermsUpdate"));
             WriteLog($"Privacy Terms last updated: {Kernel.PrivacyTermsUpdate}", LogType.CONSOLE);
 
-
-            int count = 0;
-            if (int.TryParse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count"), out count))
+            foreach (XmlNode node in Kernel.MyXml.GetAllNodes("Config", "AllowedPatches"))
             {
-                for (int i = 0; i < count; i++)
+                UpdatesManager.AddPatch(new PatchStructure
                 {
-                    string name = $"Patch{i}";
-                    UpdatesManager.AddPatch(new PatchStructure
-                    {
-                        Order = i,
-                        To = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", name)),
-                        FileName = Kernel.MyXml.GetValue("Config", "AllowedPatches", name)
-                    }, true);
-                }
+                    To = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", $"Patch[@id='{node.Attributes["id"].Value}']")),
+                    FileName = Kernel.MyXml.GetValue("Config", "AllowedPatches", $"Patch[@id='{node.Attributes["id"].Value}']")
+                }, true);
             }
 
-            if (int.TryParse(Kernel.MyXml.GetValue("Config", "BundlePatches", "Count"), out count))
+            foreach (XmlNode node in Kernel.MyXml.GetAllNodes("Config", "BundlePatches"))
             {
-                for (int i = 0; i < count; i++)
+                UpdatesManager.AddPatch(new PatchStructure
                 {
-                    string name = $"Patch{i}";
-                    UpdatesManager.AddPatch(new PatchStructure
-                    {
-                        Order = i,
-                        FileName = Kernel.MyXml.GetValue("Config", "BundlePatches", name, "FileName"),
-                        From = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", name, "From")),
-                        To = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", name, "To"))
-                    }, true);
-                }
+                    From = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", $"Patch[@id='{node.Attributes["id"].Value}']", "From")),
+                    To = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", $"Patch[@id='{node.Attributes["id"].Value}']", "To")),
+                    FileName = Kernel.MyXml.GetValue("Config", "BundlePatches", $"Patch[@id='{node.Attributes["id"].Value}']", "FileName")
+                }, true);
             }
         }
         

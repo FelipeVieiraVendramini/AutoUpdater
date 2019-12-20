@@ -73,7 +73,7 @@ namespace AutoPatchServer.Sockets.Updater
                     }
                     else
                     {
-                        msg.Mode = AutoUpdateRequestType.LauncherUpdatesOk;
+                        msg.Mode = AutoUpdateRequestType.GameUpdatesOk;
                         user.Send(msg);
                     }
                     break;

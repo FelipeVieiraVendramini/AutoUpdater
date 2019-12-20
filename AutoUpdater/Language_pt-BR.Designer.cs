@@ -70,6 +70,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Calculando tamanho de download....
+        /// </summary>
+        public static string StrCalculatingDownloadSize {
+            get {
+                return ResourceManager.GetString("StrCalculatingDownloadSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Verificando termos de privacidade....
         /// </summary>
         public static string StrCheckingPrivacyTerms {
@@ -93,6 +102,24 @@ namespace AutoUpdater {
         public static string StrClientUpdatedOK {
             get {
                 return ResourceManager.GetString("StrClientUpdatedOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ao fechar o atualizador todas as conexões com os nossos servidores serão encerradas e os clientes fechados. Sem uma conexão ativa entre o seu computador e nosso servidor de atualizações você compromete a segurança de seu cliente, portanto, apenas o feche caso já tenha encerrado todas as instâncias do jogo. Você tem certeza de que deseja fechar o atualizador?.
+        /// </summary>
+        public static string StrCloseWindowMsg {
+            get {
+                return ResourceManager.GetString("StrCloseWindowMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Você tem certeza?.
+        /// </summary>
+        public static string StrCloseWindowTitle {
+            get {
+                return ResourceManager.GetString("StrCloseWindowTitle", resourceCulture);
             }
         }
         
@@ -169,11 +196,74 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O arquivo `{0}` está faltando no seu cliente. Verifique se o seu cliente está na última versão ou faça o download do jogo novamente..
+        /// </summary>
+        public static string StrFileMissing {
+            get {
+                return ResourceManager.GetString("StrFileMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Arquivo faltando!.
+        /// </summary>
+        public static string StrFileMissingTitle {
+            get {
+                return ResourceManager.GetString("StrFileMissingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Versão: {0}.
         /// </summary>
         public static string StrGameVersion {
             get {
                 return ResourceManager.GetString("StrGameVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Instalando patch {0}. Por favor, aguarde..
+        /// </summary>
+        public static string StrInstallingUpdates {
+            get {
+                return ResourceManager.GetString("StrInstallingUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Será realizado o download de {0} atualizações totalizando {1}..
+        /// </summary>
+        public static string StrLabelCalculatingDownloadAmount {
+            get {
+                return ResourceManager.GetString("StrLabelCalculatingDownloadAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Baixando atualização {0} de {1}. {2}/{3} ({4}).
+        /// </summary>
+        public static string StrLabelDownloading {
+            get {
+                return ResourceManager.GetString("StrLabelDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por atualizações de jogo....
+        /// </summary>
+        public static string StrLookingForGameUpdates {
+            get {
+                return ResourceManager.GetString("StrLookingForGameUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por atualizações de Launcher....
+        /// </summary>
+        public static string StrLookingForUpdaterUpdates {
+            get {
+                return ResourceManager.GetString("StrLookingForUpdaterUpdates", resourceCulture);
             }
         }
         
@@ -187,11 +277,29 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a As atualizações foram instaladas, por favor, aguarde enquanto verificamos se existem mais..
+        /// </summary>
+        public static string StrPatchsInstalled {
+            get {
+                return ResourceManager.GetString("StrPatchsInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por instâncias do jogo em aberto.
         /// </summary>
         public static string StrSearchForOpenInstances {
             get {
                 return ResourceManager.GetString("StrSearchForOpenInstances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Preparando para instalar atualizações..
+        /// </summary>
+        public static string StrStartInstallUpdates {
+            get {
+                return ResourceManager.GetString("StrStartInstallUpdates", resourceCulture);
             }
         }
         

@@ -120,6 +120,9 @@
   <data name="StrAutoUpdateVersion" xml:space="preserve">
     <value>Versão do Atualizador: {0} - Compilação: {1}</value>
   </data>
+  <data name="StrCalculatingDownloadSize" xml:space="preserve">
+    <value>Calculando tamanho de download...</value>
+  </data>
   <data name="StrCheckingPrivacyTerms" xml:space="preserve">
     <value>Verificando termos de privacidade...</value>
   </data>
@@ -128,6 +131,12 @@
   </data>
   <data name="StrClientUpdatedOK" xml:space="preserve">
     <value>Cliente atualizado com sucesso! Bom jogo.</value>
+  </data>
+  <data name="StrCloseWindowMsg" xml:space="preserve">
+    <value>Ao fechar o atualizador todas as conexões com os nossos servidores serão encerradas e os clientes fechados. Sem uma conexão ativa entre o seu computador e nosso servidor de atualizações você compromete a segurança de seu cliente, portanto, apenas o feche caso já tenha encerrado todas as instâncias do jogo. Você tem certeza de que deseja fechar o atualizador?</value>
+  </data>
+  <data name="StrCloseWindowTitle" xml:space="preserve">
+    <value>Você tem certeza?</value>
   </data>
   <data name="StrConnectingToServer" xml:space="preserve">
     <value>Conectando-se ao servidor...</value>
@@ -153,14 +162,41 @@
   <data name="StrErrorPrivacyNotAccepted" xml:space="preserve">
     <value>Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade.</value>
   </data>
+  <data name="StrFileMissing" xml:space="preserve">
+    <value>O arquivo `{0}` está faltando no seu cliente. Verifique se o seu cliente está na última versão ou faça o download do jogo novamente.</value>
+  </data>
+  <data name="StrFileMissingTitle" xml:space="preserve">
+    <value>Arquivo faltando!</value>
+  </data>
   <data name="StrGameVersion" xml:space="preserve">
     <value>Versão: {0}</value>
+  </data>
+  <data name="StrInstallingUpdates" xml:space="preserve">
+    <value>Instalando patch {0}. Por favor, aguarde.</value>
+  </data>
+  <data name="StrLabelCalculatingDownloadAmount" xml:space="preserve">
+    <value>Será realizado o download de {0} atualizações totalizando {1}.</value>
+  </data>
+  <data name="StrLabelDownloading" xml:space="preserve">
+    <value>Baixando atualização {0} de {1}. {2}/{3} ({4})</value>
+  </data>
+  <data name="StrLookingForGameUpdates" xml:space="preserve">
+    <value>Procurando por atualizações de jogo...</value>
+  </data>
+  <data name="StrLookingForUpdaterUpdates" xml:space="preserve">
+    <value>Procurando por atualizações de Launcher...</value>
   </data>
   <data name="StrOpenClientError" xml:space="preserve">
     <value>Não foi possível atualizar devido a instâncias do cliente do jogo em aberto.</value>
   </data>
+  <data name="StrPatchsInstalled" xml:space="preserve">
+    <value>As atualizações foram instaladas, por favor, aguarde enquanto verificamos se existem mais.</value>
+  </data>
   <data name="StrSearchForOpenInstances" xml:space="preserve">
     <value>Procurando por instâncias do jogo em aberto</value>
+  </data>
+  <data name="StrStartInstallUpdates" xml:space="preserve">
+    <value>Preparando para instalar atualizações.</value>
   </data>
   <data name="StrTermsOfPrivacyDesc" xml:space="preserve">
     <value>Para começar ou continuar a jogar você deve aceitar nossos %privacy_terms%. 

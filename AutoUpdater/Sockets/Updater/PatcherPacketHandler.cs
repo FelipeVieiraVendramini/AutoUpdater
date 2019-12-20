@@ -34,12 +34,14 @@ namespace AutoUpdater.Sockets.Updater
             switch (msg.Mode)
             {
                 case AutoUpdateRequestType.LauncherUpdatesOk:
-                    server.Send(new MsgRequestInfo {Mode = AutoUpdateRequestType.CheckForGameUpdates});
+                    Kernel.Stage = AutoPatchStage.WaitingForGamePatchs;
+                    Program.FrmMain.RequestPatches(AutoUpdateRequestType.CheckForGameUpdates, server);
                     break;
                 case AutoUpdateRequestType.GameUpdatesOk:
                     Program.FrmMain.NoDownload(UpdateReturnMessage.Success);
                     break;
             }
+
             //Kernel.Log.SaveLog("PatcherPacketHandler::ProcessRequestInfo(PatchServer,byte[]) handler failed");
             //Report(buffer);
         }
@@ -48,6 +50,22 @@ namespace AutoUpdater.Sockets.Updater
         public void ProcessDownloadInfo(PatchServer server, byte[] buffer)
         {
             MsgDownloadInfo msg = new MsgDownloadInfo(buffer);
+            switch (msg.Mode)
+            {
+                case UpdateDownloadType.UpdaterPatch:
+                    if (Kernel.Stage != AutoPatchStage.WaitingForUpdaterPatchs)
+                        return;
+
+                    Program.FrmMain.PrepairToDownload(msg.Mode, msg.GetStrings(), server);
+                    break;
+
+                case UpdateDownloadType.GameClientPatch:
+                    if (Kernel.Stage != AutoPatchStage.WaitingForGamePatchs)
+                        return;
+
+                    Program.FrmMain.PrepairToDownload(msg.Mode, msg.GetStrings(), server);
+                    break;
+            }
         }
 
         [PacketHandlerType(PacketType.MsgClientInfo)]

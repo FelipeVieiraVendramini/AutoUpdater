@@ -46,28 +46,12 @@ namespace AutoPatchServer
             {
                 if (m_patchLibrary[patch.From].To < patch.To)
                 {
-                    int addTo = RemovePatch(patch.From, true);
+                    RemovePatch(patch.From, true);
                     m_patchLibrary.TryAdd(patch.From, patch);
 
                     if (!isLoading)
                     {
-                        if (patch.From > 0)
-                        {
-                            int count = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", "Count"));
-                            Kernel.MyXml.AddNewNode("", $"Patch{count}", "Config", "BundlePatches");
-                            Kernel.MyXml.AddNewNode(patch.From.ToString(), "From", "Config", "BundlePatches", $"Patch{count}");
-                            Kernel.MyXml.AddNewNode(patch.To.ToString(), "To", "Config", "BundlePatches", $"Patch{count}");
-                            Kernel.MyXml.AddNewNode(patch.FileName, "FileName", "Config", "BundlePatches", $"Patch{count++}");
-                            Kernel.MyXml.ChangeValue(patch.FileName, "Config", "BundlePatches", $"Patch{count}", "FileName");
-                            Kernel.MyXml.ChangeValue(count.ToString(), "Config", "BundlePatches", "Count");
-                            patch.Order = count - 1;
-                        }
-                        else
-                        {
-                            Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "AllowedPatches", $"Patch{addTo}");
-                            patch.Order = addTo;
-                        }
-
+                        AddToXml(patch);
                         added = true;
                     }
                 }
@@ -78,24 +62,7 @@ namespace AutoPatchServer
 
                 if (!isLoading)
                 {
-                    if (patch.From > 0)
-                    {
-                        int count = int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", "Count"));
-                        Kernel.MyXml.AddNewNode("", $"Patch{count}", "Config", "BundlePatches");
-                        Kernel.MyXml.AddNewNode(patch.From.ToString(), $"Patch{count}", "Config", "BundlePatches", "From");
-                        Kernel.MyXml.AddNewNode(patch.To.ToString(), $"Patch{count}", "Config", "BundlePatches", "To");
-                        Kernel.MyXml.AddNewNode(patch.FileName, $"Patch{count}", "Config", "BundlePatches", "FileName");
-                        Kernel.MyXml.ChangeValue(patch.FileName, "Config", "BundlePatches", $"Patch{count++}", "FileName");
-                        Kernel.MyXml.ChangeValue(count.ToString(), "Config", "BundlePatches", "Count");
-                        patch.Order = count - 1;
-                    }
-                    else
-                    {
-                        int count = int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count"));
-                        Kernel.MyXml.AddNewNode(patch.To.ToString(), $"Patch{count++}", "Config", "AllowedPatches");
-                        Kernel.MyXml.ChangeValue(count.ToString(), "Config", "AllowedPatches", "Count");
-                        patch.Order = count - 1;
-                    }
+                    AddToXml(patch);
                     added = true;
                 }
             }
@@ -112,6 +79,21 @@ namespace AutoPatchServer
                     Kernel.LatestGamePatch = patch.To;
                     Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "LatestGameVersion");
                 }
+            }
+        }
+
+        private static void AddToXml(PatchStructure patch)
+        {
+            if (patch.From > 0)
+            {
+                Kernel.MyXml.AddNewNode("", patch.From.ToString(), "Patch", "Config", "BundlePatches");
+                Kernel.MyXml.AddNewNode(patch.From.ToString(), null, "From", "Config", "BundlePatches", $"Patch[@id='{patch.From}']");
+                Kernel.MyXml.AddNewNode(patch.To.ToString(), null, "To", "Config", "BundlePatches", $"Patch[@id='{patch.From}']");
+                Kernel.MyXml.AddNewNode(patch.FileName, null, "FileName", "Config", "BundlePatches", $"Patch[@id='{patch.From}']");
+            }
+            else
+            {
+                Kernel.MyXml.AddNewNode(patch.FileName, patch.To.ToString(), "Patch", "Config", "AllowedPatches");
             }
         }
 
@@ -132,13 +114,11 @@ namespace AutoPatchServer
             {
                 if (removed.From > 0)
                 {
-                    Kernel.MyXml.DeleteNode("Config", "BundlePatches", $"Patch{removed.Order}");
-                    Kernel.MyXml.ChangeValue((int.Parse(Kernel.MyXml.GetValue("Config", "BundlePatches", "Count"))-1).ToString(),"Config", "BundlePatches", "Count");
+                    Kernel.MyXml.DeleteNode("Config", "BundlePatches", $"Patch[@id='{removed.From}']");
                 }
                 else
                 {
-                    Kernel.MyXml.DeleteNode("Config", "AllowedPatches", $"Patch{removed.Order}");
-                    Kernel.MyXml.ChangeValue((int.Parse(Kernel.MyXml.GetValue("Config", "AllowedPatches", "Count")) - 1).ToString(), "Config", "AllowedPatches", "Count");
+                    Kernel.MyXml.DeleteNode("Config", "AllowedPatches", $"Patch[@id='{removed.From}']");
                 }
             }
 

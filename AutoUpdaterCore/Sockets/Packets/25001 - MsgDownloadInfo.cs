@@ -77,6 +77,7 @@ namespace AutoUpdaterCore.Sockets.Packets
 
     public enum UpdateDownloadType : ushort
     {
+        None,
         UpdaterPatch,
         GameClientPatch
     }
