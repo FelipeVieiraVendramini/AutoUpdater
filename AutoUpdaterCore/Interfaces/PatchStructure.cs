@@ -31,7 +31,7 @@ namespace AutoUpdaterCore.Interfaces
 
         public string FileName
         {
-            get => string.IsNullOrEmpty(m_szName) ? "" : m_szName.Contains(".exe") ? m_szName : $"{m_szName}.exe";
+            get => string.IsNullOrEmpty(m_szName) ? To.ToString() : m_szName.Contains(".exe") ? m_szName : $"{m_szName}.exe";
             set => m_szName = value;
         }
         public bool IsGameUpdate { get; set; }

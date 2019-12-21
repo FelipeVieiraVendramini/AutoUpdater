@@ -313,7 +313,7 @@ namespace AutoUpdater
             Edit(btnPlayHigh, ButtonAsyncOperation.Enable, true);
         }
 
-        public void PrepairToDownload(UpdateDownloadType type, List<string> strs, PatchServer server)
+        public void PrepareToDownload(UpdateDownloadType type, List<string> strs, PatchServer server)
         {
             HideDownloadBar();
             if (strs.Count < 2)
@@ -398,7 +398,7 @@ namespace AutoUpdater
 
         private void StartDownloading()
         {
-            if (m_queueNextDownloads.Count == 0)
+            if (m_queueNextDownloads.Count == 0 || !string.IsNullOrEmpty(m_szOpenAfterClose))
             {
                 if (m_queueDoneDownloads.Count > 0)
                     BeginInstall();
@@ -449,6 +449,15 @@ namespace AutoUpdater
             {
                 string[] parsed = fullPath.Split('/');
                 string fileName = parsed[parsed.Length - 1];
+
+                if (int.TryParse(fileName.Replace(".exe", ""), out int idPatch) && idPatch > 10000)
+                {
+                    m_szOpenAfterClose = GetTempDownloadPath(fileName);
+                    m_bInternalCloseRequest = true;
+                    Close();
+                    return;
+                }
+
                 Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrInstallingUpdates", fileName));
 
                 string localPath = GetTempDownloadPath(fileName);
@@ -983,6 +992,7 @@ namespace AutoUpdater
                     }
 
                     Kernel.HasAgreedPrivacy = true;
+                    Kernel.Stage = AutoPatchStage.WaitingForUpdaterPatchs;
                     RequestPatches(AutoUpdateRequestType.CheckForLauncherUpdates, server);
                     break;
             }

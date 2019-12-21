@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdaterCore", "AutoUpdaterCore\AutoUpdaterCore.csproj", "{D9D61F0E-383B-471D-9BDF-57D5E942E05A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTests", "MyTests\MyTests.csproj", "{4CE50C7C-9A82-4C34-A80B-37C25A013CD4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdater", "AutoUpdater\AutoUpdater.csproj", "{AD3006B3-4DCE-41E0-8C73-91B5A8B93D71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoConfig", "CryptoConfig\CryptoConfig.csproj", "{B9E52D1B-2EAB-4D7D-91EE-344C30C993CE}"
@@ -23,10 +21,6 @@ Global
 		{D9D61F0E-383B-471D-9BDF-57D5E942E05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9D61F0E-383B-471D-9BDF-57D5E942E05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9D61F0E-383B-471D-9BDF-57D5E942E05A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CE50C7C-9A82-4C34-A80B-37C25A013CD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CE50C7C-9A82-4C34-A80B-37C25A013CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CE50C7C-9A82-4C34-A80B-37C25A013CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CE50C7C-9A82-4C34-A80B-37C25A013CD4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD3006B3-4DCE-41E0-8C73-91B5A8B93D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD3006B3-4DCE-41E0-8C73-91B5A8B93D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD3006B3-4DCE-41E0-8C73-91B5A8B93D71}.Release|Any CPU.ActiveCfg = Release|Any CPU

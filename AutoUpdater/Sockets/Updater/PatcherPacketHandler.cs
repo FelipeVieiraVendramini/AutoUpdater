@@ -30,7 +30,6 @@ namespace AutoUpdater.Sockets.Updater
         public void ProcessRequestInfo(PatchServer server, byte[] buffer)
         {
             MsgRequestInfo msg = new MsgRequestInfo(buffer);
-
             switch (msg.Mode)
             {
                 case AutoUpdateRequestType.LauncherUpdatesOk:
@@ -56,14 +55,14 @@ namespace AutoUpdater.Sockets.Updater
                     if (Kernel.Stage != AutoPatchStage.WaitingForUpdaterPatchs)
                         return;
 
-                    Program.FrmMain.PrepairToDownload(msg.Mode, msg.GetStrings(), server);
+                    Program.FrmMain.PrepareToDownload(msg.Mode, msg.GetStrings(), server);
                     break;
 
                 case UpdateDownloadType.GameClientPatch:
                     if (Kernel.Stage != AutoPatchStage.WaitingForGamePatchs)
                         return;
 
-                    Program.FrmMain.PrepairToDownload(msg.Mode, msg.GetStrings(), server);
+                    Program.FrmMain.PrepareToDownload(msg.Mode, msg.GetStrings(), server);
                     break;
             }
         }

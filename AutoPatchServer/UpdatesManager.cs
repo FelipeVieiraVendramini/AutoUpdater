@@ -118,7 +118,7 @@ namespace AutoPatchServer
                 }
                 else
                 {
-                    Kernel.MyXml.DeleteNode("Config", "AllowedPatches", $"Patch[@id='{removed.From}']");
+                    Kernel.MyXml.DeleteNode("Config", "AllowedPatches", $"Patch[@id='{removed.To}']");
                 }
             }
 
@@ -131,8 +131,8 @@ namespace AutoPatchServer
                 return 0;
 
             if (isUpdate)
-                return m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdate).Max(x => x.To);
-            return m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdate).Max(x => x.To);
+                return m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdate).Max(x => x.To);
+            return m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdate).Max(x => x.To);
         }
 
         public static List<PatchStructure> GetDownloadList(int actualVersion)
