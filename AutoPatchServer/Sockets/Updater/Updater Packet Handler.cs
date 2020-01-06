@@ -36,6 +36,14 @@ namespace AutoPatchServer.Sockets.Updater
         public void ProcessRequestInfo(User user, byte[] buffer)
         {
             MsgRequestInfo msg = new MsgRequestInfo(buffer);
+
+            if (user.IsBanned)
+            {
+                msg.CurrentVersion = ushort.MaxValue;
+                user.Send(msg);
+                return;
+            }
+
             List<PatchStructure> updates = UpdatesManager.GetDownloadList(msg.CurrentVersion);
             switch (msg.Mode)
             {

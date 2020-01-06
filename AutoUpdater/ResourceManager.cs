@@ -33,7 +33,7 @@ namespace AutoUpdater
     {
         public static List<Languages> AvailableLanguages = new List<Languages>
         {
-            //new Languages {LanguageFullName = "English", LanguageCultureName = "en-US"},
+            new Languages {LanguageFullName = "English", LanguageCultureName = "en-US"},
             new Languages {LanguageFullName = "Português Brasileiro", LanguageCultureName = "pt-BR"}
         };
 

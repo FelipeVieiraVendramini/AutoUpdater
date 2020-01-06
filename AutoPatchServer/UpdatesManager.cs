@@ -137,6 +137,9 @@ namespace AutoPatchServer
 
         public static List<PatchStructure> GetDownloadList(int actualVersion)
         {
+            if (actualVersion < GAME_UPDATE_MIN)
+                return new List<PatchStructure>();
+
             List<PatchStructure> result = new List<PatchStructure>();
             bool isUpdater = actualVersion >= UPDATER_VERSION_MIN && actualVersion <= UPDATER_VERSION_MAX;
             var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdater && x.To > actualVersion)

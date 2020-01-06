@@ -70,6 +70,11 @@
       <DependentUpon>FrmWebBrowser.cs</DependentUpon>
     </Compile>
     <Compile Include="Kernel.cs" />
+    <Compile Include="Language_en-US.Designer.cs">
+      <DependentUpon>Language_en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Language_pt-BR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,6 +94,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmWebBrowser.resx">
       <DependentUpon>FrmWebBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language_en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language_en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Language_pt-BR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

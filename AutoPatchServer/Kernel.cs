@@ -20,6 +20,9 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using AutoPatchServer.Sockets.Updater;
 using AutoUpdaterCore;
 
 namespace AutoPatchServer
@@ -34,5 +37,9 @@ namespace AutoPatchServer
         public static DateTime PrivacyTermsUpdate = DateTime.MinValue;
 
         public static MyXml MyXml;
+
+        public static ConcurrentDictionary<string, User> AllowedUsers = new ConcurrentDictionary<string, User>();
+        public static List<string> BannedMacAddresses = new List<string>();
+        public static List<string> BannedIpAddresses = new List<string>();
     }
 }

@@ -22,14 +22,14 @@ namespace AutoUpdater {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Language_pt_BR {
+    public class Language_en_US {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Language_pt_BR() {
+        internal Language_en_US() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace AutoUpdater {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoUpdater.Language_pt-BR", typeof(Language_pt_BR).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoUpdater.Language_en-US", typeof(Language_en_US).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Versão do Atualizador: {0} - Compilação: {1}.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Updater Version: {0} - Compilation: {1}.
         /// </summary>
         public static string StrAutoUpdateVersion {
             get {
@@ -70,7 +70,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Calculando tamanho de download....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Calculating download size....
         /// </summary>
         public static string StrCalculatingDownloadSize {
             get {
@@ -79,7 +79,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Verificando termos de privacidade....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Verifying privacy terms....
         /// </summary>
         public static string StrCheckingPrivacyTerms {
             get {
@@ -88,7 +88,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível atualizar o cliente. Talvez você não consiga entrar no jogo..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a An error occurred while trying to update the client, you may not be able to login..
         /// </summary>
         public static string StrClientUpdatedError {
             get {
@@ -97,7 +97,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Cliente atualizado com sucesso! Bom jogo..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Client updated successfully! Enjoy the game!.
         /// </summary>
         public static string StrClientUpdatedOK {
             get {
@@ -106,7 +106,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Ao fechar o atualizador todas as conexões com os nossos servidores serão encerradas e os clientes fechados. Sem uma conexão ativa entre o seu computador e nosso servidor de atualizações você compromete a segurança de seu cliente, portanto, apenas o feche caso já tenha encerrado todas as instâncias do jogo. Você tem certeza de que deseja fechar o atualizador?.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Closing the updater will end all connections with your servers and all your current clients will be disconnected. Without an active connection between our client and the update server you compromise your client security, then, just close the updater if you already ended all instances of the game. Are you sure you want to close the updater?.
         /// </summary>
         public static string StrCloseWindowMsg {
             get {
@@ -115,7 +115,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Você tem certeza?.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Are you sure?.
         /// </summary>
         public static string StrCloseWindowTitle {
             get {
@@ -124,7 +124,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Conectando-se ao servidor....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Connecting to the server....
         /// </summary>
         public static string StrConnectingToServer {
             get {
@@ -133,7 +133,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Houve um erro na conexão com o servidor. Tente novamente mais tarde..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a An error ocurred when trying to contact our servers. Try again later..
         /// </summary>
         public static string StrConnectionError {
             get {
@@ -142,7 +142,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O cliente do World Conquer já está em execução! Para prosseguir com a instalação dos pacotes, por favor feche os clientes que estão abertos e pressione &quot;Sim&quot;. Ao pressionar &quot;Sim&quot; o atualizador forçará o cliente de qualquer cliente do Conquer em andamento, isto inclui também versões oficiais..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a An instance of the World Conquer client is already in execution. To continue installing the patches, please close all clients and press &quot;Yes&quot;. By pressing &quot;Yes&quot; if you haven&apos;t closed all instances of the game, the updater will force them to close, and this includes any Conquer client..
         /// </summary>
         public static string StrConquerRunning {
             get {
@@ -151,7 +151,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Feche os clientes para continuar.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Close the clients to continue.
         /// </summary>
         public static string StrConquerRunningTitle {
             get {
@@ -160,7 +160,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível conectar-se ao servidor de atualizações. Deseja baixar manualmente as atualizações?.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a We could not connect to the update server. Do you want to download the patches manually?.
         /// </summary>
         public static string StrCouldNotConnectToAutoPatch {
             get {
@@ -169,7 +169,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Erro de conexão.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Connection Error.
         /// </summary>
         public static string StrCouldNotConnectToAutoPatchTitle {
             get {
@@ -178,7 +178,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível se conectar ao servidor do atualizador..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a We were not able to connect to the update servers..
         /// </summary>
         public static string StrCouldNotFindUpdaterServer {
             get {
@@ -187,7 +187,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a You cannot start the game if you do not accept our Privacy Terms..
         /// </summary>
         public static string StrErrorPrivacyNotAccepted {
             get {
@@ -196,7 +196,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a O arquivo `{0}` está faltando no seu cliente. Verifique se o seu cliente está na última versão ou faça o download do jogo novamente..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The file `{0}` is missing in your client folder. Verify if your client is in the final version or download the game again.está faltando no seu cliente..
         /// </summary>
         public static string StrFileMissing {
             get {
@@ -205,7 +205,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Arquivo faltando!.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a File missing.
         /// </summary>
         public static string StrFileMissingTitle {
             get {
@@ -214,7 +214,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Versão: {0}.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Version: {0}.
         /// </summary>
         public static string StrGameVersion {
             get {
@@ -223,7 +223,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Instalando patch {0}. Por favor, aguarde..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Installing patch {0}. Please wait....
         /// </summary>
         public static string StrInstallingUpdates {
             get {
@@ -232,7 +232,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Será realizado o download de {0} atualizações totalizando {1}..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a {0} updates will be downloaded ({1})..
         /// </summary>
         public static string StrLabelCalculatingDownloadAmount {
             get {
@@ -241,7 +241,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Baixando atualização {0} de {1}. {2}/{3} ({4}).
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Downloading update {0} of {1}. {2}/{3} ({4}).
         /// </summary>
         public static string StrLabelDownloading {
             get {
@@ -250,7 +250,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Seu login não foi autorizado! Isso pode estar relacionado a um bloqueio em seu endereço IP, por favor, contate o administrador..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your login has not been authorized! Your IP Address may be blocked in our servers. Please contact our client support..
         /// </summary>
         public static string StrLoginNotAllowed {
             get {
@@ -259,7 +259,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por atualizações de jogo....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Searching for game updates....
         /// </summary>
         public static string StrLookingForGameUpdates {
             get {
@@ -268,7 +268,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por atualizações de Launcher....
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Searching for anti-cheat updates....
         /// </summary>
         public static string StrLookingForUpdaterUpdates {
             get {
@@ -277,7 +277,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Novas atualizações foram encontradas. Por favor, encerre os clientes em aberto e abra o atualizador novamente..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a New updates has been found. Please, close the current clients and open the updater again..
         /// </summary>
         public static string StrNewUpdatesFound {
             get {
@@ -286,7 +286,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível atualizar devido a instâncias do cliente do jogo em aberto..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Could not update due to running instances of the game..
         /// </summary>
         public static string StrOpenClientError {
             get {
@@ -295,7 +295,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a As atualizações foram instaladas, por favor, aguarde enquanto verificamos se existem mais..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The updates has been installed, please wait while we check if there are more patches..
         /// </summary>
         public static string StrPatchsInstalled {
             get {
@@ -304,7 +304,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Procurando por instâncias do jogo em aberto.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Looking for open instances of the game.
         /// </summary>
         public static string StrSearchForOpenInstances {
             get {
@@ -313,7 +313,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Preparando para instalar atualizações..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Preparing to install updates..
         /// </summary>
         public static string StrStartInstallUpdates {
             get {
@@ -322,8 +322,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Para começar ou continuar a jogar você deve aceitar nossos %privacy_terms%. 
-        ///Por favor clique no link acima e leia cuidadosamente, nosso Launcher realiza uma varredura pelos processos em seu sistema operacional. Se você não concorda, por favor feche o inicializador e desinstale o jogo..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a To start or continue playing you need to agree our %privacy_terms%. Please, click in the link above and read carefully, our launcher checks for all processes running in your Operating System. If you do not agree, please close our launcher and uninstall the game..
         /// </summary>
         public static string StrTermsOfPrivacyDesc {
             get {
@@ -332,7 +331,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Privacidade.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Privacy Terms.
         /// </summary>
         public static string StrTermsOfPrivacyTitle {
             get {
@@ -341,7 +340,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Privacidade.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Privacy Terms.
         /// </summary>
         public static string StrTopLabel {
             get {
@@ -350,7 +349,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Termos de Serviço.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Terms of Service.
         /// </summary>
         public static string StrTosLabel {
             get {
@@ -359,7 +358,7 @@ namespace AutoUpdater {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Conectado com sucesso! Procurando por atualizações..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Connected with success! Looking for updates..
         /// </summary>
         public static string StrUpdaterServerFound {
             get {

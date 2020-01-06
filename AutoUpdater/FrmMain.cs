@@ -274,6 +274,11 @@ namespace AutoUpdater
                 .FirstOrDefault()?.ToString();
         }
 
+        public void OnTimer()
+        {
+
+        }
+
         #endregion
 
         #region Open Browser
@@ -291,9 +296,6 @@ namespace AutoUpdater
         {
             HideDownloadBar();
 
-            if (!allowStart)
-                return;
-
             switch (msg)
             {
                 case UpdateReturnMessage.Success:
@@ -308,7 +310,13 @@ namespace AutoUpdater
                 case UpdateReturnMessage.OpenClientError:
                     Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrOpenClientError"));
                     break;
+                case UpdateReturnMessage.LoginNotAllowed:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLoginNotAllowed"));
+                    break;
             }
+
+            if (!allowStart)
+                return;
 
             Edit(btnExit, ButtonAsyncOperation.Enable, true);
             Edit(btnPlayLow, ButtonAsyncOperation.Enable, true);
@@ -1159,6 +1167,7 @@ namespace AutoUpdater
         ConnectionError,
         OpenClientError,
         UnknownFail,
-        PrivacyNotAccepted
+        PrivacyNotAccepted,
+        LoginNotAllowed
     }
 }

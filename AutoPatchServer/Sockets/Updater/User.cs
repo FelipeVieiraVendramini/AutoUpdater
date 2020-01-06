@@ -36,5 +36,8 @@ namespace AutoPatchServer.Sockets.Updater
         {
             m_socket = server;
         }
+
+        // todo improve ban system allowing ranges :)
+        public bool IsBanned => Kernel.BannedIpAddresses.Contains(IpAddress) || Kernel.BannedMacAddresses.Contains(MacAddress);
     }
 }

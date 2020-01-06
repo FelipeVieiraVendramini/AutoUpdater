@@ -118,106 +118,105 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StrAutoUpdateVersion" xml:space="preserve">
-    <value>Versão do Atualizador: {0} - Compilação: {1}</value>
+    <value>Updater Version: {0} - Compilation: {1}</value>
   </data>
   <data name="StrCalculatingDownloadSize" xml:space="preserve">
-    <value>Calculando tamanho de download...</value>
+    <value>Calculating download size...</value>
   </data>
   <data name="StrCheckingPrivacyTerms" xml:space="preserve">
-    <value>Verificando termos de privacidade...</value>
+    <value>Verifying privacy terms...</value>
   </data>
   <data name="StrClientUpdatedError" xml:space="preserve">
-    <value>Não foi possível atualizar o cliente. Talvez você não consiga entrar no jogo.</value>
+    <value>An error occurred while trying to update the client, you may not be able to login.</value>
   </data>
   <data name="StrClientUpdatedOK" xml:space="preserve">
-    <value>Cliente atualizado com sucesso! Bom jogo.</value>
+    <value>Client updated successfully! Enjoy the game!</value>
   </data>
   <data name="StrCloseWindowMsg" xml:space="preserve">
-    <value>Ao fechar o atualizador todas as conexões com os nossos servidores serão encerradas e os clientes fechados. Sem uma conexão ativa entre o seu computador e nosso servidor de atualizações você compromete a segurança de seu cliente, portanto, apenas o feche caso já tenha encerrado todas as instâncias do jogo. Você tem certeza de que deseja fechar o atualizador?</value>
+    <value>Closing the updater will end all connections with your servers and all your current clients will be disconnected. Without an active connection between our client and the update server you compromise your client security, then, just close the updater if you already ended all instances of the game. Are you sure you want to close the updater?</value>
   </data>
   <data name="StrCloseWindowTitle" xml:space="preserve">
-    <value>Você tem certeza?</value>
+    <value>Are you sure?</value>
   </data>
   <data name="StrConnectingToServer" xml:space="preserve">
-    <value>Conectando-se ao servidor...</value>
+    <value>Connecting to the server...</value>
   </data>
   <data name="StrConnectionError" xml:space="preserve">
-    <value>Houve um erro na conexão com o servidor. Tente novamente mais tarde.</value>
+    <value>An error ocurred when trying to contact our servers. Try again later.</value>
   </data>
   <data name="StrConquerRunning" xml:space="preserve">
-    <value>O cliente do World Conquer já está em execução! Para prosseguir com a instalação dos pacotes, por favor feche os clientes que estão abertos e pressione "Sim". Ao pressionar "Sim" o atualizador forçará o cliente de qualquer cliente do Conquer em andamento, isto inclui também versões oficiais.</value>
+    <value>An instance of the World Conquer client is already in execution. To continue installing the patches, please close all clients and press "Yes". By pressing "Yes" if you haven't closed all instances of the game, the updater will force them to close, and this includes any Conquer client.</value>
   </data>
   <data name="StrConquerRunningTitle" xml:space="preserve">
-    <value>Feche os clientes para continuar</value>
+    <value>Close the clients to continue</value>
   </data>
   <data name="StrCouldNotConnectToAutoPatch" xml:space="preserve">
-    <value>Não foi possível conectar-se ao servidor de atualizações. Deseja baixar manualmente as atualizações?</value>
+    <value>We could not connect to the update server. Do you want to download the patches manually?</value>
   </data>
   <data name="StrCouldNotConnectToAutoPatchTitle" xml:space="preserve">
-    <value>Erro de conexão</value>
+    <value>Connection Error</value>
   </data>
   <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
-    <value>Não foi possível se conectar ao servidor do atualizador.</value>
+    <value>We were not able to connect to the update servers.</value>
   </data>
   <data name="StrErrorPrivacyNotAccepted" xml:space="preserve">
-    <value>Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade.</value>
+    <value>You cannot start the game if you do not accept our Privacy Terms.</value>
   </data>
   <data name="StrFileMissing" xml:space="preserve">
-    <value>O arquivo `{0}` está faltando no seu cliente. Verifique se o seu cliente está na última versão ou faça o download do jogo novamente.</value>
+    <value>The file `{0}` is missing in your client folder. Verify if your client is in the final version or download the game again.está faltando no seu cliente.</value>
   </data>
   <data name="StrFileMissingTitle" xml:space="preserve">
-    <value>Arquivo faltando!</value>
+    <value>File missing</value>
   </data>
   <data name="StrGameVersion" xml:space="preserve">
-    <value>Versão: {0}</value>
+    <value>Version: {0}</value>
   </data>
   <data name="StrInstallingUpdates" xml:space="preserve">
-    <value>Instalando patch {0}. Por favor, aguarde.</value>
+    <value>Installing patch {0}. Please wait...</value>
   </data>
   <data name="StrLabelCalculatingDownloadAmount" xml:space="preserve">
-    <value>Será realizado o download de {0} atualizações totalizando {1}.</value>
+    <value>{0} updates will be downloaded ({1}).</value>
   </data>
   <data name="StrLabelDownloading" xml:space="preserve">
-    <value>Baixando atualização {0} de {1}. {2}/{3} ({4})</value>
+    <value>Downloading update {0} of {1}. {2}/{3} ({4})</value>
   </data>
   <data name="StrLoginNotAllowed" xml:space="preserve">
-    <value>Seu login não foi autorizado! Isso pode estar relacionado a um bloqueio em seu endereço IP, por favor, contate o administrador.</value>
+    <value>Your login has not been authorized! Your IP Address may be blocked in our servers. Please contact our client support.</value>
   </data>
   <data name="StrLookingForGameUpdates" xml:space="preserve">
-    <value>Procurando por atualizações de jogo...</value>
+    <value>Searching for game updates...</value>
   </data>
   <data name="StrLookingForUpdaterUpdates" xml:space="preserve">
-    <value>Procurando por atualizações de Launcher...</value>
+    <value>Searching for anti-cheat updates...</value>
   </data>
   <data name="StrNewUpdatesFound" xml:space="preserve">
-    <value>Novas atualizações foram encontradas. Por favor, encerre os clientes em aberto e abra o atualizador novamente.</value>
+    <value>New updates has been found. Please, close the current clients and open the updater again.</value>
   </data>
   <data name="StrOpenClientError" xml:space="preserve">
-    <value>Não foi possível atualizar devido a instâncias do cliente do jogo em aberto.</value>
+    <value>Could not update due to running instances of the game.</value>
   </data>
   <data name="StrPatchsInstalled" xml:space="preserve">
-    <value>As atualizações foram instaladas, por favor, aguarde enquanto verificamos se existem mais.</value>
+    <value>The updates has been installed, please wait while we check if there are more patches.</value>
   </data>
   <data name="StrSearchForOpenInstances" xml:space="preserve">
-    <value>Procurando por instâncias do jogo em aberto</value>
+    <value>Looking for open instances of the game</value>
   </data>
   <data name="StrStartInstallUpdates" xml:space="preserve">
-    <value>Preparando para instalar atualizações.</value>
+    <value>Preparing to install updates.</value>
   </data>
   <data name="StrTermsOfPrivacyDesc" xml:space="preserve">
-    <value>Para começar ou continuar a jogar você deve aceitar nossos %privacy_terms%. 
-Por favor clique no link acima e leia cuidadosamente, nosso Launcher realiza uma varredura pelos processos em seu sistema operacional. Se você não concorda, por favor feche o inicializador e desinstale o jogo.</value>
+    <value>To start or continue playing you need to agree our %privacy_terms%. Please, click in the link above and read carefully, our launcher checks for all processes running in your Operating System. If you do not agree, please close our launcher and uninstall the game.</value>
   </data>
   <data name="StrTermsOfPrivacyTitle" xml:space="preserve">
-    <value>Termos de Privacidade</value>
+    <value>Privacy Terms</value>
   </data>
   <data name="StrTopLabel" xml:space="preserve">
-    <value>Termos de Privacidade</value>
+    <value>Privacy Terms</value>
   </data>
   <data name="StrTosLabel" xml:space="preserve">
-    <value>Termos de Serviço</value>
+    <value>Terms of Service</value>
   </data>
   <data name="StrUpdaterServerFound" xml:space="preserve">
-    <value>Conectado com sucesso! Procurando por atualizações.</value>
+    <value>Connected with success! Looking for updates.</value>
   </data>
 </root>

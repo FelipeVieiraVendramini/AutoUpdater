@@ -39,6 +39,11 @@ namespace AutoUpdater.Sockets.Updater
                 case AutoUpdateRequestType.GameUpdatesOk:
                     Program.FrmMain.NoDownload(UpdateReturnMessage.Success);
                     break;
+
+                case AutoUpdateRequestType.CheckForGameUpdates:
+                case AutoUpdateRequestType.CheckForLauncherUpdates:
+                    Program.FrmMain.NoDownload(UpdateReturnMessage.LoginNotAllowed, false);
+                    break;
             }
         }
 
