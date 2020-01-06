@@ -1064,12 +1064,12 @@ namespace AutoUpdater
             string[] filesToCheck =
             {
                 fileName,
-                "Launcher.exe",
+                "AutoPatchLoader.exe",
                 "Loader.dll",
-                "LoaderSettings.dll"
+                "config.ini"
             };
-            string path = $"{Environment.CurrentDirectory}\\{fileName}";
 
+            string path = $"{Environment.CurrentDirectory}\\AutoPatchLoader.exe";//{fileName}";
             foreach (var file in filesToCheck)
             {
                 string verifyPath = $"{Environment.CurrentDirectory}\\{file}";
@@ -1088,11 +1088,22 @@ namespace AutoUpdater
                 {
                     WorkingDirectory = Environment.CurrentDirectory,
                     FileName = path,
-                    Arguments = "blacknull"
+                    Arguments = "whitenull"
                 }
             };
             game.Start();
-            m_lOpenClients.Add(game);
+            game.WaitForExit();
+
+            try
+            {
+                Process addGame = Process.GetProcessById(game.ExitCode);
+                m_lOpenClients.Add(addGame);
+                MessageBox.Show(this, $@"CQ.exe ID: {game.ExitCode}");
+            }
+            catch
+            {
+
+            }
         }
 
         private void SetGameMode(GameMode mode)

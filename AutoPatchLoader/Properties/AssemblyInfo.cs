@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
-// associada a um assembly.
-[assembly: AssemblyTitle("AutoUpdaterCore")]
+// associadas a um assembly.
+[assembly: AssemblyTitle("AutoPatchLoader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AutoUpdaterCore")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyProduct("AutoPatchLoader")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // O GUID a seguir será destinado à ID de typelib se este projeto for exposto para COM
-[assembly: Guid("d9d61f0e-383b-471d-9bdf-57d5e942e05a")]
+[assembly: Guid("2dd95d8e-4242-4276-a5a1-27ec6eb36492")]
 
 // As informações da versão de um assembly consistem nos quatro valores a seguir:
 //
@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2020.6.0")]
-[assembly: AssemblyFileVersion("1.0106.1442.0")]
+[assembly: AssemblyFileVersion("1.0106.1455.0")]
 
-[assembly: AssemblyInformationalVersion("1.2020.0-alpha-05")]
+[assembly: AssemblyInformationalVersion("1.2020.0-alpha-02")]
