@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using AutoUpdaterCore;
 using AutoUpdaterCore.Interfaces;
 using AutoUpdaterCore.Sockets.Packets;
 
@@ -36,14 +37,15 @@ namespace AutoPatchServer.Sockets.Updater
         public void ProcessRequestInfo(User user, byte[] buffer)
         {
             MsgRequestInfo msg = new MsgRequestInfo(buffer);
-
-            if (user.IsBanned)
+            if (user.IsBanned || !Kernel.AllowedUsers.ContainsKey(user.MacAddress))
             {
+                Program.WriteLog($"User [{user.IpAddress}::{user.MacAddress}] is not allowed to download patches.", LogType.WARNING);
                 msg.CurrentVersion = ushort.MaxValue;
                 user.Send(msg);
                 return;
             }
 
+            Program.WriteLog($"User [{user.IpAddress}::{user.MacAddress}] has requested updates with current version: {msg.CurrentVersion}.");
             List<PatchStructure> updates = UpdatesManager.GetDownloadList(msg.CurrentVersion);
             switch (msg.Mode)
             {
@@ -119,6 +121,17 @@ namespace AutoPatchServer.Sockets.Updater
              */
 
             user.MacAddress = msg.MacAddress;
+
+            if (Kernel.AllowedUsers.ContainsKey(user.MacAddress) || !Kernel.AllowedUsers.TryAdd(user.MacAddress, user))
+            {
+                user.Send(new MsgRequestInfo
+                {
+                    CurrentVersion = 0,
+                    Mode = AutoUpdateRequestType.CheckForGameUpdates
+                });
+                return;
+            }
+
             /**
              * Sends the latest update! Since it's web host we wont have problems with this. The client
              * will just display the page! :D

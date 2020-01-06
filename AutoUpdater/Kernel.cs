@@ -20,7 +20,10 @@
 #endregion
 
 using System;
+#if !DEBUG
 using System.Reflection;
+#endif
+using System.Windows.Forms;
 using AutoUpdaterCore;
 
 namespace AutoUpdater
@@ -32,7 +35,11 @@ namespace AutoUpdater
 
         static Kernel()
         {
+#if DEBUG
+            Version = Application.ProductVersion;
+#else
             Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#endif
             Log = new LogWriter(Environment.CurrentDirectory);
         }
 

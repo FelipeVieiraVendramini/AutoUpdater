@@ -313,6 +313,9 @@ namespace AutoUpdater
                 case UpdateReturnMessage.LoginNotAllowed:
                     Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLoginNotAllowed"));
                     break;
+                case UpdateReturnMessage.DoubleClient:
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrDoubleClient"));
+                    break;
             }
 
             if (!allowStart)
@@ -1168,6 +1171,7 @@ namespace AutoUpdater
         OpenClientError,
         UnknownFail,
         PrivacyNotAccepted,
-        LoginNotAllowed
+        LoginNotAllowed,
+        DoubleClient
     }
 }

@@ -100,7 +100,7 @@
             this.lblUpdaterVersion.AutoSize = true;
             this.lblUpdaterVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblUpdaterVersion.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblUpdaterVersion.Location = new System.Drawing.Point(309, 78);
+            this.lblUpdaterVersion.Location = new System.Drawing.Point(59, 27);
             this.lblUpdaterVersion.Name = "lblUpdaterVersion";
             this.lblUpdaterVersion.Size = new System.Drawing.Size(52, 13);
             this.lblUpdaterVersion.TabIndex = 1;

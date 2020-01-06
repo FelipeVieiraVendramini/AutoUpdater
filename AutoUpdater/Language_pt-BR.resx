@@ -159,6 +159,9 @@
   <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
     <value>Não foi possível se conectar ao servidor do atualizador.</value>
   </data>
+  <data name="StrDoubleClient" xml:space="preserve">
+    <value>Acesso negado devido a múltiplas instâncias do cliente de atualização em aberto.</value>
+  </data>
   <data name="StrErrorPrivacyNotAccepted" xml:space="preserve">
     <value>Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade.</value>
   </data>

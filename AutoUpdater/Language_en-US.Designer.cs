@@ -187,6 +187,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Access denied due to multiple instances of the updater client running..
+        /// </summary>
+        public static string StrDoubleClient {
+            get {
+                return ResourceManager.GetString("StrDoubleClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a You cannot start the game if you do not accept our Privacy Terms..
         /// </summary>
         public static string StrErrorPrivacyNotAccepted {

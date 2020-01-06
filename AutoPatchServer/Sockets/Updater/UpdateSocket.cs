@@ -87,6 +87,8 @@ namespace AutoPatchServer.Sockets.Updater
         {
             if (!(state is User client))
                 return;
+
+            Kernel.AllowedUsers.TryRemove(client.MacAddress, out _);
         }
     }
 }

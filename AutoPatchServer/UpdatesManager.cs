@@ -142,7 +142,7 @@ namespace AutoPatchServer
 
             List<PatchStructure> result = new List<PatchStructure>();
             bool isUpdater = actualVersion >= UPDATER_VERSION_MIN && actualVersion <= UPDATER_VERSION_MAX;
-            var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdater && x.To > actualVersion)
+            var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdater && x.To > actualVersion)
                 .OrderBy(x => x.To).ToList();
             int latestVersion = 0;
             int currently = latestVersion = LatestVersion(!isUpdater);

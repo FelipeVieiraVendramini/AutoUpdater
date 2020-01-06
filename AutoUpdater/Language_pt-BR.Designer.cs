@@ -187,6 +187,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Acesso negado devido a múltiplas instâncias do cliente de atualização em aberto..
+        /// </summary>
+        public static string StrDoubleClient {
+            get {
+                return ResourceManager.GetString("StrDoubleClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Você não pode atualizar ou iniciar o jogo sem aceitar os termos de privacidade..
         /// </summary>
         public static string StrErrorPrivacyNotAccepted {

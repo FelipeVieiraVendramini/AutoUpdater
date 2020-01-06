@@ -159,6 +159,9 @@
   <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
     <value>We were not able to connect to the update servers.</value>
   </data>
+  <data name="StrDoubleClient" xml:space="preserve">
+    <value>Access denied due to multiple instances of the updater client running.</value>
+  </data>
   <data name="StrErrorPrivacyNotAccepted" xml:space="preserve">
     <value>You cannot start the game if you do not accept our Privacy Terms.</value>
   </data>

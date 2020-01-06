@@ -42,7 +42,14 @@ namespace AutoUpdater.Sockets.Updater
 
                 case AutoUpdateRequestType.CheckForGameUpdates:
                 case AutoUpdateRequestType.CheckForLauncherUpdates:
-                    Program.FrmMain.NoDownload(UpdateReturnMessage.LoginNotAllowed, false);
+                    if (msg.CurrentVersion == 0)
+                    {
+                        Program.FrmMain.NoDownload(UpdateReturnMessage.DoubleClient, false);
+                    }
+                    else
+                    {
+                        Program.FrmMain.NoDownload(UpdateReturnMessage.LoginNotAllowed, false);
+                    }
                     break;
             }
         }
