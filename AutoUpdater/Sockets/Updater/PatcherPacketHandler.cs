@@ -40,9 +40,6 @@ namespace AutoUpdater.Sockets.Updater
                     Program.FrmMain.NoDownload(UpdateReturnMessage.Success);
                     break;
             }
-
-            //Kernel.Log.SaveLog("PatcherPacketHandler::ProcessRequestInfo(PatchServer,byte[]) handler failed");
-            //Report(buffer);
         }
 
         [PacketHandlerType(PacketType.MsgDownloadInfo)]

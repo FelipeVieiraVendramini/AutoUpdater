@@ -207,6 +207,8 @@ namespace AutoUpdater
 
             m_ifConfig = new IniFileName(Environment.CurrentDirectory + "\\AutoPatch.ini");
             LoadStringUrlTable();
+            // we will download everything again if needed. But we wont be keeping the folder with content after a succesfull (or failed) update.
+            DeleteTempFolder();
         }
 
         public void LoadStringUrlTable()
@@ -731,8 +733,6 @@ namespace AutoUpdater
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            LaunchSite(m_szLogoutSite);
-
             Close();
         }
 
@@ -1019,9 +1019,6 @@ namespace AutoUpdater
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(m_szOpenAfterClose))
-                Process.Start(m_szOpenAfterClose);
-
             foreach (var game in m_lOpenClients)
             {
                 try
@@ -1035,6 +1032,15 @@ namespace AutoUpdater
 
                 }
             }
+
+            if (!string.IsNullOrEmpty(m_szOpenAfterClose))
+            {
+                Process.Start(m_szOpenAfterClose);
+            }
+            else
+            {
+                LaunchSite(m_szLogoutSite);
+            }
         }
 
         #endregion
@@ -1046,7 +1052,10 @@ namespace AutoUpdater
             const string fileName = "Conquer.exe";
             string[] filesToCheck =
             {
-                fileName
+                fileName,
+                "Launcher.exe",
+                "Loader.dll",
+                "LoaderSettings.dll"
             };
             string path = $"{Environment.CurrentDirectory}\\{fileName}";
 
@@ -1089,6 +1098,16 @@ namespace AutoUpdater
             catch
             {
 
+            }
+
+            switch (mode)
+            {
+                case GameMode.HighDefinition:
+                    highTimes++;
+                    break;
+                case GameMode.LowDefinition:
+                    lowTimes++;
+                    break;
             }
 
             ini.SetValue("GameMode", "LowTimes", lowTimes);

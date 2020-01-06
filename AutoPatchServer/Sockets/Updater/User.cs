@@ -27,7 +27,7 @@ namespace AutoPatchServer.Sockets.Updater
 {
     public sealed class User : Passport
     {
-        public string MacAddress = "00-00-00-00-00-00";
+        public string MacAddress = "000000000000";
 
         private AsynchronousServerSocket m_socket;
 

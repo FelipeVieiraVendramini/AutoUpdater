@@ -38,7 +38,7 @@ namespace AutoPatchServer
 
         public static void AddPatch(PatchStructure patch, bool isLoading)
         {
-            if (patch.To >= UPDATER_VERSION_MIN)
+            if (patch.To < UPDATER_VERSION_MIN)
                 patch.IsGameUpdate = true;
 
             bool added = false;
@@ -142,7 +142,7 @@ namespace AutoPatchServer
             var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdater && x.To > actualVersion)
                 .OrderBy(x => x.To).ToList();
             int latestVersion = 0;
-            int currently = latestVersion = LatestVersion(isUpdater);
+            int currently = latestVersion = LatestVersion(!isUpdater);
 
             foreach (PatchStructure patch in possibleUpdates.OrderByDescending(x => x.To))
             {

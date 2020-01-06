@@ -19,10 +19,14 @@
 
 #endregion
 
+#region References
+
 using System;
 using System.Collections.Generic;
 using AutoUpdaterCore.Interfaces;
 using AutoUpdaterCore.Sockets.Packets;
+
+#endregion
 
 namespace AutoPatchServer.Sockets.Updater
 {
@@ -48,6 +52,7 @@ namespace AutoPatchServer.Sockets.Updater
                         {
                             pMsg.Append(patch.FileName);
                         }
+
                         user.Send(pMsg);
                     }
                     else
@@ -55,6 +60,7 @@ namespace AutoPatchServer.Sockets.Updater
                         msg.Mode = AutoUpdateRequestType.LauncherUpdatesOk;
                         user.Send(msg);
                     }
+
                     break;
                 case AutoUpdateRequestType.CheckForGameUpdates:
                     if (updates.Count > 0)
@@ -62,13 +68,14 @@ namespace AutoPatchServer.Sockets.Updater
                         MsgDownloadInfo pMsg = new MsgDownloadInfo
                         {
                             Mode = UpdateDownloadType.GameClientPatch,
-                            LatestVersion = (ushort)Kernel.LatestGamePatch
+                            LatestVersion = (ushort) Kernel.LatestGamePatch
                         };
                         pMsg.Append(Kernel.DownloadUrl);
                         foreach (var patch in updates)
                         {
                             pMsg.Append(patch.FileName);
                         }
+
                         user.Send(pMsg);
                     }
                     else
@@ -76,6 +83,7 @@ namespace AutoPatchServer.Sockets.Updater
                         msg.Mode = AutoUpdateRequestType.GameUpdatesOk;
                         user.Send(msg);
                     }
+
                     break;
             }
         }
@@ -95,12 +103,20 @@ namespace AutoPatchServer.Sockets.Updater
              * Todo store user data securely
              * Todo develop something to encrypt data
              */
+            MsgClientInfo msg = new MsgClientInfo(buffer);
+            Program.WriteLog($"IPAddress [{user.IpAddress}] has connected [MacAddress:{msg.MacAddress}]");
 
+            /**
+             * Todo Send user info and Mac Address to the login server to allow connections.
+             */
+
+            user.MacAddress = msg.MacAddress;
             /**
              * Sends the latest update! Since it's web host we wont have problems with this. The client
              * will just display the page! :D
              */
             MsgClientInfo back = new MsgClientInfo();
+            back.MacAddress = msg.MacAddress;
             back.Append(Kernel.PrivacyTermsUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
             user.Send(back);
         }
