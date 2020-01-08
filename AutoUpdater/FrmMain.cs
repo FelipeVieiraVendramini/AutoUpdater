@@ -159,6 +159,7 @@ namespace AutoUpdater
 
         private WebClient m_wcClient;
         private Stopwatch m_swStopwatch = new Stopwatch();
+        private int m_nLastDownloadTick = 0;
 
         List<Process> m_lOpenClients = new List<Process>();
 
@@ -442,6 +443,7 @@ namespace AutoUpdater
             m_nCurrentlyBytesDownloaded = 0;
             m_wcClient.Dispose();
             m_swStopwatch.Stop();
+            m_nLastDownloadTick = Environment.TickCount;
             StartDownloading();
         }
 
@@ -449,13 +451,20 @@ namespace AutoUpdater
         {
             Edit(pbDownload, ProgressBarAsyncOperation.Value, pbDownload.Value + (e.BytesReceived - m_nCurrentlyBytesDownloaded));
             m_nCurrentlyBytesDownloaded = (int)e.BytesReceived;
-            Edit(lblDownloadStatus, LabelAsyncOperation.Text,
-                LanguageManager.GetString("StrLabelDownloading", m_nCurrentDownloading, m_nTotalDownloads,
-                    ParseFileSize(pbDownload.Value), ParseFileSize(m_nTotalDownloadSize), ParseDownloadSpeed((long)(e.BytesReceived / m_swStopwatch.Elapsed.TotalSeconds))));
+
+            if (Environment.TickCount - m_nLastDownloadTick > 500)
+            {
+                Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                    LanguageManager.GetString("StrLabelDownloading", m_nCurrentDownloading, m_nTotalDownloads,
+                        ParseFileSize(pbDownload.Value), ParseFileSize(m_nTotalDownloadSize),
+                        ParseDownloadSpeed((long) (e.BytesReceived / m_swStopwatch.Elapsed.TotalSeconds))));
+                m_nLastDownloadTick = Environment.TickCount;
+            }
         }
 
         private void BeginInstall()
         {
+            HideDownloadBar();
             Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrStartInstallUpdates"));
             string fullPath;
             while (m_queueDoneDownloads.Count > 0 && !string.IsNullOrEmpty(fullPath = m_queueDoneDownloads.Dequeue()))
@@ -474,7 +483,7 @@ namespace AutoUpdater
                 Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrInstallingUpdates", fileName));
 
                 string localPath = GetTempDownloadPath(fileName);
-                Process process = Process.Start(localPath, $"-d \"{Environment.CurrentDirectory}\"");
+                Process process = Process.Start(localPath, $"-s -d \"{Environment.CurrentDirectory}\"");
                 //while (process?.HasExited == false) Task.Delay(100);
                 process?.WaitForExit();
                 process?.Close();
