@@ -63,6 +63,7 @@
             this.btnPlayHigh.Size = new System.Drawing.Size(210, 83);
             this.btnPlayHigh.TabIndex = 0;
             this.btnPlayHigh.UseVisualStyleBackColor = false;
+            this.btnPlayHigh.Visible = false;
             this.btnPlayHigh.Click += new System.EventHandler(this.btnPlayHigh_Click);
             this.btnPlayHigh.MouseEnter += new System.EventHandler(this.btnPlayHigh_MouseEnter);
             this.btnPlayHigh.MouseLeave += new System.EventHandler(this.btnPlayHigh_MouseLeave);
@@ -80,6 +81,7 @@
             this.btnPlayLow.Size = new System.Drawing.Size(210, 90);
             this.btnPlayLow.TabIndex = 0;
             this.btnPlayLow.UseVisualStyleBackColor = false;
+            this.btnPlayLow.Visible = false;
             this.btnPlayLow.Click += new System.EventHandler(this.btnPlayLow_Click);
             this.btnPlayLow.MouseEnter += new System.EventHandler(this.btnPlayLow_MouseEnter);
             this.btnPlayLow.MouseLeave += new System.EventHandler(this.btnPlayLow_MouseLeave);

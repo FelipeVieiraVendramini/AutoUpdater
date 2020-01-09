@@ -31,11 +31,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using AutoUpdater.Properties;
 using AutoUpdater.Sockets;
@@ -44,6 +42,7 @@ using AutoUpdaterCore;
 using AutoUpdaterCore.Security;
 using AutoUpdaterCore.Sockets;
 using AutoUpdaterCore.Sockets.Packets;
+using Timer = System.Windows.Forms.Timer;
 
 #endregion
 
@@ -143,6 +142,7 @@ namespace AutoUpdater
 
         private string m_szOpenAfterClose = "";
 
+        private bool m_bIsClosing = false;
         private bool m_bInternalCloseRequest = false;
         private UpdateDownloadType m_actuallyDownloading = UpdateDownloadType.None;
 
@@ -162,6 +162,8 @@ namespace AutoUpdater
         private int m_nLastDownloadTick = 0;
 
         List<Process> m_lOpenClients = new List<Process>();
+
+        private Timer m_pAntiCheatTimer;
 
         public FrmMain()
         {
@@ -275,7 +277,39 @@ namespace AutoUpdater
                 .FirstOrDefault()?.ToString();
         }
 
-        public void OnTimer()
+        public void OnTimer(object sender, EventArgs e)
+        {
+            if (m_bIsClosing && m_pAntiCheatTimer.Enabled)
+            {
+                m_pAntiCheatTimer.Stop();
+                m_pAntiCheatTimer.Dispose();
+            }
+
+            List<Process> remove = new List<Process>();
+            foreach (var cq in m_lOpenClients)
+            {
+                bool invalid = false;
+                ProcessThread mainThread = cq.Threads[0];
+                foreach (ProcessThread thread in cq.Threads)
+                {
+                    if (mainThread.StartAddress != thread.StartAddress)
+                    {
+                        cq.Kill();
+                        remove.Add(cq);
+                        invalid = true;
+                        break;
+                    }
+                }
+
+                if (invalid)
+                    continue;
+            }
+
+            foreach (var rem in remove)
+                m_lOpenClients.Remove(rem);
+        }
+
+        public void OnStopTimer()
         {
 
         }
@@ -324,7 +358,9 @@ namespace AutoUpdater
 
             Edit(btnExit, ButtonAsyncOperation.Enable, true);
             Edit(btnPlayLow, ButtonAsyncOperation.Enable, true);
+            Edit(btnPlayLow, ButtonAsyncOperation.Visible, true);
             Edit(btnPlayHigh, ButtonAsyncOperation.Enable, true);
+            Edit(btnPlayHigh, ButtonAsyncOperation.Visible, true);
         }
 
         public void PrepareToDownload(UpdateDownloadType type, List<string> strs, PatchServer server)
@@ -636,6 +672,13 @@ namespace AutoUpdater
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            const int UPDATE_TIME = 30 * 1000;
+            // let's initialize the anticheat engine
+            m_pAntiCheatTimer = new Timer();
+            m_pAntiCheatTimer.Tick += OnTimer;
+            m_pAntiCheatTimer.Interval = UPDATE_TIME;
+            //m_pAntiCheatTimer.Start();
+
             DeleteTempFolder();
             LoadVersion();
             ConnectToAutoUpdateServer();
@@ -864,7 +907,16 @@ namespace AutoUpdater
                     == DialogResult.Yes)
                 {
                     foreach (var proc in procList)
-                        proc.Kill();
+                    {
+                        try
+                        {
+                            proc.Kill();
+                        }
+                        catch
+                        {
+                            // process might have been exited already
+                        }
+                    }
                 }
                 else
                 {
@@ -1035,10 +1087,18 @@ namespace AutoUpdater
                 e.Cancel = true;
                 return;
             }
+
+            m_bIsClosing = true;
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (m_pAntiCheatTimer.Enabled)
+            {
+                m_pAntiCheatTimer.Stop();
+                m_pAntiCheatTimer.Dispose();
+            }
+
             foreach (var game in m_lOpenClients)
             {
                 try
@@ -1107,11 +1167,16 @@ namespace AutoUpdater
             {
                 Process addGame = Process.GetProcessById(game.ExitCode);
                 m_lOpenClients.Add(addGame);
-                MessageBox.Show(this, $@"CQ.exe ID: {game.ExitCode}");
             }
             catch
             {
 
+            }
+
+            if (!m_pAntiCheatTimer.Enabled)
+            {
+                OnTimer(null, null);
+                m_pAntiCheatTimer.Start();
             }
         }
 
