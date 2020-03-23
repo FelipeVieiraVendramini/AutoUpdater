@@ -8,6 +8,8 @@
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "user32.lib")
 
+#define VERSION 5808
+
 //
 // hooks.h is from a library/project (MID) that I (InfamousNoone) wrote back in 2010.
 // It was a /FAILED/ project, and I decided to discontinue it.
@@ -150,7 +152,11 @@ void csv3_init(HMODULE hModule)
 	//	hook packet processor
 	//
 
+#if  VERSION < 5810
 	BYTE pattern[] = { 0x85, 0xC0, 0x75, 0x00, 0x8B, 0x4E, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x83, 0x4D, 0x00, 0x00, 0x8B, 0x00, 0x00 };
+#else
+	BYTE pattern[] = { 0x85, 0xC0, 0x75, 0x00, 0x8B, 0x4F, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x83, 0x4D, 0x00, 0x00, 0x8B, 0x00, 0x00 };
+#endif
 	bool wildcards[] = { 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1 };
 	PBYTE match = (PBYTE)FindMemoryPattern(pattern, wildcards, 19);
 

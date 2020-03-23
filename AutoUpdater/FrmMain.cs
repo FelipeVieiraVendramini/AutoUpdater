@@ -19,6 +19,8 @@
 
 #endregion
 
+#define NO_INJECTION // if you want to use the pure launcher, uncomment this
+
 #region References
 
 using System;
@@ -675,8 +677,8 @@ namespace AutoUpdater
             const int UPDATE_TIME = 30 * 1000;
             // let's initialize the anticheat engine
             m_pAntiCheatTimer = new Timer();
-            m_pAntiCheatTimer.Tick += OnTimer;
-            m_pAntiCheatTimer.Interval = UPDATE_TIME;
+            //m_pAntiCheatTimer.Tick += OnTimer;
+            //m_pAntiCheatTimer.Interval = UPDATE_TIME;
             //m_pAntiCheatTimer.Start();
 
             DeleteTempFolder();
@@ -1133,12 +1135,18 @@ namespace AutoUpdater
             string[] filesToCheck =
             {
                 fileName,
+#if !NO_INJECTION
                 "AutoPatchLoader.exe",
                 "Loader.dll",
+#endif
                 "config.ini"
             };
 
-            string path = $"{Environment.CurrentDirectory}\\AutoPatchLoader.exe";//{fileName}";
+#if !NO_INJECTION
+            string path = $"{Environment.CurrentDirectory}\\AutoPatchLoader.exe";
+#else
+            string path = $"{Environment.CurrentDirectory}\\{fileName}";
+#endif
             foreach (var file in filesToCheck)
             {
                 string verifyPath = $"{Environment.CurrentDirectory}\\{file}";
@@ -1157,7 +1165,11 @@ namespace AutoUpdater
                 {
                     WorkingDirectory = Environment.CurrentDirectory,
                     FileName = path,
-                    Arguments = "whitenull"
+#if !NO_INJECTION
+                    Arguments = "whitenull",
+#else
+                    Arguments = "blacknull",
+#endif
                 }
             };
             game.Start();
@@ -1173,11 +1185,11 @@ namespace AutoUpdater
 
             }
 
-            if (!m_pAntiCheatTimer.Enabled)
-            {
-                OnTimer(null, null);
-                m_pAntiCheatTimer.Start();
-            }
+            //if (!m_pAntiCheatTimer.Enabled)
+            //{
+                //OnTimer(null, null);
+                //m_pAntiCheatTimer.Start();
+            //}
         }
 
         private void SetGameMode(GameMode mode)
@@ -1211,7 +1223,7 @@ namespace AutoUpdater
             ini.SetValue("GameMode", "HighTimes", highTimes);
         }
 
-        #endregion
+#endregion
     }
 
     public enum GameMode
