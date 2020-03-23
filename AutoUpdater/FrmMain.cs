@@ -1138,8 +1138,8 @@ namespace AutoUpdater
 #if !NO_INJECTION
                 "AutoPatchLoader.exe",
                 "Loader.dll",
+                "config.ini",
 #endif
-                "config.ini"
             };
 
 #if !NO_INJECTION
