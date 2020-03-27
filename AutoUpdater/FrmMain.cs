@@ -177,28 +177,36 @@ namespace AutoUpdater
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.FromArgb(0x00FFFFFF);
 
-            byte[] file = File.ReadAllBytes("login.dat");
-            SymmetricCryptoHandler crypto = new SymmetricCryptoHandler(
-                new RSAParameters
-                {
-                    Modulus = _MODULUS,
-                    Exponent = _EXPONENT,
-                    P = _P,
-                    DP = _DP,
-                    Q = _Q,
-                    DQ = _DQ,
-                    D = _D,
-                    InverseQ = _INVERSE
-                }
-            );
+            try
+            {
+                byte[] file = File.ReadAllBytes("login.dat");
+                SymmetricCryptoHandler crypto = new SymmetricCryptoHandler(
+                    new RSAParameters
+                    {
+                        Modulus = _MODULUS,
+                        Exponent = _EXPONENT,
+                        P = _P,
+                        DP = _DP,
+                        Q = _Q,
+                        DQ = _DQ,
+                        D = _D,
+                        InverseQ = _INVERSE
+                    }
+                );
 
-            byte[] decrypted = crypto.Decrypt(file);
+                byte[] decrypted = crypto.Decrypt(file);
 
-            string[] fullAddr = Encoding.ASCII.GetString(decrypted, 0, decrypted.Length).TrimEnd('\0').Split(':');
-            if (fullAddr.Length > 0)
-                m_szLoginAddr = fullAddr[0];
-            if (fullAddr.Length > 1)
-                m_nLoginPort = int.Parse(fullAddr[1]);
+                string[] fullAddr = Encoding.ASCII.GetString(decrypted, 0, decrypted.Length).TrimEnd('\0').Split(':');
+                if (fullAddr.Length > 0)
+                    m_szLoginAddr = fullAddr[0];
+                if (fullAddr.Length > 1)
+                    m_nLoginPort = int.Parse(fullAddr[1]);
+            }
+            catch
+            {
+                m_szLoginAddr = "127.0.0.1";
+                m_nLoginPort = 9958;
+            }
 
             btnPlayHigh.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnPlayHigh.FlatAppearance.MouseDownBackColor = Color.Transparent;
@@ -1172,9 +1180,13 @@ namespace AutoUpdater
 #endif
                 }
             };
-            game.Start();
-            game.WaitForExit();
 
+            game.Start();
+#if !NO_INJECTION
+            game.WaitForExit();
+#endif
+
+#if !NO_INJECTION
             try
             {
                 Process addGame = Process.GetProcessById(game.ExitCode);
@@ -1184,6 +1196,7 @@ namespace AutoUpdater
             {
 
             }
+#endif
 
             //if (!m_pAntiCheatTimer.Enabled)
             //{

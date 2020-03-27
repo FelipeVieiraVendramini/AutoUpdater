@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 // É possível especificar todos os valores ou usar como padrão os Números de Build e da Revisão
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2020.83.1")]
-[assembly: AssemblyFileVersion("1.0323.1325.1")]
+[assembly: AssemblyVersion("1.2020.87.2")]
+[assembly: AssemblyFileVersion("1.0327.1515.2")]
 
-[assembly: AssemblyInformationalVersion("1.2020.0-alpha-36")]
+[assembly: AssemblyInformationalVersion("1.2020.0-alpha-41")]
