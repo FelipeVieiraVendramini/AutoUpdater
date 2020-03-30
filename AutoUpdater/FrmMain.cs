@@ -1184,6 +1184,8 @@ namespace AutoUpdater
             game.Start();
 #if !NO_INJECTION
             game.WaitForExit();
+#else
+            m_lOpenClients.Add(game);
 #endif
 
 #if !NO_INJECTION
@@ -1200,8 +1202,8 @@ namespace AutoUpdater
 
             //if (!m_pAntiCheatTimer.Enabled)
             //{
-                //OnTimer(null, null);
-                //m_pAntiCheatTimer.Start();
+            //OnTimer(null, null);
+            //m_pAntiCheatTimer.Start();
             //}
         }
 
