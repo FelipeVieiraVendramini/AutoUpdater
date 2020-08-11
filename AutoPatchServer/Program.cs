@@ -157,9 +157,7 @@ namespace AutoPatchServer
                 create.AddNewNode("4000", null, "LatestGameVersion", "Config");
                 create.AddNewNode("2019-10-22 00:00:00", null, "PrivacyTermsUpdate", "Config");
                 create.AddNewNode("", null, "AllowedPatches", "Config");
-                //create.AddNewNode("0", null, "Count", "Config", "AllowedPatches");
                 create.AddNewNode("", null, "BundlePatches", "Config");
-                //create.AddNewNode("0", null, "Count", "Config", "BundlePatches");
             }
 
             Kernel.MyXml = new MyXml(path);

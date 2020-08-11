@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Config>
-  <DownloadUrl>https://ftwmasters.com.br/patches</DownloadUrl>
+  <DownloadUrl>https://ftwmasters.com.br/patchs</DownloadUrl>
   <ListenPort>9528</ListenPort>
   <LatestUpdaterVersion>10000</LatestUpdaterVersion>
-  <LatestGameVersion>4002</LatestGameVersion>
+  <LatestGameVersion>5017</LatestGameVersion>
   <PrivacyTermsUpdate>2019-10-22 00:00:00</PrivacyTermsUpdate>
   <AllowedPatches>
   </AllowedPatches>

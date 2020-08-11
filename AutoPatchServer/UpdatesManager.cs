@@ -69,12 +69,12 @@ namespace AutoPatchServer
 
             if (added)
             {
-                if (patch.IsGameUpdate && patch.To > Kernel.LatestUpdaterPatch)
+                if (!patch.IsGameUpdate && patch.To > Kernel.LatestUpdaterPatch)
                 {
                     Kernel.LatestUpdaterPatch = patch.To;
                     Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "LatestUpdaterVersion");
                 }
-                else if (!patch.IsGameUpdate && patch.To > Kernel.LatestGamePatch)
+                else if (patch.IsGameUpdate && patch.To > Kernel.LatestGamePatch)
                 {
                     Kernel.LatestGamePatch = patch.To;
                     Kernel.MyXml.ChangeValue(patch.To.ToString(), "Config", "LatestGameVersion");
@@ -125,14 +125,12 @@ namespace AutoPatchServer
             return result;
         }
 
-        public static int LatestVersion(bool isUpdate)
+        public static int LatestVersion(bool isUpdater)
         {
-            if (m_patchLibrary.Values.Count(x => x.IsGameUpdate == isUpdate) == 0)
+            if (m_patchLibrary.Values.Count(x => x.IsGameUpdate == !isUpdater) == 0)
                 return 0;
 
-            if (isUpdate)
-                return m_patchLibrary.Values.Where(x => x.IsGameUpdate == isUpdate).Max(x => x.To);
-            return m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdate).Max(x => x.To);
+            return m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdater).Max(x => x.To);
         }
 
         public static List<PatchStructure> GetDownloadList(int actualVersion)
@@ -145,7 +143,7 @@ namespace AutoPatchServer
             var possibleUpdates = m_patchLibrary.Values.Where(x => x.IsGameUpdate == !isUpdater && x.To > actualVersion)
                 .OrderBy(x => x.To).ToList();
             int latestVersion = 0;
-            int currently = latestVersion = LatestVersion(!isUpdater);
+            int currently = latestVersion = LatestVersion(isUpdater);
 
             foreach (PatchStructure patch in possibleUpdates.OrderByDescending(x => x.To))
             {
