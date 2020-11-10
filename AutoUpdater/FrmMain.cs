@@ -269,8 +269,12 @@ namespace AutoUpdater
 
             for (int i = 1; i < strs.Count; i++)
             {
+                if (!strs[i].EndsWith(".exe"))
+                    strs[i] += ".exe";
+
                 if (!RemoteFileExists($"{domain}{strs[i]}"))
                     continue;
+
                 m_nTotalDownloadSize += FetchFileSize($"{domain}{strs[i]}");
                 m_nTotalDownloads++;
                 m_queueNextDownloads.Enqueue($"{domain}{strs[i]}");
@@ -376,8 +380,8 @@ namespace AutoUpdater
             {
                 string[] parsed = fullPath.Split('/');
                 string fileName = parsed[parsed.Length - 1];
-
-                if (int.TryParse(fileName.Replace(".exe", ""), out int idPatch) && idPatch > 10000)
+                string tempName = fileName.Replace(".exe", "");
+                if (int.TryParse(tempName, out int idPatch) && idPatch > 10000)
                 {
                     m_szOpenAfterClose = GetTempDownloadPath(fileName);
                     m_bInternalCloseRequest = true;
@@ -387,9 +391,11 @@ namespace AutoUpdater
 
                 Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrInstallingUpdates", fileName));
 
+                if (string.IsNullOrEmpty(Path.GetExtension(fileName)))
+                    fileName += ".exe";
+
                 string localPath = GetTempDownloadPath(fileName);
                 Process process = Process.Start(localPath, $"-s -d \"{Environment.CurrentDirectory}\"");
-                //while (process?.HasExited == false) Task.Delay(100);
                 process?.WaitForExit();
                 process?.Close();
                 process?.Dispose();
@@ -792,8 +798,8 @@ namespace AutoUpdater
 #if !DEBUG
             string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #else
-            string autoPatch = "127.0.0.1:9528";
-            //string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
+            //string autoPatch = "127.0.0.1:9528";
+            string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #endif
 
 
