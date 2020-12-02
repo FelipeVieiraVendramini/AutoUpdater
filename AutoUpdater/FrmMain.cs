@@ -67,8 +67,8 @@ namespace AutoUpdater
         private string m_szQueryAutoPatch = string.Empty;
         private string m_szRankingSite = string.Empty;
         private string m_szRegisterSite = string.Empty;
-        private string m_szPrivacyTerms = "https://worldconquer.online/Home/Privacy";
-        private string m_szTermsOfService = "https://worldconquer.online/Home/TermsOfUse";
+        private string m_szPrivacyTerms = "https://worldconquer.online/Privacy";
+        private string m_szTermsOfService = "https://worldconquer.online/TermsOfUse";
 
         private string m_szOpenAfterClose = "";
 
