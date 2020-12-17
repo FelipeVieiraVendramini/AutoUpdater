@@ -46,6 +46,7 @@
             this.lnkTos = new System.Windows.Forms.LinkLabel();
             this.lblDownloadStatus = new System.Windows.Forms.Label();
             this.webNews = new System.Windows.Forms.WebBrowser();
+            this.lnkSettings = new System.Windows.Forms.LinkLabel();
             this.panelStatus.SuspendLayout();
             this.panelProgressbar.SuspendLayout();
             this.SuspendLayout();
@@ -227,7 +228,7 @@
             this.lnkPrivacy.AutoSize = true;
             this.lnkPrivacy.BackColor = System.Drawing.Color.Transparent;
             this.lnkPrivacy.LinkColor = System.Drawing.Color.Yellow;
-            this.lnkPrivacy.Location = new System.Drawing.Point(379, 561);
+            this.lnkPrivacy.Location = new System.Drawing.Point(277, 561);
             this.lnkPrivacy.Name = "lnkPrivacy";
             this.lnkPrivacy.Size = new System.Drawing.Size(55, 13);
             this.lnkPrivacy.TabIndex = 4;
@@ -274,6 +275,19 @@
             this.webNews.TabIndex = 6;
             this.webNews.Url = new System.Uri("https://ftwmasters.com.br/panel/", System.UriKind.Absolute);
             // 
+            // lnkSettings
+            // 
+            this.lnkSettings.AutoSize = true;
+            this.lnkSettings.BackColor = System.Drawing.Color.Transparent;
+            this.lnkSettings.LinkColor = System.Drawing.Color.Yellow;
+            this.lnkSettings.Location = new System.Drawing.Point(496, 561);
+            this.lnkSettings.Name = "lnkSettings";
+            this.lnkSettings.Size = new System.Drawing.Size(55, 13);
+            this.lnkSettings.TabIndex = 9;
+            this.lnkSettings.TabStop = true;
+            this.lnkSettings.Text = "linkLabel1";
+            this.lnkSettings.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSettings_LinkClicked);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -281,6 +295,7 @@
             this.BackgroundImage = global::AutoUpdater.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.ControlBox = false;
+            this.Controls.Add(this.lnkSettings);
             this.Controls.Add(this.webNews);
             this.Controls.Add(this.lblDownloadStatus);
             this.Controls.Add(this.lnkTos);
@@ -330,6 +345,7 @@
         internal System.Windows.Forms.Label lblCenterStatus;
         private System.Windows.Forms.Label lblDownloadStatus;
         private System.Windows.Forms.WebBrowser webNews;
+        private System.Windows.Forms.LinkLabel lnkSettings;
     }
 }
 

@@ -35,14 +35,17 @@ namespace AutoUpdater
         [STAThread]
         static void Main(string[] args)
         {
+#if !DEBUG
             Mutex appSingleton = new Mutex(false, "MyCQAutoPatchClient");
             try
             {
                 if (appSingleton.WaitOne(0, false))
                 {
+#endif
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(FrmMain = new FrmMain());
+#if !DEBUG
                 }
                 else
                 {
@@ -51,9 +54,11 @@ namespace AutoUpdater
             }
             finally
             {
+                appSingleton.ReleaseMutex();
                 appSingleton.Close();
                 appSingleton.Dispose();
             }
+#endif
         }
     }
 }

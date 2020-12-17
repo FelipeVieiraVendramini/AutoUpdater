@@ -171,6 +171,15 @@
   <data name="StrFileMissingTitle" xml:space="preserve">
     <value>File missing</value>
   </data>
+  <data name="StrFps60" xml:space="preserve">
+    <value>60 FPS</value>
+  </data>
+  <data name="StrFpsNormal" xml:space="preserve">
+    <value>Normal FPS</value>
+  </data>
+  <data name="StrFpsUnlocked" xml:space="preserve">
+    <value>Unlocked FPS</value>
+  </data>
   <data name="StrGameVersion" xml:space="preserve">
     <value>Version: {0}</value>
   </data>
@@ -182,6 +191,9 @@
   </data>
   <data name="StrLabelDownloading" xml:space="preserve">
     <value>Downloading update {0} of {1}. {2}/{3} ({4})</value>
+  </data>
+  <data name="StrLinkSettings" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="StrLoginNotAllowed" xml:space="preserve">
     <value>Your login has not been authorized! Your IP Address may be blocked in our servers. Please contact our client support.</value>

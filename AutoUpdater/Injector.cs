@@ -6,7 +6,7 @@
 // forbidden. This code is public and free as is, and if you alter anything you can insert your name
 // in the fields below.
 // 
-// AutoUpdater - AutoPatchLoader - Injector.cs
+// AutoUpdater - AutoUpdater - Injector.cs
 // 
 // Description: <Write a description for this file>
 // 
@@ -28,50 +28,12 @@ using System.Windows.Forms;
 
 #endregion
 
-namespace AutoPatchLoader
+namespace AutoUpdater
 {
     public static class Injector
     {
-        #region Win32
-        [DllImport("KERNEL32.DLL")]
-        private static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAdress, UIntPtr dwSize, uint flAllocationType, uint flProtect);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAdress, uint dwSize, uint dwFreeType);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int nSize, int lpNumberOfBytesWritten);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr se, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, uint lpThreadId);
-
-        [DllImport("KERNEL32.DLL", CharSet = CharSet.Ansi)]
-        private extern static IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
-
-        [DllImport("KERNEL32.DLL", CharSet = CharSet.Ansi)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern bool CloseHandle(IntPtr hObject);
-
-        [DllImport("KERNEL32.DLL")]
-        private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliSeconds);
-
-        private const uint PROCESS_ALL_ACCESS = (uint)(0x0002 | 0x0400 | 0x0008 | 0x0010 | 0x0020);
-        private const uint MEM_COMMIT = 0x1000;
-        private const uint MEM_RELEASE = 0x8000;
-        private const uint PAGE_EXECUTE_READWRITE = 0x40;
-        private const uint WAIT_ABANDONED = 0x00000080;
-        private const uint WAIT_OBJECT_0 = 0x00000000;
-        private const uint WAIT_TIMEOUT = 0x00000102;
-        private const uint WAIT_FAILED = 0xFFFFFFFF;
-        #endregion
-
         /// <summary>
-        /// Fonction qui injecte une dll
+        ///     Fonction qui injecte une dll
         /// </summary>
         /// <param name="DllName">Nom de la dll qui va être injectée.</param>
         /// <param name="ProcessName">Nom du processus dans lequel la dll sera injectée.</param>
@@ -92,7 +54,8 @@ namespace AutoPatchLoader
                 if (hProcess != IntPtr.Zero)
                 {
                     //on va allouer de la mémoire
-                    hModule = VirtualAllocEx(hProcess, IntPtr.Zero, (UIntPtr)LenWrite, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+                    hModule = VirtualAllocEx(hProcess, IntPtr.Zero, (UIntPtr) LenWrite, MEM_COMMIT,
+                        PAGE_EXECUTE_READWRITE);
 
                     //si on a bien alloué de la mémoire
                     if (hModule != IntPtr.Zero)
@@ -123,7 +86,7 @@ namespace AutoPatchLoader
 
                                     //...
                                     if (Result != WAIT_FAILED || Result != WAIT_ABANDONED
-                                       || Result != WAIT_OBJECT_0 || Result != WAIT_TIMEOUT)
+                                                              || Result != WAIT_OBJECT_0 || Result != WAIT_TIMEOUT)
                                     {
                                         //on désalloc la mémoire allouée
                                         if (VirtualFreeEx(hProcess, hModule, 0, MEM_RELEASE))
@@ -135,25 +98,83 @@ namespace AutoPatchLoader
                                                 CloseHandle(hThread);
                                                 return true;
                                             }
-                                            else throw new Exception("Mauvais Handle du thread...injection échouée");
+                                            else
+                                            {
+                                                throw new Exception("Mauvais Handle du thread...injection échouée");
+                                            }
                                         }
-                                        else throw new Exception("Problème libèration de mémoire...injection échouée");
+                                        else
+                                        {
+                                            throw new Exception("Problème libèration de mémoire...injection échouée");
+                                        }
                                     }
-                                    else throw new Exception("WaitForSingle échoué : " + Result.ToString() + "...injection échouée");
-                                }
-                                else throw new Exception("Problème au lancement du thread...injection échouée");
-                            }
-                            else throw new Exception("Adresse LoadLibraryA non trouvée...injection échouée");
-                        }
-                        else throw new Exception("Erreur d'écriture dans le processus...injection échouée");
-                    }
-                    else throw new Exception("Mémoire non allouée...injection échouée");
-                }
-                else throw new Exception("Processus non ouvert...injection échouée");
 
+                                    throw new Exception("WaitForSingle échoué : " + Result + "...injection échouée");
+                                }
+
+                                throw new Exception("Problème au lancement du thread...injection échouée");
+                            }
+
+                            throw new Exception("Adresse LoadLibraryA non trouvée...injection échouée");
+                        }
+
+                        throw new Exception("Erreur d'écriture dans le processus...injection échouée");
+                    }
+
+                    throw new Exception("Mémoire non allouée...injection échouée");
+                }
+
+                throw new Exception("Processus non ouvert...injection échouée");
             }
-            catch (Exception Exc) { MessageBox.Show(Exc.ToString(), "Error!", MessageBoxButtons.OK); return false; }
+            catch (Exception Exc)
+            {
+                MessageBox.Show(Exc.ToString(), "Error!", MessageBoxButtons.OK);
+                return false;
+            }
         }
+
+        #region Win32
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAdress, UIntPtr dwSize,
+            uint flAllocationType, uint flProtect);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAdress, uint dwSize, uint dwFreeType);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int nSize,
+            int lpNumberOfBytesWritten);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr se, uint dwStackSize,
+            IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, uint lpThreadId);
+
+        [DllImport("KERNEL32.DLL", CharSet = CharSet.Ansi)]
+        private extern static IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+
+        [DllImport("KERNEL32.DLL", CharSet = CharSet.Ansi)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("KERNEL32.DLL")]
+        private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliSeconds);
+
+        private const uint PROCESS_ALL_ACCESS = 0x0002 | 0x0400 | 0x0008 | 0x0010 | 0x0020;
+        private const uint MEM_COMMIT = 0x1000;
+        private const uint MEM_RELEASE = 0x8000;
+        private const uint PAGE_EXECUTE_READWRITE = 0x40;
+        private const uint WAIT_ABANDONED = 0x00000080;
+        private const uint WAIT_OBJECT_0 = 0x00000000;
+        private const uint WAIT_TIMEOUT = 0x00000102;
+        private const uint WAIT_FAILED = 0xFFFFFFFF;
+
+        #endregion
     }
 }
-// by cptsky
+// by CptSky

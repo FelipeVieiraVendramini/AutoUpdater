@@ -171,6 +171,15 @@
   <data name="StrFileMissingTitle" xml:space="preserve">
     <value>Arquivo faltando!</value>
   </data>
+  <data name="StrFps60" xml:space="preserve">
+    <value>60 FPS</value>
+  </data>
+  <data name="StrFpsNormal" xml:space="preserve">
+    <value>FPS Normal</value>
+  </data>
+  <data name="StrFpsUnlocked" xml:space="preserve">
+    <value>FPS Ilimitado</value>
+  </data>
   <data name="StrGameVersion" xml:space="preserve">
     <value>Versão: {0}</value>
   </data>
@@ -182,6 +191,9 @@
   </data>
   <data name="StrLabelDownloading" xml:space="preserve">
     <value>Baixando atualização {0} de {1}. {2}/{3} ({4})</value>
+  </data>
+  <data name="StrLinkSettings" xml:space="preserve">
+    <value>Configurações</value>
   </data>
   <data name="StrLoginNotAllowed" xml:space="preserve">
     <value>Seu login não foi autorizado! Isso pode estar relacionado a um bloqueio em seu endereço IP, por favor, contate o administrador.</value>

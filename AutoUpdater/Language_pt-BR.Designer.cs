@@ -223,6 +223,33 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a 60 FPS.
+        /// </summary>
+        public static string StrFps60 {
+            get {
+                return ResourceManager.GetString("StrFps60", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a FPS Normal.
+        /// </summary>
+        public static string StrFpsNormal {
+            get {
+                return ResourceManager.GetString("StrFpsNormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a FPS Ilimitado.
+        /// </summary>
+        public static string StrFpsUnlocked {
+            get {
+                return ResourceManager.GetString("StrFpsUnlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Versão: {0}.
         /// </summary>
         public static string StrGameVersion {
@@ -255,6 +282,15 @@ namespace AutoUpdater {
         public static string StrLabelDownloading {
             get {
                 return ResourceManager.GetString("StrLabelDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Configurações.
+        /// </summary>
+        public static string StrLinkSettings {
+            get {
+                return ResourceManager.GetString("StrLinkSettings", resourceCulture);
             }
         }
         

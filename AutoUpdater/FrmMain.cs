@@ -19,7 +19,7 @@
 
 #endregion
 
-#define NO_INJECTION // if you want to use the pure launcher, uncomment this
+// #define NO_INJECTION // if you want to use the pure launcher, uncomment this
 
 #region References
 
@@ -31,6 +31,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
@@ -102,7 +103,7 @@ namespace AutoUpdater
             TransparencyKey = Color.FromArgb(0xff00d8);
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.FromArgb(0x00FFFFFF);
-            
+
             btnPlayHigh.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btnPlayHigh.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btnPlayLow.FlatAppearance.MouseDownBackColor = Color.Transparent;
@@ -150,6 +151,7 @@ namespace AutoUpdater
 
             lnkPrivacy.Text = LanguageManager.GetString("StrTopLabel");
             lnkTos.Text = LanguageManager.GetString("StrTosLabel");
+            lnkSettings.Text = LanguageManager.GetString("StrLinkSettings");
         }
 
         #region Version
@@ -163,9 +165,12 @@ namespace AutoUpdater
                 if (szVersion == null || string.IsNullOrEmpty(szVersion))
                     Environment.Exit(3);
                 Kernel.ActualVersion = m_usCurrentVersion = ushort.Parse(szVersion);
-                Edit(lblGameVersion, LabelAsyncOperation.Text, LanguageManager.GetString("StrGameVersion", m_usCurrentVersion));
+                Edit(lblGameVersion, LabelAsyncOperation.Text,
+                    LanguageManager.GetString("StrGameVersion", m_usCurrentVersion));
             }
-            Edit(lblUpdaterVersion, LabelAsyncOperation.Text, LanguageManager.GetString("StrAutoUpdateVersion", m_usClientVersion, Kernel.Version));
+
+            Edit(lblUpdaterVersion, LabelAsyncOperation.Text,
+                LanguageManager.GetString("StrAutoUpdateVersion", m_usClientVersion, Kernel.Version));
         }
 
         #endregion
@@ -244,12 +249,14 @@ namespace AutoUpdater
                     server.Send(mri);
 
                     Kernel.Stage = AutoPatchStage.WaitingForGamePatchs;
-                    Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLookingForGameUpdates"));
+                    Edit(lblCenterStatus, LabelAsyncOperation.Text,
+                        LanguageManager.GetString("StrLookingForGameUpdates"));
                 }
                 else
                 {
                     NoDownload(UpdateReturnMessage.Success);
                 }
+
                 return;
             }
 
@@ -264,7 +271,9 @@ namespace AutoUpdater
             m_nCurrentDownloading = 0;
             m_nTotalDownloads = 0;
 
-            Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads,
+                    ParseFileSize(m_nTotalDownloadSize)));
             Edit(lblDownloadStatus, LabelAsyncOperation.Visible, true);
 
             for (int i = 1; i < strs.Count; i++)
@@ -278,10 +287,14 @@ namespace AutoUpdater
                 m_nTotalDownloadSize += FetchFileSize($"{domain}{strs[i]}");
                 m_nTotalDownloads++;
                 m_queueNextDownloads.Enqueue($"{domain}{strs[i]}");
-                Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+                Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                    LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads,
+                        ParseFileSize(m_nTotalDownloadSize)));
             }
 
-            Edit(lblDownloadStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads, ParseFileSize(m_nTotalDownloadSize)));
+            Edit(lblDownloadStatus, LabelAsyncOperation.Text,
+                LanguageManager.GetString("StrLabelCalculatingDownloadAmount", m_nTotalDownloads,
+                    ParseFileSize(m_nTotalDownloadSize)));
             Edit(pbDownload, ProgressBarAsyncOperation.Value, 0);
             Edit(pbDownload, ProgressBarAsyncOperation.Max, m_nTotalDownloadSize);
             ShowDownloadBar();
@@ -358,8 +371,9 @@ namespace AutoUpdater
 
         private void DownloadFileProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Edit(pbDownload, ProgressBarAsyncOperation.Value, pbDownload.Value + (e.BytesReceived - m_nCurrentlyBytesDownloaded));
-            m_nCurrentlyBytesDownloaded = (int)e.BytesReceived;
+            Edit(pbDownload, ProgressBarAsyncOperation.Value,
+                pbDownload.Value + (e.BytesReceived - m_nCurrentlyBytesDownloaded));
+            m_nCurrentlyBytesDownloaded = (int) e.BytesReceived;
 
             if (Environment.TickCount - m_nLastDownloadTick > 500)
             {
@@ -389,7 +403,8 @@ namespace AutoUpdater
                     return;
                 }
 
-                Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrInstallingUpdates", fileName));
+                Edit(lblCenterStatus, LabelAsyncOperation.Text,
+                    LanguageManager.GetString("StrInstallingUpdates", fileName));
 
                 if (string.IsNullOrEmpty(Path.GetExtension(fileName)))
                     fileName += ".exe";
@@ -428,6 +443,11 @@ namespace AutoUpdater
         private void lnkTos_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             new FrmWebBrowser(m_szTermsOfService).ShowDialog(this);
+        }
+
+        private void lnkSettings_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FrmSettings().ShowDialog(this);
         }
 
         #endregion
@@ -476,13 +496,13 @@ namespace AutoUpdater
                 switch (op)
                 {
                     case ProgressBarAsyncOperation.Value:
-                        control.Value = (int)((long)value);
+                        control.Value = (int) ((long) value);
                         break;
                     case ProgressBarAsyncOperation.Min:
-                        control.Minimum = (int)((long)value);
+                        control.Minimum = (int) ((long) value);
                         break;
                     case ProgressBarAsyncOperation.Max:
-                        control.Maximum = (int)((long)value);
+                        control.Maximum = (int) ((long) value);
                         break;
                 }
             }
@@ -505,7 +525,7 @@ namespace AutoUpdater
                 switch (op)
                 {
                     case PanelAsyncOperation.Visible:
-                        control.Visible = (bool)value;
+                        control.Visible = (bool) value;
                         break;
                 }
             }
@@ -528,7 +548,7 @@ namespace AutoUpdater
                 switch (op)
                 {
                     case ButtonAsyncOperation.Visible:
-                        control.Visible = (bool)value;
+                        control.Visible = (bool) value;
                         break;
                     case ButtonAsyncOperation.Enable:
                         control.Enabled = (bool) value;
@@ -668,7 +688,7 @@ namespace AutoUpdater
         }
 
         #endregion
-        
+
         #region Remote File Check
 
         public bool RemoteFileExists(string url)
@@ -735,6 +755,7 @@ namespace AutoUpdater
             {
                 resp?.Close();
             }
+
             return 0;
         }
 
@@ -745,7 +766,7 @@ namespace AutoUpdater
             if (size > _MBYTE)
                 return $"{size / _MBYTE:N2} MB";
             if (size > _KBYTE)
-                return $"{size/_KBYTE:N2} KB";
+                return $"{size / _KBYTE:N2} KB";
             return $"{size} B";
         }
 
@@ -766,6 +787,7 @@ namespace AutoUpdater
 
         public void ConnectToAutoUpdateServer()
         {
+#if !DEBUG
             Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrSearchForOpenInstances"));
             var procList = Process.GetProcessesByName("Conquer");
             if (procList.Length > 0)
@@ -792,6 +814,7 @@ namespace AutoUpdater
                     return;
                 }
             }
+#endif
 
             Edit(lblCenterStatus, LabelAsyncOperation.Text, LanguageManager.GetString("StrConnectingToServer"));
 
@@ -817,8 +840,8 @@ namespace AutoUpdater
             if (m_patchServer == null || !connected)
             {
                 if (MessageBox.Show(this, LanguageManager.GetString("StrCouldNotConnectToAutoPatch"),
-                        LanguageManager.GetString("StrCouldNotConnectToAutoPatchTitle"),
-                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    LanguageManager.GetString("StrCouldNotConnectToAutoPatchTitle"),
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
                     LaunchSite(m_szDownloadSite);
 
                 Edit(lblCenterStatus, LabelAsyncOperation.Text,
@@ -884,6 +907,7 @@ namespace AutoUpdater
                     msg.CurrentVersion = m_usCurrentVersion;
                     break;
             }
+
             server.Send(msg);
         }
 
@@ -916,8 +940,8 @@ namespace AutoUpdater
                     }
 
                     string strPrivacyDate = m_ifConfig.GetEntryValue("Config", "TermsOfPrivacy").ToString();
-                    if (!DateTime.TryParse(strPrivacyDate, out DateTime date) 
-                        || !DateTime.TryParse(list[0], out DateTime serverTime) 
+                    if (!DateTime.TryParse(strPrivacyDate, out DateTime date)
+                        || !DateTime.TryParse(list[0], out DateTime serverTime)
                         || serverTime > date)
                     {
                         if (new FrmTermsOfPrivacy(m_szPrivacyTerms).ShowDialog(this) != DialogResult.OK)
@@ -994,17 +1018,11 @@ namespace AutoUpdater
             {
                 fileName,
 #if !NO_INJECTION
-                "AutoPatchLoader.exe",
-                "Loader.dll",
-                "config.ini",
+                "UpdaterCore.dll"
 #endif
             };
 
-#if !NO_INJECTION
-            string path = $"{Environment.CurrentDirectory}\\AutoPatchLoader.exe";
-#else
             string path = $"{Environment.CurrentDirectory}\\{fileName}";
-#endif
             foreach (var file in filesToCheck)
             {
                 string verifyPath = $"{Environment.CurrentDirectory}\\{file}";
@@ -1023,38 +1041,13 @@ namespace AutoUpdater
                 {
                     WorkingDirectory = Environment.CurrentDirectory,
                     FileName = path,
-#if !NO_INJECTION
-                    Arguments = "whitenull",
-#else
-                    Arguments = "blacknull",
-#endif
+                    Arguments = "blacknull"
                 }
             };
 
             game.Start();
-#if !NO_INJECTION
-            game.WaitForExit();
-#else
+            Injector.StartInjection(filesToCheck[1], (uint) game.Id);
             m_lOpenClients.Add(game);
-#endif
-
-#if !NO_INJECTION
-            try
-            {
-                Process addGame = Process.GetProcessById(game.ExitCode);
-                m_lOpenClients.Add(addGame);
-            }
-            catch
-            {
-
-            }
-#endif
-
-            //if (!m_pAntiCheatTimer.Enabled)
-            //{
-            //OnTimer(null, null);
-            //m_pAntiCheatTimer.Start();
-            //}
         }
 
         private void SetGameMode(GameMode mode)
@@ -1084,11 +1077,11 @@ namespace AutoUpdater
             }
 
             ini.SetValue("GameMode", "LowTimes", lowTimes);
-            ini.SetValue("GameMode", "GameModeRecord", (int)mode);
+            ini.SetValue("GameMode", "GameModeRecord", (int) mode);
             ini.SetValue("GameMode", "HighTimes", highTimes);
         }
 
-#endregion
+        #endregion
     }
 
     public enum GameMode

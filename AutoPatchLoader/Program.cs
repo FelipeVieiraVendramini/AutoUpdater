@@ -30,17 +30,22 @@ namespace AutoPatchLoader
         {
             try
             {
-                if (args[0] != "whitenull")
-                    throw new Exception("No parameter passed.");
+                Environment.CurrentDirectory = "D:\\World Conquer\\Client";
 
-                Process game = new Process();
-                game.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
-                game.StartInfo.FileName = Environment.CurrentDirectory + @"\Conquer.exe";
-                game.StartInfo.Arguments = "blacknull";
+                Process game = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = Environment.CurrentDirectory + @"\Conquer.exe",
+                        Arguments = "blacknull"
+                    }
+                };
                 game.Start();
+
                 uint idProcess = (uint)game.Id;
                 game.Close();
-                Injector.StartInjection(Environment.CurrentDirectory + @"\Loader.dll", idProcess);
+                Injector.StartInjection(Environment.CurrentDirectory + @"\UpdaterCore.dll", idProcess);
                 Environment.Exit((int) idProcess);
             }
             catch
