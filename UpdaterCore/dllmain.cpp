@@ -29,8 +29,11 @@ BOOL APIENTRY DllMain( HMODULE hModule,
             const LPVOID BASE_PUZZLE_H_ADDR = (LPVOID)(0x0048F8AF + 1);
             const LPVOID BASE_PUZZLE_H2_ADDR = (LPVOID)(0x0048F8CF + 1);
 
-            const LPVOID BASE_FPS1_ADDR = (LPVOID)(0x00468D28);
-            const LPVOID BASE_FPS2_ADDR = (LPVOID)(0x00468D31);
+            const LPVOID BASE_MAIN_UI0_ADDR = (LPVOID)(0x0046E4C3);
+            const LPVOID BASE_MAIN_UI1_ADDR = (LPVOID)(0x0046E4C8);
+
+            //const LPVOID BASE_FPS1_ADDR = (LPVOID)(0x00468D28);
+            //const LPVOID BASE_FPS2_ADDR = (LPVOID)(0x00468D31);
 
             int width = GetPrivateProfileIntA("GameResolution", "Width", 1024, CONFIG_FILE);
             int height = GetPrivateProfileIntA("GameResolution", "Height", 768, CONFIG_FILE);
@@ -64,9 +67,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get width memory offset. 3", "ReadProcessMemory error", MB_OK);
 
-                sprintf_s(msg, "Puzzle width %d", read);
-                MessageBoxA(NULL, msg, "Puzzle", MB_OK);
-
                 if (!WriteProcessMemory(hProcess, BASE_PUZZLE_W_ADDR, &width, 4, &bytes_written))
                 {
                     sprintf_s(msg, "Error writing to memory! 3 %d", GetLastError());
@@ -77,9 +77,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
             if (ReadProcessMemory(hProcess, BASE_PUZZLE_H_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get height memory offset. 4", "ReadProcessMemory error", MB_OK);
-
-                sprintf_s(msg, "Puzzle height %d", read);
-                MessageBoxA(NULL, msg, "Puzzle", MB_OK);
 
                 if (!WriteProcessMemory(hProcess, BASE_PUZZLE_H_ADDR, &height, 4, &bytes_written))
                 {
@@ -92,9 +89,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get height memory offset. 4", "ReadProcessMemory error", MB_OK);
 
-                sprintf_s(msg, "Puzzle height2 %d", read);
-                MessageBoxA(NULL, msg, "Puzzle", MB_OK);
-
                 if (!WriteProcessMemory(hProcess, BASE_PUZZLE_H2_ADDR, &height, 4, &bytes_written))
                 {
                     sprintf_s(msg, "Error writing to memory! 4 %d", GetLastError());
@@ -102,34 +96,71 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 }
             }
 
+            if (ReadProcessMemory(hProcess, BASE_MAIN_UI0_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 6", "ReadProcessMemory error", MB_OK);
+
+                sprintf_s(msg, "Old UI POS X Value: %d", read);
+                MessageBoxA(NULL, msg, "Main UI", MB_OK);
+
+                int position = height - 141;
+                if (!WriteProcessMemory(hProcess, BASE_MAIN_UI0_ADDR, &position, 4, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 6 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
+            if (ReadProcessMemory(hProcess, BASE_MAIN_UI1_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 5", "ReadProcessMemory error", MB_OK);
+
+                sprintf_s(msg, "Old UI POS X Value: %d", read);
+                MessageBoxA(NULL, msg, "Main UI", MB_OK);
+
+                int position = (width - 1024) / 2;
+                if (!WriteProcessMemory(hProcess, BASE_MAIN_UI1_ADDR, &position, 4, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 5 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
             //if (fpsMode != 0) 
             //{
-            //    int frameDelayMs = 0x19; // normal
+            //    short frameDelayMs = 0x19; // normal
             //    if (fpsMode == 2) // unlocked
             //    {
             //        frameDelayMs = 0x1;
             //    }
-            //    else if (fpsMode == 1)
+            //    else if (fpsMode == 1) // 60 fps
             //    {
             //        frameDelayMs = 0x10;
             //    }
 
-            //    if (ReadProcessMemory(hProcess, BASE_FPS1_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+            //    if (ReadProcessMemory(hProcess, BASE_FPS1_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY)
+            //    {
             //        if (bytes_read == 0)
             //            MessageBoxA(NULL, "Could not get height memory offset.", "ReadProcessMemory error", MB_OK);
 
-            //        if (!WriteProcessMemory(hProcess, BASE_FPS1_ADDR, &frameDelayMs, 4, &bytes_written))
+            //        sprintf_s(msg, "Old FPS Value: %d", read);
+            //        MessageBoxA(NULL, msg, "FPS", MB_OK);
+
+            //        if (!WriteProcessMemory(hProcess, BASE_FPS1_ADDR, &frameDelayMs, 2, &bytes_written))
             //        {
             //            sprintf_s(msg, "Error writing to memory! %d", GetLastError());
             //            MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
             //        }
             //    }
 
-            //    if (ReadProcessMemory(hProcess, BASE_FPS2_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+            //    if (ReadProcessMemory(hProcess, BASE_FPS2_ADDR, &read, 2, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
             //        if (bytes_read == 0)
             //            MessageBoxA(NULL, "Could not get height memory offset.", "ReadProcessMemory error", MB_OK);
 
-            //        if (!WriteProcessMemory(hProcess, BASE_FPS2_ADDR, &frameDelayMs, 4, &bytes_written))
+            //        sprintf_s(msg, "Old FPS Value: %d", read);
+            //        MessageBoxA(NULL, msg, "FPS", MB_OK);
+
+            //        if (!WriteProcessMemory(hProcess, BASE_FPS2_ADDR, &frameDelayMs, 2, &bytes_written))
             //        {
             //            sprintf_s(msg, "Error writing to memory! %d", GetLastError());
             //            MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);

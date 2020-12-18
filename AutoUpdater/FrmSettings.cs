@@ -65,6 +65,20 @@ namespace AutoUpdater
                     cmbScreenResolution.SelectedIndex = i;
             }
 
+            int fpsMode = int.Parse(ini.GetEntryValue("GameSetup", "FpsMode").ToString());
+
+            switch (fpsMode)
+            {
+                case 1:
+                    radio60Fps.Checked = true;
+                    break;
+                case 2:
+                    radioUnlockedFps.Checked = true;
+                    break;
+                default:
+                    radioNormalFps.Checked = true;
+                    break;
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -172,6 +186,8 @@ namespace AutoUpdater
             // AddExp
             ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 200 + 90);
             ini.SetValue("ExpShowPos", "AddExp_YPos", height - 90);
+
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
