@@ -1,7 +1,7 @@
 // dllmain.cpp : Define o ponto de entrada para o aplicativo DLL.
 #include "pch.h"
 
-const char CONFIG_FILE[] { ".\\AutoPatch.ini" };
+const char CONFIG_FILE[] { ".\\Config.ini" };
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,

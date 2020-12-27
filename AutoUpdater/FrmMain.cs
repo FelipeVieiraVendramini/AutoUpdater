@@ -112,6 +112,19 @@ namespace AutoUpdater
              */
             new LanguageManager().SetLanguage(CultureInfo.CurrentUICulture.Name);
 
+            if (!File.Exists("Config.ini"))
+            {
+                File.Create("Config.ini").Close();
+                var writer = new StreamWriter("Config.ini");
+                writer.Write("[GameResolution]");
+                writer.Write("Width=1024");
+                writer.Write("Height=768");
+                writer.Write("NoWindowInjection=0");
+                writer.Write("[GameSetup]");
+                writer.Write("FpsMode=1");
+                writer.Close();
+            }
+
             m_ifConfig = new IniFileName(Environment.CurrentDirectory + "\\AutoPatch.ini");
             LoadStringUrlTable();
             // we will download everything again if needed. But we wont be keeping the folder with content after a succesfull (or failed) update.
@@ -1021,6 +1034,7 @@ namespace AutoUpdater
         {
             const string fileName = "Conquer.exe";
             const string noInjectFileName = "AltConquer.exe";
+            const string injectDll = "UpdaterCore.dll";
             string[] filesToCheck =
             {
                 fileName,
@@ -1049,8 +1063,9 @@ namespace AutoUpdater
                 szInjectionDisable = "0";
             }
 
+            bool inject = int.Parse(szInjectionDisable) == 0;
             Process game;
-            if (int.Parse(szInjectionDisable) != 0)
+            if (!inject)
             {
                 string path = $"{Environment.CurrentDirectory}\\{noInjectFileName}";
                 game = new Process
@@ -1078,7 +1093,10 @@ namespace AutoUpdater
             }
 
             game.Start();
-            Injector.StartInjection(filesToCheck[1], (uint) game.Id);
+
+            if (inject)
+                Injector.StartInjection(injectDll, (uint) game.Id);
+
             m_lOpenClients.Add(game);
         }
 
