@@ -22,15 +22,21 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         DWORD dwProc = (DWORD)hProcess;
         if (hProcess) 
         {
-            const LPVOID BASE_W_ADDR = (LPVOID) (0x00469DEF + 6);
-            const LPVOID BASE_H_ADDR = (LPVOID) (0x00469DFC + 6);
+            const LPVOID BASE_W_ADDR = (LPVOID)(0x004842BD + 6);
+            const LPVOID BASE_H_ADDR = (LPVOID)(0x004842CA + 6);
 
-            const LPVOID BASE_PUZZLE_W_ADDR = (LPVOID)(0x0048F898 + 1);
-            const LPVOID BASE_PUZZLE_H_ADDR = (LPVOID)(0x0048F8AF + 1);
-            const LPVOID BASE_PUZZLE_H2_ADDR = (LPVOID)(0x0048F8CF + 1);
+            const LPVOID BASE_PUZZLE_W_ADDR = (LPVOID)(0x004AD21A + 1);
+            const LPVOID BASE_PUZZLE_H_ADDR = (LPVOID)(0x004AD231 + 1);
+            const LPVOID BASE_PUZZLE_H2_ADDR = (LPVOID)(0x004AD251 + 1);
 
-            const LPVOID BASE_MAIN_UI0_ADDR = (LPVOID)(0x0046E4C3);
-            const LPVOID BASE_MAIN_UI1_ADDR = (LPVOID)(0x0046E4C8);
+            const LPVOID BASE_MAIN_UI0_ADDR = (LPVOID)(0x00488D09 + 1);
+            const LPVOID BASE_MAIN_UI1_ADDR = (LPVOID)(0x00488D0E + 1);
+
+            const LPVOID BASE_ARROW_ICON_ADDR = (LPVOID)(0x004C852E + 1);
+            const LPVOID BASE_ARROW_STRING_BLACK_ADDR = (LPVOID)(0x004C858E + 1);
+            const LPVOID BASE_ARROW_STRING_WHITE_ADDR = (LPVOID)(0x004C85C8 + 1);
+
+            const LPVOID BASE_HELP_BUTTON_ADDR = (LPVOID)(0x00430D50 + 1);
 
             //const LPVOID BASE_FPS1_ADDR = (LPVOID)(0x00468D28);
             //const LPVOID BASE_FPS2_ADDR = (LPVOID)(0x00468D31);
@@ -100,8 +106,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get height memory offset. 6", "ReadProcessMemory error", MB_OK);
 
-                sprintf_s(msg, "Old UI POS X Value: %d", read);
-                MessageBoxA(NULL, msg, "Main UI", MB_OK);
+                //sprintf_s(msg, "Old UI POS X Value: %d", read);
+                //MessageBoxA(NULL, msg, "Main UI", MB_OK);
 
                 int position = height - 141;
                 if (!WriteProcessMemory(hProcess, BASE_MAIN_UI0_ADDR, &position, 4, &bytes_written))
@@ -115,13 +121,61 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get height memory offset. 5", "ReadProcessMemory error", MB_OK);
 
-                sprintf_s(msg, "Old UI POS X Value: %d", read);
-                MessageBoxA(NULL, msg, "Main UI", MB_OK);
+                //sprintf_s(msg, "Old UI POS X Value: %d", read);
+                //MessageBoxA(NULL, msg, "Main UI", MB_OK);
 
                 int position = (width - 1024) / 2;
                 if (!WriteProcessMemory(hProcess, BASE_MAIN_UI1_ADDR, &position, 4, &bytes_written))
                 {
                     sprintf_s(msg, "Error writing to memory! 5 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
+            if (ReadProcessMemory(hProcess, BASE_ARROW_ICON_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 6", "ReadProcessMemory error", MB_OK);
+
+                int position = ((width - 1024) / 2) + 131;
+                if (!WriteProcessMemory(hProcess, BASE_ARROW_ICON_ADDR, &position, 4, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 6 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
+            if (ReadProcessMemory(hProcess, BASE_ARROW_STRING_BLACK_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 7", "ReadProcessMemory error", MB_OK);
+
+                int position = ((width - 1024) / 2) + 130;
+                if (!WriteProcessMemory(hProcess, BASE_ARROW_STRING_BLACK_ADDR, &position, 4, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 7 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
+            if (ReadProcessMemory(hProcess, BASE_ARROW_STRING_WHITE_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 8", "ReadProcessMemory error", MB_OK);
+
+                int position = ((width - 1024) / 2) + 131;
+                if (!WriteProcessMemory(hProcess, BASE_ARROW_STRING_WHITE_ADDR, &position, 4, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 8 %d", GetLastError());
+                    MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
+                }
+            }
+
+            if (ReadProcessMemory(hProcess, BASE_HELP_BUTTON_ADDR, &read, 1, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (bytes_read == 0)
+                    MessageBoxA(NULL, "Could not get height memory offset. 9", "ReadProcessMemory error", MB_OK);
+
+                int position = -30;
+                if (!WriteProcessMemory(hProcess, BASE_HELP_BUTTON_ADDR, &position, 1, &bytes_written))
+                {
+                    sprintf_s(msg, "Error writing to memory! 9 %d", GetLastError());
                     MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
                 }
             }

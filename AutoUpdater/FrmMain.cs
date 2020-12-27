@@ -31,7 +31,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Windows.Forms;
@@ -41,7 +40,6 @@ using AutoUpdater.Sockets.Updater;
 using AutoUpdaterCore;
 using AutoUpdaterCore.Sockets;
 using AutoUpdaterCore.Sockets.Packets;
-using Timer = System.Windows.Forms.Timer;
 
 #endregion
 
@@ -159,14 +157,22 @@ namespace AutoUpdater
         private void LoadVersion()
         {
             m_usClientVersion = Convert.ToUInt16(m_ifConfig.GetEntryValue("Client", "Version").ToString());
-            using (var reader = new StreamReader("version.dat"))
+            if (File.Exists("version.dat"))
             {
-                string szVersion = reader.ReadLine();
-                if (szVersion == null || string.IsNullOrEmpty(szVersion))
-                    Environment.Exit(3);
-                Kernel.ActualVersion = m_usCurrentVersion = ushort.Parse(szVersion);
+                using (var reader = new StreamReader("version.dat"))
+                {
+                    string szVersion = reader.ReadLine();
+                    if (szVersion == null || string.IsNullOrEmpty(szVersion))
+                        Environment.Exit(3);
+                    Kernel.ActualVersion = m_usCurrentVersion = ushort.Parse(szVersion);
+                    Edit(lblGameVersion, LabelAsyncOperation.Text,
+                        LanguageManager.GetString("StrGameVersion", m_usCurrentVersion));
+                }
+            }
+            else
+            {
                 Edit(lblGameVersion, LabelAsyncOperation.Text,
-                    LanguageManager.GetString("StrGameVersion", m_usCurrentVersion));
+                    LanguageManager.GetString("StrError"));
             }
 
             Edit(lblUpdaterVersion, LabelAsyncOperation.Text,
@@ -821,8 +827,8 @@ namespace AutoUpdater
 #if !DEBUG
             string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #else
-            //string autoPatch = "127.0.0.1:9528";
-            string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
+            string autoPatch = "127.0.0.1:9528";
+            //string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #endif
 
 
@@ -1014,15 +1020,16 @@ namespace AutoUpdater
         private void Play()
         {
             const string fileName = "Conquer.exe";
+            const string noInjectFileName = "AltConquer.exe";
             string[] filesToCheck =
             {
                 fileName,
+                noInjectFileName,
 #if !NO_INJECTION
                 "UpdaterCore.dll"
 #endif
             };
-
-            string path = $"{Environment.CurrentDirectory}\\{fileName}";
+            
             foreach (var file in filesToCheck)
             {
                 string verifyPath = $"{Environment.CurrentDirectory}\\{file}";
@@ -1035,15 +1042,40 @@ namespace AutoUpdater
                 }
             }
 
-            Process game = new Process
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
+            string szInjectionDisable = ini.GetEntryValue("GameResolution", "NoWindowInjection")?.ToString() ?? "0";
+            if (string.IsNullOrEmpty(szInjectionDisable))
             {
-                StartInfo =
+                szInjectionDisable = "0";
+            }
+
+            Process game;
+            if (int.Parse(szInjectionDisable) != 0)
+            {
+                string path = $"{Environment.CurrentDirectory}\\{noInjectFileName}";
+                game = new Process
                 {
-                    WorkingDirectory = Environment.CurrentDirectory,
-                    FileName = path,
-                    Arguments = "blacknull"
-                }
-            };
+                    StartInfo =
+                    {
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = path,
+                        Arguments = "blacknull"
+                    }
+                };
+            }
+            else
+            {
+                string path = $"{Environment.CurrentDirectory}\\{fileName}";
+                game = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = path,
+                        Arguments = "blacknull"
+                    }
+                };
+            }
 
             game.Start();
             Injector.StartInjection(filesToCheck[1], (uint) game.Id);

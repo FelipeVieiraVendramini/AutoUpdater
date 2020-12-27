@@ -48,6 +48,10 @@ namespace AutoUpdater
             foreach (var result in results)
             {
                 string resolution = $"{result["HorizontalResolution"]}x{result["VerticalResolution"]}";
+
+                if (int.Parse(result["HorizontalResolution"].ToString()) < 1024)
+                    continue;
+
                 if (!cmbScreenResolution.Items.Contains(resolution))
                     cmbScreenResolution.Items.Add(resolution);
             }
@@ -55,9 +59,34 @@ namespace AutoUpdater
             if (cmbScreenResolution.Items.Count > 0)
                 cmbScreenResolution.SelectedIndex = cmbScreenResolution.Items.Count - 1;
 
-            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\AutoPatch.ini");
-            int width = int.Parse(ini.GetEntryValue("GameResolution", "Width").ToString()) + 20;
-            int height = int.Parse(ini.GetEntryValue("GameResolution", "Height").ToString()) + 60;
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
+            string szWidth = ini.GetEntryValue("GameResolution", "Width")?.ToString() ?? "1004";
+            string szHeight = ini.GetEntryValue("GameResolution", "Height")?.ToString() ?? "708";
+            string szFpsMode = ini.GetEntryValue("GameSetup", "FpsMode")?.ToString() ?? "2";
+            string szInjectionDisable = ini.GetEntryValue("GameResolution", "NoWindowInjection")?.ToString() ?? "0";
+
+            if (string.IsNullOrEmpty(szWidth))
+            {
+                szWidth = "1004";
+            }
+
+            if (string.IsNullOrEmpty(szHeight))
+            {
+                szHeight = "708";
+            }
+
+            if (string.IsNullOrEmpty(szFpsMode))
+            {
+                szFpsMode = "1";
+            }
+
+            if (string.IsNullOrEmpty(szInjectionDisable))
+            {
+                szInjectionDisable = "0";
+            }
+
+            int width = int.Parse(szWidth) + 20;
+            int height = int.Parse(szHeight) + 60;
 
             for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
             {
@@ -65,8 +94,7 @@ namespace AutoUpdater
                     cmbScreenResolution.SelectedIndex = i;
             }
 
-            int fpsMode = int.Parse(ini.GetEntryValue("GameSetup", "FpsMode").ToString());
-
+            int fpsMode = int.Parse(szFpsMode);
             switch (fpsMode)
             {
                 case 1:
@@ -79,6 +107,8 @@ namespace AutoUpdater
                     radioNormalFps.Checked = true;
                     break;
             }
+
+            chkNoInjection.Checked = int.Parse(szInjectionDisable) != 0;
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -87,12 +117,14 @@ namespace AutoUpdater
             ini.SetValue("ScreenMode", "ScreenModeRecord", 2);
 
             string selectedResolution = cmbScreenResolution.Items[cmbScreenResolution.SelectedIndex].ToString();
-            int width = Math.Max(800, int.Parse(selectedResolution.Split('x')[0]) - 20);
-            int height = Math.Max(600, int.Parse(selectedResolution.Split('x')[1]) - 60);
+            int width = Math.Max(1024, int.Parse(selectedResolution.Split('x')[0]) - 20);
+            int height = Math.Max(768, int.Parse(selectedResolution.Split('x')[1]) - 60);
+            int windowInjection = chkNoInjection.Checked ? 1 : 0;
 
-            ini = new IniFileName(Environment.CurrentDirectory + @"\AutoPatch.ini");
+            ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
             ini.SetValue("GameResolution", "Width", width);
             ini.SetValue("GameResolution", "Height", height);
+            ini.SetValue("GameResolution", "NoWindowInjection", windowInjection.ToString());
 
             int fpsMode = 0;
             if (radioNormalFps.Checked)
@@ -109,7 +141,7 @@ namespace AutoUpdater
             }
 
             ini.SetValue("GameSetup", "FpsMode", fpsMode);
-
+            
             ini = new IniFileName(Environment.CurrentDirectory + @"\ini\GUI.ini");
             // Main interface
             ini.SetValue("0-130", "x", (width - 1024) / 2);
@@ -143,10 +175,16 @@ namespace AutoUpdater
 
             // Team
             ini.SetValue("0-141", "x", (width - 290) / 2);
+            ini.SetValue("0-268", "x", (width - 58) / 2);
+            
+            //VIP Button
+            ini.SetValue("0-339", "x", ((width - 1024) / 2) + 82 + 205);
+            ini.SetValue("0-339", "y", height - 115);
 
-            // Items
-            //GUI.SetValue("0-153", "x", scrWidth - 270);
-            //GUI.SetValue("0-153", "y", (scrHeight - 502) / 2);
+            // My Talisman UI
+            ini.SetValue("0-345", "x", 9999);
+            // Target Talisman UI
+            ini.SetValue("0-346", "x", 9999);
 
             // Shopping Mall
             ini.SetValue("0-289", "x", ((width - 1024) / 2) + 82 + 50);
@@ -180,11 +218,11 @@ namespace AutoUpdater
 
             ini = new IniFileName(Environment.CurrentDirectory + @"\ini\info.ini");
             // Exp
-            ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 200);
+            ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 150);
             ini.SetValue("ExpShowPos", "Exp_YPos", height - 90);
 
             // AddExp
-            ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 200 + 90);
+            ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 150 + 90);
             ini.SetValue("ExpShowPos", "AddExp_YPos", height - 90);
 
             Close();
@@ -193,6 +231,24 @@ namespace AutoUpdater
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNoInjection.Checked)
+            {
+                for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
+                {
+                    if (cmbScreenResolution.Items[i].Equals("1024x768"))
+                    {
+                        cmbScreenResolution.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                cmbScreenResolution.Enabled = false;
+            }
+            else cmbScreenResolution.Enabled = true;
         }
     }
 }
