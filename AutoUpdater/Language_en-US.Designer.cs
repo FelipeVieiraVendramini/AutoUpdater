@@ -277,6 +277,24 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your configuration file is bad or it doesn&apos;t exist. Please, select the best options for yourself..
+        /// </summary>
+        public static string StrInvalidConfigFile {
+            get {
+                return ResourceManager.GetString("StrInvalidConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Invalid Configuration.
+        /// </summary>
+        public static string StrInvalidConfigFileTitle {
+            get {
+                return ResourceManager.GetString("StrInvalidConfigFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a {0} updates will be downloaded ({1})..
         /// </summary>
         public static string StrLabelCalculatingDownloadAmount {

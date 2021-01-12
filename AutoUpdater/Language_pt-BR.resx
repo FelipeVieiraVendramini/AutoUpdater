@@ -189,6 +189,12 @@
   <data name="StrInstallingUpdates" xml:space="preserve">
     <value>Instalando patch {0}. Por favor, aguarde.</value>
   </data>
+  <data name="StrInvalidConfigFile" xml:space="preserve">
+    <value>Seu arquivo de configuração está mal escrito ou não existe. Por favor, selecione as melhores opções de jogo para você.</value>
+  </data>
+  <data name="StrInvalidConfigFileTitle" xml:space="preserve">
+    <value>Configuração Inválida</value>
+  </data>
   <data name="StrLabelCalculatingDownloadAmount" xml:space="preserve">
     <value>Será realizado o download de {0} atualizações totalizando {1}.</value>
   </data>

@@ -36,6 +36,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutoUpdater.Properties;
+using AutoUpdater.Screen;
 using AutoUpdater.Sockets;
 using AutoUpdater.Sockets.Updater;
 using AutoUpdaterCore;
@@ -1057,14 +1058,15 @@ namespace AutoUpdater
                 }
             }
 
-            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
-            string szInjectionDisable = ini.GetEntryValue("GameResolution", "NoWindowInjection")?.ToString() ?? "0";
-            if (string.IsNullOrEmpty(szInjectionDisable))
+            ScreenInfo info = default;
+            if ((info = Kernel.GetClientConfiguration()).Equals(default(ScreenInfo)))
             {
-                szInjectionDisable = "0";
+                MessageBox.Show(this, LanguageManager.GetString("StrInvalidConfigFile"), LanguageManager.GetString("StrInvalidConfigFileTitle"));
+                new FrmSettings().ShowDialog(this);
+                return;
             }
 
-            bool inject = int.Parse(szInjectionDisable) == 0;
+            bool inject = info.Inject;
             Process game = null;
             if (!inject)
             {

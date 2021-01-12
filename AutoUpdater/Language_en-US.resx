@@ -189,6 +189,12 @@
   <data name="StrInstallingUpdates" xml:space="preserve">
     <value>Installing patch {0}. Please wait...</value>
   </data>
+  <data name="StrInvalidConfigFile" xml:space="preserve">
+    <value>Your configuration file is bad or it doesn't exist. Please, select the best options for yourself.</value>
+  </data>
+  <data name="StrInvalidConfigFileTitle" xml:space="preserve">
+    <value>Invalid Configuration</value>
+  </data>
   <data name="StrLabelCalculatingDownloadAmount" xml:space="preserve">
     <value>{0} updates will be downloaded ({1}).</value>
   </data>

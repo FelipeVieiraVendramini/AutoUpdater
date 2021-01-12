@@ -277,6 +277,24 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Seu arquivo de configuração está mal escrito ou não existe. Por favor, selecione as melhores opções de jogo para você..
+        /// </summary>
+        public static string StrInvalidConfigFile {
+            get {
+                return ResourceManager.GetString("StrInvalidConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Configuração Inválida.
+        /// </summary>
+        public static string StrInvalidConfigFileTitle {
+            get {
+                return ResourceManager.GetString("StrInvalidConfigFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Será realizado o download de {0} atualizações totalizando {1}..
         /// </summary>
         public static string StrLabelCalculatingDownloadAmount {

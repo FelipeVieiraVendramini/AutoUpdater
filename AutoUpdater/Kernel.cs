@@ -24,6 +24,7 @@ using System;
 using System.Reflection;
 #endif
 using System.Windows.Forms;
+using AutoUpdater.Screen;
 using AutoUpdaterCore;
 
 namespace AutoUpdater
@@ -48,6 +49,119 @@ namespace AutoUpdater
         public static bool HasAgreedPrivacy = false;
 
         public static AutoPatchStage Stage = AutoPatchStage.None;
+
+        public static void SetClientConfiguration(int width, int height, bool noInject, int fpsMode)
+        {
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
+            ini.SetValue("GameResolution", "Width", width);
+            ini.SetValue("GameResolution", "Height", height);
+            ini.SetValue("GameResolution", "NoWindowInjection", (noInject ? 1 : 0));
+            
+            ini.SetValue("GameSetup", "FpsMode", fpsMode);
+
+            ini = new IniFileName(Environment.CurrentDirectory + @"\ini\GUI.ini");
+            // Main interface
+            ini.SetValue("0-130", "x", (width - 1024) / 2);
+            ini.SetValue("0-130", "y", height - 141);
+
+            // Chat panel
+            ini.SetValue("0-145", "x", ((width - 1024) / 2) + 82);
+            ini.SetValue("0-145", "y", height - 71);
+
+            // Chat Player Names
+            ini.SetValue("0-148", "x", ((width - 1024) / 2) + 82 + 35);
+            ini.SetValue("0-148", "y", height - 65 - 300);
+
+            // Chat Channel
+            ini.SetValue("0-174", "x", ((width - 1024) / 2) + 82 + 172);
+            ini.SetValue("0-174", "y", height - 65 - 205);
+
+            // Path Finding Button
+            ini.SetValue("0-304", "x", width - 110);
+
+            // Path Finding GUI
+            ini.SetValue("0-303", "x", width - 530);
+
+            // Exit Game
+            ini.SetValue("0-158", "x", (width - 288) / 2);
+            ini.SetValue("0-158", "y", (height - 120) / 2);
+
+            // Options
+            ini.SetValue("0-138", "x", (width - 370) / 2);
+            ini.SetValue("0-138", "y", (height - 350) / 2);
+
+            // Team
+            ini.SetValue("0-141", "x", (width - 290) / 2);
+            ini.SetValue("0-268", "x", (width - 58) / 2);
+
+            //VIP Button
+            ini.SetValue("0-339", "x", ((width - 1024) / 2) + 82 + 205);
+            ini.SetValue("0-339", "y", height - 115);
+
+            // My Talisman UI
+            ini.SetValue("0-345", "x", 9999);
+            // Target Talisman UI
+            ini.SetValue("0-346", "x", 9999);
+
+            // Shopping Mall
+            ini.SetValue("0-289", "x", ((width - 1024) / 2) + 82 + 50);
+            ini.SetValue("0-289", "y", height - 115);
+
+            // Mentor
+            ini.SetValue("0-325", "x", ((width - 1024) / 2) + 82 + 85);
+            ini.SetValue("0-325", "y", height - 130);
+
+            // Item Lock
+            ini.SetValue("0-328", "x", ((width - 1024) / 2) + 82 + 145);
+            ini.SetValue("0-328", "y", height - 110);
+
+            // Whisper Player Avatars
+            ini.SetValue("0-3", "x", ((width - 1024) / 2) + 82 + 400);
+            ini.SetValue("0-3", "y", height - 115);
+
+            // PKModes
+            ini.SetValue("0-191", "x", ((width - 1024) / 2) + 82 + 500);
+            ini.SetValue("0-191", "y", height - 100);
+
+            // Map Mini
+            ini.SetValue("0-1199", "x", width - 40);
+
+            // Map Full
+            ini.SetValue("0-1200", "x", width - 20);
+
+            // Actions
+            ini.SetValue("0-140", "x", ((width - 1024) / 2) + 250);
+            ini.SetValue("0-140", "y", height - 180);
+
+            ini = new IniFileName(Environment.CurrentDirectory + @"\ini\info.ini");
+            // Exp
+            ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 150);
+            ini.SetValue("ExpShowPos", "Exp_YPos", height - 90);
+
+            // AddExp
+            ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 150 + 90);
+            ini.SetValue("ExpShowPos", "AddExp_YPos", height - 90);
+        }
+
+        public static ScreenInfo GetClientConfiguration()
+        {
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
+            if (!int.TryParse(ini.GetEntryValue("GameResolution", "Width").ToString(), out var width))
+                return default;
+            if (!int.TryParse(ini.GetEntryValue("GameResolution", "Height").ToString(), out var height))
+                return default;
+            if (!int.TryParse(ini.GetEntryValue("GameResolution", "NoWindowInjection").ToString(), out var noInjection))
+                return default;
+            if (!int.TryParse(ini.GetEntryValue("GameSetup", "FpsMode").ToString(), out var fps))
+                return default;
+            return new ScreenInfo
+            {
+                Width = width,
+                Height = height,
+                Inject = noInjection == 0,
+                FpsMode = fps
+            };
+        }
     }
 
     public enum AutoPatchStage
