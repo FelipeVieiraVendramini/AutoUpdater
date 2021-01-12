@@ -35,15 +35,14 @@ namespace AutoUpdater
         [STAThread]
         static void Main(string[] args)
         {
-#if !DEBUG
-            Environment.CurrentDirectory = @"D:\World Conquer\Client";
+#if !DEBUG            
             Mutex appSingleton = new Mutex(false, "MyCQAutoPatchClient");
             try
             {
                 if (appSingleton.WaitOne(0, false))
                 {
 #else
-            Environment.CurrentDirectory = @"D:\World Conquer\Client";
+                    Environment.CurrentDirectory = @"D:\World Conquer\Client";
 #endif
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
