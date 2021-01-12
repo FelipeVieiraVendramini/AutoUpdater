@@ -36,6 +36,7 @@ namespace AutoUpdater
         static void Main(string[] args)
         {
 #if !DEBUG
+            Environment.CurrentDirectory = @"D:\World Conquer\Client";
             Mutex appSingleton = new Mutex(false, "MyCQAutoPatchClient");
             try
             {

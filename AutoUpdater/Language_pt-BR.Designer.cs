@@ -187,6 +187,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi possível iniciar o cliente..
+        /// </summary>
+        public static string StrCouldNotStart {
+            get {
+                return ResourceManager.GetString("StrCouldNotStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Acesso negado devido a múltiplas instâncias do cliente de atualização em aberto..
         /// </summary>
         public static string StrDoubleClient {

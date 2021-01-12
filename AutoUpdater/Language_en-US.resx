@@ -159,6 +159,9 @@
   <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
     <value>We were not able to connect to the update servers.</value>
   </data>
+  <data name="StrCouldNotStart" xml:space="preserve">
+    <value>Could not start the game client.</value>
+  </data>
   <data name="StrDoubleClient" xml:space="preserve">
     <value>Access denied due to multiple instances of the updater client running.</value>
   </data>

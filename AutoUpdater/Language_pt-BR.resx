@@ -159,6 +159,9 @@
   <data name="StrCouldNotFindUpdaterServer" xml:space="preserve">
     <value>Não foi possível se conectar ao servidor do atualizador.</value>
   </data>
+  <data name="StrCouldNotStart" xml:space="preserve">
+    <value>Não foi possível iniciar o cliente.</value>
+  </data>
   <data name="StrDoubleClient" xml:space="preserve">
     <value>Acesso negado devido a múltiplas instâncias do cliente de atualização em aberto.</value>
   </data>

@@ -1,5 +1,6 @@
 // dllmain.cpp : Define o ponto de entrada para o aplicativo DLL.
 #include "pch.h"
+#include "CFlashFix.h"
 
 const char CONFIG_FILE[] { ".\\Config.ini" };
 
@@ -179,6 +180,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                     MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
                 }
             }
+
+            CFlashFix flash;
+            flash.Hook();
+            // MessageBoxA(NULL, "CFlashFix::Hook() OK", "CFlashFix", MB_OK);
 
             //if (fpsMode != 0) 
             //{

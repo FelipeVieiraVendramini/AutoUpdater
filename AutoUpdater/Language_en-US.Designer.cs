@@ -187,6 +187,15 @@ namespace AutoUpdater {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Could not start the game client..
+        /// </summary>
+        public static string StrCouldNotStart {
+            get {
+                return ResourceManager.GetString("StrCouldNotStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Access denied due to multiple instances of the updater client running..
         /// </summary>
         public static string StrDoubleClient {

@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutoUpdater.Properties;
 using AutoUpdater.Sockets;
@@ -669,16 +670,16 @@ namespace AutoUpdater
 
         #region Buttons Click
 
-        private void btnPlayHigh_Click(object sender, EventArgs e)
+        private async void btnPlayHigh_Click(object sender, EventArgs e)
         {
             SetGameMode(GameMode.HighDefinition);
-            Play();
+            _ = PlayAsync().ConfigureAwait(false);
         }
 
-        private void btnPlayLow_Click(object sender, EventArgs e)
+        private async void btnPlayLow_Click(object sender, EventArgs e)
         {
             SetGameMode(GameMode.LowDefinition);
-            Play();
+            _ = PlayAsync().ConfigureAwait(false);
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -1030,7 +1031,7 @@ namespace AutoUpdater
 
         #region Start Game
 
-        private void Play()
+        private async Task PlayAsync()
         {
             const string fileName = "Conquer.exe";
             const string noInjectFileName = "AltConquer.exe";
@@ -1040,7 +1041,7 @@ namespace AutoUpdater
                 fileName,
                 noInjectFileName,
 #if !NO_INJECTION
-                "UpdaterCore.dll"
+                injectDll,
 #endif
             };
             
@@ -1064,7 +1065,7 @@ namespace AutoUpdater
             }
 
             bool inject = int.Parse(szInjectionDisable) == 0;
-            Process game;
+            Process game = null;
             if (!inject)
             {
                 string path = $"{Environment.CurrentDirectory}\\{noInjectFileName}";
@@ -1131,7 +1132,7 @@ namespace AutoUpdater
             ini.SetValue("GameMode", "HighTimes", highTimes);
         }
 
-        #endregion
+#endregion
     }
 
     public enum GameMode
