@@ -431,10 +431,20 @@ namespace AutoUpdater
                     fileName += ".exe";
 
                 string localPath = GetTempDownloadPath(fileName);
-                Process process = Process.Start(localPath, $"-s -d \"{Environment.CurrentDirectory}\"");
-                process?.WaitForExit();
-                process?.Close();
-                process?.Dispose();
+                try
+                {
+                    Process process = Process.Start(localPath, $"-s -d \"{Environment.CurrentDirectory}\"");
+                    process?.WaitForExit();
+                    process?.Close();
+                    process?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, @$"Não foi possível instalar o patch {fileName}. Por favor baixe o arquivo manualmente no site!\r\nErro: {ex.Message}", 
+                        @"Falha na instalação");
+                    break;
+                }
+
                 LoadVersion();
             }
 
@@ -742,8 +752,8 @@ namespace AutoUpdater
 
             try
             {
-                using (var web = new WebClient())
-                    return web.DownloadString(url);
+                using var web = new WebClient();
+                return web.DownloadString(url);
             }
             catch
             {
@@ -758,7 +768,7 @@ namespace AutoUpdater
 
             WebRequest req = WebRequest.Create(url);
             req.Method = "HEAD";
-            req.Timeout = 1000;
+            req.Timeout = 2500;
             WebResponse resp = null;
             try
             {
@@ -842,8 +852,8 @@ namespace AutoUpdater
 #if !DEBUG
             string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #else
-            string autoPatch = "127.0.0.1:9528";
-            //string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
+            //string autoPatch = "127.0.0.1:9528";
+            string autoPatch = ReadStringFromUrl(m_szQueryAutoPatch);
 #endif
 
 
