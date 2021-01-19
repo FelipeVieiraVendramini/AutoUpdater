@@ -1,3 +1,8 @@
+/**
+* This fix has been created by Ultimation from Elitepvpers :]
+* From: https://www.elitepvpers.com/forum/co2-pserver-guides-releases/4858019-release-flash-fix-old-clients.html
+*/
+
 #include "pch.h"
 #include "CFlashFix.h"
 #include <tchar.h>

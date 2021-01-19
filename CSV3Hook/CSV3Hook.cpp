@@ -8,7 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "user32.lib")
 
-#define VERSION 5808
+//#define VERSION 5808
 
 //
 // hooks.h is from a library/project (MID) that I (InfamousNoone) wrote back in 2010.

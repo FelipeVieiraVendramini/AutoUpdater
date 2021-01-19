@@ -30,7 +30,9 @@ namespace AutoPatchLoader
         {
             try
             {
+#if DEBUG
                 Environment.CurrentDirectory = "D:\\World Conquer\\Client";
+#endif
 
                 Process game = new Process
                 {
@@ -46,6 +48,7 @@ namespace AutoPatchLoader
                 uint idProcess = (uint)game.Id;
                 game.Close();
                 Injector.StartInjection(Environment.CurrentDirectory + @"\UpdaterCore.dll", idProcess);
+                //Injector.StartInjection(Environment.CurrentDirectory + @"\LoaderHook.dll", idProcess);
                 Environment.Exit((int) idProcess);
             }
             catch

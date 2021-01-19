@@ -74,7 +74,7 @@ namespace AutoUpdater
 
             // Chat Channel
             ini.SetValue("0-174", "x", ((width - 1024) / 2) + 82 + 172);
-            ini.SetValue("0-174", "y", height - 65 - 205);
+            ini.SetValue("0-174", "y", height - 65 - 260);
 
             // Path Finding Button
             ini.SetValue("0-304", "x", width - 110);
@@ -95,13 +95,13 @@ namespace AutoUpdater
             ini.SetValue("0-268", "x", (width - 58) / 2);
 
             //VIP Button
-            ini.SetValue("0-339", "x", ((width - 1024) / 2) + 82 + 205);
+            ini.SetValue("0-339", "x", ((width - 1024) / 2) + 82 + 202);
             ini.SetValue("0-339", "y", height - 115);
 
             // My Talisman UI
-            ini.SetValue("0-345", "x", 9999);
+            //ini.SetValue("0-345", "x", 9999);
             // Target Talisman UI
-            ini.SetValue("0-346", "x", 9999);
+            //ini.SetValue("0-346", "x", 9999);
 
             // Shopping Mall
             ini.SetValue("0-289", "x", ((width - 1024) / 2) + 82 + 50);
@@ -116,7 +116,7 @@ namespace AutoUpdater
             ini.SetValue("0-328", "y", height - 110);
 
             // Whisper Player Avatars
-            ini.SetValue("0-3", "x", ((width - 1024) / 2) + 82 + 400);
+            ini.SetValue("0-3", "x", ((width - 1024) / 2) + 82 + 530);
             ini.SetValue("0-3", "y", height - 115);
 
             // PKModes
@@ -129,17 +129,39 @@ namespace AutoUpdater
             // Map Full
             ini.SetValue("0-1200", "x", width - 20);
 
-            // Actions
-            ini.SetValue("0-140", "x", ((width - 1024) / 2) + 250);
-            ini.SetValue("0-140", "y", height - 180);
+            // Arena
+            ini.SetValue("0-403", "x", ((width - 1024) / 2) + 82 + 250);
+            ini.SetValue("0-403", "y", height - 115);
+            // Action Express Interact Combobox
+            ini.SetValue("0-367", "x", ((width - 1024) / 2) + 82 + 350);
+            ini.SetValue("0-367", "y", height - 245);
+            // Action
+            ini.SetValue("0-140", "x", ((width - 1024) / 2) + 82 + 350);
+            ini.SetValue("0-140", "y", height - 225);
+            // Express
+            ini.SetValue("0-274", "x", ((width - 1024) / 2) + 82 + 350);
+            ini.SetValue("0-274", "y", height - 215);
+            // Interact
+            ini.SetValue("0-360", "x", ((width - 1024) / 2) + 82 + 350);
+            ini.SetValue("0-360", "y", height - 215);
+
+            // Group UI
+            ini.SetValue("0-371", "x", ((width - 1024) / 2) + 82 + 600);
+            ini.SetValue("0-371", "y", height - 140);
+
+            // Message Channel
+            ini.SetValue("0-357", "y", height - 452);
+
+            // Message Scrollbar
+            ini.SetValue("0-1198", "y", height - 477);
 
             ini = new IniFileName(Environment.CurrentDirectory + @"\ini\info.ini");
             // Exp
-            ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 150);
+            ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 100);
             ini.SetValue("ExpShowPos", "Exp_YPos", height - 90);
 
             // AddExp
-            ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 150 + 90);
+            ini.SetValue("ExpShowPos", "AddExp_XPos", (width / 2) - 100 + 90);
             ini.SetValue("ExpShowPos", "AddExp_YPos", height - 90);
         }
 

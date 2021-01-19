@@ -1,4 +1,10 @@
+/**
+* This fix has been created by Ultimation from Elitepvpers :]
+* From: https://www.elitepvpers.com/forum/co2-pserver-guides-releases/4858019-release-flash-fix-old-clients.html
+*/
+
 #pragma once
+
 class CFlashFix
 {
 	typedef HMODULE(_stdcall* HookLoadLibrary)(_In_ LPCWSTR lpLibFileName,
