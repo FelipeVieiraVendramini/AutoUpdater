@@ -108,7 +108,7 @@ namespace AutoUpdater
                     break;
             }
 
-            chkNoInjection.Checked = int.Parse(szInjectionDisable) != 0;
+            //chkNoInjection.Checked = int.Parse(szInjectionDisable) != 0;
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace AutoUpdater
             string selectedResolution = cmbScreenResolution.Items[cmbScreenResolution.SelectedIndex].ToString();
             int width = Math.Max(1024, int.Parse(selectedResolution.Split('x')[0]) - 20);
             int height = Math.Max(768, int.Parse(selectedResolution.Split('x')[1]) - 60);
-            bool noInjection = chkNoInjection.Checked;
+            bool noInjection = false; //chkNoInjection.Checked;
             int fpsMode = 0;
             if (radioNormalFps.Checked)
             {
@@ -145,20 +145,21 @@ namespace AutoUpdater
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkNoInjection.Checked)
-            {
-                for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
-                {
-                    if (cmbScreenResolution.Items[i].Equals("1024x768"))
-                    {
-                        cmbScreenResolution.SelectedIndex = i;
-                        break;
-                    }
-                }
+            //if (chkNoInjection.Checked)
+            //{
+            //    for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
+            //    {
+            //        if (cmbScreenResolution.Items[i].Equals("1024x768"))
+            //        {
+            //            cmbScreenResolution.SelectedIndex = i;
+            //            break;
+            //        }
+            //    }
 
-                cmbScreenResolution.Enabled = false;
-            }
-            else cmbScreenResolution.Enabled = true;
+            //    cmbScreenResolution.Enabled = false;
+            //}
+            //else 
+                cmbScreenResolution.Enabled = true;
         }
     }
 }

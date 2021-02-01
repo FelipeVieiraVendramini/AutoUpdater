@@ -37,7 +37,6 @@ namespace AutoUpdater
             this.cmbScreenResolution = new System.Windows.Forms.ComboBox();
             this.lblScreenSize = new System.Windows.Forms.Label();
             this.lblFramesPerSecond = new System.Windows.Forms.Label();
-            this.chkNoInjection = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -65,7 +64,6 @@ namespace AutoUpdater
             // 
             this.radioNormalFps.AutoSize = true;
             this.radioNormalFps.BackColor = System.Drawing.Color.Transparent;
-            this.radioNormalFps.Enabled = false;
             this.radioNormalFps.Location = new System.Drawing.Point(111, 24);
             this.radioNormalFps.Name = "radioNormalFps";
             this.radioNormalFps.Size = new System.Drawing.Size(81, 17);
@@ -78,7 +76,6 @@ namespace AutoUpdater
             this.radio60Fps.AutoSize = true;
             this.radio60Fps.BackColor = System.Drawing.Color.Transparent;
             this.radio60Fps.Checked = true;
-            this.radio60Fps.Enabled = false;
             this.radio60Fps.Location = new System.Drawing.Point(111, 47);
             this.radio60Fps.Name = "radio60Fps";
             this.radio60Fps.Size = new System.Drawing.Size(66, 17);
@@ -91,7 +88,6 @@ namespace AutoUpdater
             // 
             this.radioUnlockedFps.AutoSize = true;
             this.radioUnlockedFps.BackColor = System.Drawing.Color.Transparent;
-            this.radioUnlockedFps.Enabled = false;
             this.radioUnlockedFps.Location = new System.Drawing.Point(111, 70);
             this.radioUnlockedFps.Name = "radioUnlockedFps";
             this.radioUnlockedFps.Size = new System.Drawing.Size(86, 17);
@@ -103,7 +99,7 @@ namespace AutoUpdater
             // 
             this.cmbScreenResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbScreenResolution.FormattingEnabled = true;
-            this.cmbScreenResolution.Location = new System.Drawing.Point(111, 113);
+            this.cmbScreenResolution.Location = new System.Drawing.Point(111, 135);
             this.cmbScreenResolution.Name = "cmbScreenResolution";
             this.cmbScreenResolution.Size = new System.Drawing.Size(173, 21);
             this.cmbScreenResolution.TabIndex = 9;
@@ -112,7 +108,7 @@ namespace AutoUpdater
             // 
             this.lblScreenSize.AutoSize = true;
             this.lblScreenSize.BackColor = System.Drawing.Color.Transparent;
-            this.lblScreenSize.Location = new System.Drawing.Point(23, 118);
+            this.lblScreenSize.Location = new System.Drawing.Point(23, 140);
             this.lblScreenSize.Name = "lblScreenSize";
             this.lblScreenSize.Size = new System.Drawing.Size(58, 13);
             this.lblScreenSize.TabIndex = 13;
@@ -128,18 +124,6 @@ namespace AutoUpdater
             this.lblFramesPerSecond.TabIndex = 14;
             this.lblFramesPerSecond.Text = "FPS";
             // 
-            // chkNoInjection
-            // 
-            this.chkNoInjection.AutoSize = true;
-            this.chkNoInjection.BackColor = System.Drawing.Color.Transparent;
-            this.chkNoInjection.Location = new System.Drawing.Point(111, 140);
-            this.chkNoInjection.Name = "chkNoInjection";
-            this.chkNoInjection.Size = new System.Drawing.Size(113, 17);
-            this.chkNoInjection.TabIndex = 15;
-            this.chkNoInjection.Text = "Desabilitar Injeção";
-            this.chkNoInjection.UseVisualStyleBackColor = false;
-            this.chkNoInjection.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -148,7 +132,6 @@ namespace AutoUpdater
             this.BackgroundImage = global::AutoUpdater.Properties.Resources.Hint;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(399, 207);
-            this.Controls.Add(this.chkNoInjection);
             this.Controls.Add(this.lblFramesPerSecond);
             this.Controls.Add(this.lblScreenSize);
             this.Controls.Add(this.radioNormalFps);
@@ -177,6 +160,5 @@ namespace AutoUpdater
         private System.Windows.Forms.ComboBox cmbScreenResolution;
         private System.Windows.Forms.Label lblScreenSize;
         private System.Windows.Forms.Label lblFramesPerSecond;
-        private System.Windows.Forms.CheckBox chkNoInjection;
     }
 }

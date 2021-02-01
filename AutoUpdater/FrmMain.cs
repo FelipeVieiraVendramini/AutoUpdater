@@ -1045,12 +1045,10 @@ namespace AutoUpdater
         private async Task PlayAsync()
         {
             const string fileName = "Conquer.exe";
-            const string noInjectFileName = "AltConquer.exe";
             const string injectDll = "UpdaterCore.dll";
             string[] filesToCheck =
             {
                 fileName,
-                noInjectFileName,
 #if !NO_INJECTION
                 injectDll,
 #endif
@@ -1076,39 +1074,19 @@ namespace AutoUpdater
                 return;
             }
 
-            bool inject = info.Inject;
-            Process game = null;
-            if (!inject)
+            string path = $"{Environment.CurrentDirectory}\\{fileName}";
+            Process game = new Process
             {
-                string path = $"{Environment.CurrentDirectory}\\{noInjectFileName}";
-                game = new Process
+                StartInfo =
                 {
-                    StartInfo =
-                    {
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        FileName = path,
-                        Arguments = "blacknull"
-                    }
-                };
-            }
-            else
-            {
-                string path = $"{Environment.CurrentDirectory}\\{fileName}";
-                game = new Process
-                {
-                    StartInfo =
-                    {
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        FileName = path,
-                        Arguments = "blacknull"
-                    }
-                };
-            }
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = path,
+                    Arguments = "blacknull"
+                }
+            };
 
             game.Start();
-
-            if (inject)
-                Injector.StartInjection(injectDll, (uint) game.Id);
+            Injector.StartInjection(injectDll, (uint) game.Id);
 
             m_lOpenClients.Add(game);
         }
