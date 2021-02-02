@@ -20,8 +20,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
     {
-        // DWORD idProcess = GetCurrentProcessId();
-        HANDLE hProcess = GetCurrentProcess();//OpenProcess(PROCESS_ALL_ACCESS, false, idProcess);
+        HANDLE hProcess = GetCurrentProcess();
         DWORD dwProc = (DWORD)hProcess;
         if (hProcess) 
         {
@@ -181,7 +180,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 }
             }
 
-#if VERSION < 5187
+#if VERSION < 5180
             if (ReadProcessMemory(hProcess, BASE_ARROW_ICON_ADDR, &read, 4, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
                 if (bytes_read == 0)
                     MessageBoxA(NULL, "Could not get height memory offset. 6", "ReadProcessMemory error", MB_OK);
@@ -254,6 +253,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                 {
                     frameDelayMs = 0x10;
                 }
+                else if (fpsMode > 40) 
+                {
+                    frameDelayMs = __max(5, 1000 / fpsMode);
+                }
+
+                frameDelayMs = __min(255, frameDelayMs);
 
                 if (ReadProcessMemory(hProcess, BASE_FPS1_ADDR, &read, 1, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY)
                 {
@@ -261,18 +266,19 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                         MessageBoxA(NULL, "Could not get height memory offset.", "ReadProcessMemory error", MB_OK);
 
 
-                    if (!WriteProcessMemory(hProcess, BASE_FPS1_ADDR, &frameDelayMs, 2, &bytes_written))
+                    if (!WriteProcessMemory(hProcess, BASE_FPS1_ADDR, &frameDelayMs, 1, &bytes_written))
                     {
                         sprintf_s(msg, "Error writing to memory! %d", GetLastError());
                         MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);
                     }
                 }
 
-                if (ReadProcessMemory(hProcess, BASE_FPS2_ADDR, &read, 1, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) {
+                if (ReadProcessMemory(hProcess, BASE_FPS2_ADDR, &read, 1, &bytes_read) || GetLastError() == ERROR_PARTIAL_COPY) 
+                {
                     if (bytes_read == 0)
                         MessageBoxA(NULL, "Could not get height memory offset.", "ReadProcessMemory error", MB_OK);
 
-                    if (!WriteProcessMemory(hProcess, BASE_FPS2_ADDR, &frameDelayMs, 2, &bytes_written))
+                    if (!WriteProcessMemory(hProcess, BASE_FPS2_ADDR, &frameDelayMs, 1, &bytes_written))
                     {
                         sprintf_s(msg, "Error writing to memory! %d", GetLastError());
                         MessageBoxA(NULL, msg, "WriteProcessMemory error", MB_OK);

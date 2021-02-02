@@ -25,7 +25,6 @@ namespace AutoUpdater.Screen
     {
         public int Width;
         public int Height;
-        public bool Inject;
         public int FpsMode;
     }
 }

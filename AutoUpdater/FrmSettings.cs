@@ -63,7 +63,6 @@ namespace AutoUpdater
             string szWidth = ini.GetEntryValue("GameResolution", "Width")?.ToString() ?? "1004";
             string szHeight = ini.GetEntryValue("GameResolution", "Height")?.ToString() ?? "708";
             string szFpsMode = ini.GetEntryValue("GameSetup", "FpsMode")?.ToString() ?? "2";
-            string szInjectionDisable = ini.GetEntryValue("GameResolution", "NoWindowInjection")?.ToString() ?? "0";
 
             if (string.IsNullOrEmpty(szWidth) || !int.TryParse(szWidth, out _))
             {
@@ -79,14 +78,9 @@ namespace AutoUpdater
             {
                 szFpsMode = "1";
             }
-
-            if (string.IsNullOrEmpty(szInjectionDisable) || !int.TryParse(szInjectionDisable, out _))
-            {
-                szInjectionDisable = "0";
-            }
-
-            int width = int.Parse(szWidth) + 20;
-            int height = int.Parse(szHeight) + 60;
+            
+            int width = int.Parse(szWidth);
+            int height = int.Parse(szHeight);
 
             for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
             {
@@ -97,30 +91,43 @@ namespace AutoUpdater
             int fpsMode = int.Parse(szFpsMode);
             switch (fpsMode)
             {
+                case 0:
+                    radioNormalFps.Checked = true; 
+                    numCustomFps.Enabled = false;
+                    break;
                 case 1:
                     radio60Fps.Checked = true;
+                    numCustomFps.Enabled = false;
                     break;
                 case 2:
                     radioUnlockedFps.Checked = true;
+                    numCustomFps.Enabled = false;
                     break;
                 default:
-                    radioNormalFps.Checked = true;
+                    radioFpsCustom.Checked = true;
+                    numCustomFps.Enabled = true;
                     break;
             }
-
-            //chkNoInjection.Checked = int.Parse(szInjectionDisable) != 0;
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
-            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\ini\GameSetUp.ini");
-            ini.SetValue("ScreenMode", "ScreenModeRecord", 2);
-
             string selectedResolution = cmbScreenResolution.Items[cmbScreenResolution.SelectedIndex].ToString();
-            int width = Math.Max(1024, int.Parse(selectedResolution.Split('x')[0]) - 20);
-            int height = Math.Max(768, int.Parse(selectedResolution.Split('x')[1]) - 60);
-            bool noInjection = false; //chkNoInjection.Checked;
-            int fpsMode = 0;
+            int width = 0;
+            int height = 0;
+
+            if (chkCustomRes.Checked)
+            {
+                width = (int) Math.Max(1024, numWidth.Value);
+                height = (int) Math.Max(768, numHeight.Value);
+            }
+            else
+            {
+                width = Math.Max(1024, int.Parse(selectedResolution.Split('x')[0]));
+                height = Math.Max(768, int.Parse(selectedResolution.Split('x')[1]));
+            }
+
+            int fpsMode;
             if (radioNormalFps.Checked)
             {
                 fpsMode = 0;
@@ -133,8 +140,12 @@ namespace AutoUpdater
             {
                 fpsMode = 2;
             }
+            else
+            {
+                fpsMode = (int) numCustomFps.Value;
+            }
 
-            Kernel.SetClientConfiguration(width, height, noInjection, fpsMode);
+            Kernel.SetClientConfiguration(width, height, false, fpsMode);
             Close();
         }
 
@@ -143,23 +154,34 @@ namespace AutoUpdater
             Close();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkCustomRes_CheckedChanged(object sender, EventArgs e)
         {
-            //if (chkNoInjection.Checked)
-            //{
-            //    for (int i = 0; i < cmbScreenResolution.Items.Count; i++)
-            //    {
-            //        if (cmbScreenResolution.Items[i].Equals("1024x768"))
-            //        {
-            //            cmbScreenResolution.SelectedIndex = i;
-            //            break;
-            //        }
-            //    }
+            if (chkCustomRes.Checked)
+            {
+                cmbScreenResolution.Enabled = false;
 
-            //    cmbScreenResolution.Enabled = false;
-            //}
-            //else 
+                numWidth.Enabled = true;
+                numHeight.Enabled = true;
+            }
+            else
+            {
                 cmbScreenResolution.Enabled = true;
+
+                numWidth.Enabled = false;
+                numHeight.Enabled = false;
+            }
+        }
+
+        private void radioFpsCustom_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioFpsCustom.Checked)
+            {
+                numCustomFps.Enabled = true;
+            }
+            else
+            {
+                numCustomFps.Enabled = false;
+            }
         }
     }
 }

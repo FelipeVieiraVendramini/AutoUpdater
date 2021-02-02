@@ -50,12 +50,14 @@ namespace AutoUpdater
 
         public static AutoPatchStage Stage = AutoPatchStage.None;
 
-        public static void SetClientConfiguration(int width, int height, bool noInject, int fpsMode)
+        public static void SetClientConfiguration(int width, int height, bool fullScreen, int fpsMode)
         {
-            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
+            IniFileName ini = new IniFileName(Environment.CurrentDirectory + @"\ini\GameSetUp.ini");
+            ini.SetValue("ScreenMode", "ScreenModeRecord", 2);
+
+            ini = new IniFileName(Environment.CurrentDirectory + @"\Config.ini");
             ini.SetValue("GameResolution", "Width", width);
             ini.SetValue("GameResolution", "Height", height);
-            ini.SetValue("GameResolution", "NoWindowInjection", (noInject ? 1 : 0));
             
             ini.SetValue("GameSetup", "FpsMode", fpsMode);
 
@@ -155,6 +157,31 @@ namespace AutoUpdater
             // Message Scrollbar
             ini.SetValue("0-1198", "y", height - 477);
 
+            // Mount Vigor
+            ini.SetValue("0-383", "x", width - 200);
+            ini.SetValue("0-383", "y", height - 200);
+
+            // Target Talisman UI
+            ini.SetValue("0-346", "x", width - 345);
+
+            // Arena qualifier main ui
+            ini.SetValue("0-402", "x", (width - 665) / 2);
+            ini.SetValue("0-402", "y", (height - 560) / 2);
+            // Arena qualifier opponent info
+            ini.SetValue("0-409", "x", (width - 290) / 2);
+            ini.SetValue("0-409", "y", (height - 120) / 2);
+            // Arena qualifier fighting points info
+            ini.SetValue("0-411", "x", (width - 310) / 2);
+            // Arena qualifier quit button
+            ini.SetValue("0-412", "x", ((width - 1024) / 2) + 82 + 320);
+            ini.SetValue("0-412", "y", height - 130);
+            // Arena qualifier count down box
+            ini.SetValue("0-407", "x", (width - 290) / 2);
+            ini.SetValue("0-407", "y", (height - 110) / 2);
+            // Arena qualifier result box 
+            ini.SetValue("0-408", "x", (width - 300) / 2);
+            ini.SetValue("0-408", "y", (height - 150) / 2);
+
             ini = new IniFileName(Environment.CurrentDirectory + @"\ini\info.ini");
             // Exp
             ini.SetValue("ExpShowPos", "Exp_XPos", (width / 2) - 100);
@@ -172,15 +199,12 @@ namespace AutoUpdater
                 return default;
             if (!int.TryParse(ini.GetEntryValue("GameResolution", "Height").ToString(), out var height))
                 return default;
-            if (!int.TryParse(ini.GetEntryValue("GameResolution", "NoWindowInjection").ToString(), out var noInjection))
-                return default;
             if (!int.TryParse(ini.GetEntryValue("GameSetup", "FpsMode").ToString(), out var fps))
                 return default;
             return new ScreenInfo
             {
                 Width = width,
                 Height = height,
-                Inject = noInjection == 0,
                 FpsMode = fps
             };
         }

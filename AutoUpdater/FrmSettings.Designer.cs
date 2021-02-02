@@ -37,6 +37,14 @@ namespace AutoUpdater
             this.cmbScreenResolution = new System.Windows.Forms.ComboBox();
             this.lblScreenSize = new System.Windows.Forms.Label();
             this.lblFramesPerSecond = new System.Windows.Forms.Label();
+            this.radioFpsCustom = new System.Windows.Forms.RadioButton();
+            this.numCustomFps = new System.Windows.Forms.NumericUpDown();
+            this.chkCustomRes = new System.Windows.Forms.CheckBox();
+            this.numWidth = new System.Windows.Forms.NumericUpDown();
+            this.numHeight = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomFps)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeight)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -64,7 +72,7 @@ namespace AutoUpdater
             // 
             this.radioNormalFps.AutoSize = true;
             this.radioNormalFps.BackColor = System.Drawing.Color.Transparent;
-            this.radioNormalFps.Location = new System.Drawing.Point(111, 24);
+            this.radioNormalFps.Location = new System.Drawing.Point(124, 24);
             this.radioNormalFps.Name = "radioNormalFps";
             this.radioNormalFps.Size = new System.Drawing.Size(81, 17);
             this.radioNormalFps.TabIndex = 10;
@@ -76,7 +84,7 @@ namespace AutoUpdater
             this.radio60Fps.AutoSize = true;
             this.radio60Fps.BackColor = System.Drawing.Color.Transparent;
             this.radio60Fps.Checked = true;
-            this.radio60Fps.Location = new System.Drawing.Point(111, 47);
+            this.radio60Fps.Location = new System.Drawing.Point(124, 47);
             this.radio60Fps.Name = "radio60Fps";
             this.radio60Fps.Size = new System.Drawing.Size(66, 17);
             this.radio60Fps.TabIndex = 11;
@@ -88,7 +96,7 @@ namespace AutoUpdater
             // 
             this.radioUnlockedFps.AutoSize = true;
             this.radioUnlockedFps.BackColor = System.Drawing.Color.Transparent;
-            this.radioUnlockedFps.Location = new System.Drawing.Point(111, 70);
+            this.radioUnlockedFps.Location = new System.Drawing.Point(124, 70);
             this.radioUnlockedFps.Name = "radioUnlockedFps";
             this.radioUnlockedFps.Size = new System.Drawing.Size(86, 17);
             this.radioUnlockedFps.TabIndex = 12;
@@ -99,16 +107,16 @@ namespace AutoUpdater
             // 
             this.cmbScreenResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbScreenResolution.FormattingEnabled = true;
-            this.cmbScreenResolution.Location = new System.Drawing.Point(111, 135);
+            this.cmbScreenResolution.Location = new System.Drawing.Point(124, 117);
             this.cmbScreenResolution.Name = "cmbScreenResolution";
-            this.cmbScreenResolution.Size = new System.Drawing.Size(173, 21);
+            this.cmbScreenResolution.Size = new System.Drawing.Size(191, 21);
             this.cmbScreenResolution.TabIndex = 9;
             // 
             // lblScreenSize
             // 
             this.lblScreenSize.AutoSize = true;
             this.lblScreenSize.BackColor = System.Drawing.Color.Transparent;
-            this.lblScreenSize.Location = new System.Drawing.Point(23, 140);
+            this.lblScreenSize.Location = new System.Drawing.Point(23, 120);
             this.lblScreenSize.Name = "lblScreenSize";
             this.lblScreenSize.Size = new System.Drawing.Size(58, 13);
             this.lblScreenSize.TabIndex = 13;
@@ -124,6 +132,98 @@ namespace AutoUpdater
             this.lblFramesPerSecond.TabIndex = 14;
             this.lblFramesPerSecond.Text = "FPS";
             // 
+            // radioFpsCustom
+            // 
+            this.radioFpsCustom.AutoSize = true;
+            this.radioFpsCustom.BackColor = System.Drawing.Color.Transparent;
+            this.radioFpsCustom.Location = new System.Drawing.Point(124, 93);
+            this.radioFpsCustom.Name = "radioFpsCustom";
+            this.radioFpsCustom.Size = new System.Drawing.Size(14, 13);
+            this.radioFpsCustom.TabIndex = 12;
+            this.radioFpsCustom.UseVisualStyleBackColor = false;
+            this.radioFpsCustom.CheckedChanged += new System.EventHandler(this.radioFpsCustom_CheckedChanged);
+            // 
+            // numCustomFps
+            // 
+            this.numCustomFps.Enabled = false;
+            this.numCustomFps.Location = new System.Drawing.Point(144, 89);
+            this.numCustomFps.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numCustomFps.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numCustomFps.Name = "numCustomFps";
+            this.numCustomFps.Size = new System.Drawing.Size(76, 20);
+            this.numCustomFps.TabIndex = 15;
+            this.numCustomFps.Value = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
+            // 
+            // chkCustomRes
+            // 
+            this.chkCustomRes.AutoSize = true;
+            this.chkCustomRes.BackColor = System.Drawing.Color.Transparent;
+            this.chkCustomRes.Location = new System.Drawing.Point(26, 144);
+            this.chkCustomRes.Name = "chkCustomRes";
+            this.chkCustomRes.Size = new System.Drawing.Size(92, 17);
+            this.chkCustomRes.TabIndex = 16;
+            this.chkCustomRes.Text = "Personalizada";
+            this.chkCustomRes.UseVisualStyleBackColor = false;
+            this.chkCustomRes.CheckedChanged += new System.EventHandler(this.chkCustomRes_CheckedChanged);
+            // 
+            // numWidth
+            // 
+            this.numWidth.Enabled = false;
+            this.numWidth.Location = new System.Drawing.Point(124, 141);
+            this.numWidth.Maximum = new decimal(new int[] {
+            8000,
+            0,
+            0,
+            0});
+            this.numWidth.Minimum = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            this.numWidth.Name = "numWidth";
+            this.numWidth.Size = new System.Drawing.Size(86, 20);
+            this.numWidth.TabIndex = 17;
+            this.numWidth.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // numHeight
+            // 
+            this.numHeight.Enabled = false;
+            this.numHeight.Location = new System.Drawing.Point(229, 141);
+            this.numHeight.Maximum = new decimal(new int[] {
+            8000,
+            0,
+            0,
+            0});
+            this.numHeight.Minimum = new decimal(new int[] {
+            768,
+            0,
+            0,
+            0});
+            this.numHeight.Name = "numHeight";
+            this.numHeight.Size = new System.Drawing.Size(86, 20);
+            this.numHeight.TabIndex = 17;
+            this.numHeight.Value = new decimal(new int[] {
+            768,
+            0,
+            0,
+            0});
+            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -132,10 +232,15 @@ namespace AutoUpdater
             this.BackgroundImage = global::AutoUpdater.Properties.Resources.Hint;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(399, 207);
+            this.Controls.Add(this.numHeight);
+            this.Controls.Add(this.numWidth);
+            this.Controls.Add(this.chkCustomRes);
+            this.Controls.Add(this.numCustomFps);
             this.Controls.Add(this.lblFramesPerSecond);
             this.Controls.Add(this.lblScreenSize);
             this.Controls.Add(this.radioNormalFps);
             this.Controls.Add(this.radio60Fps);
+            this.Controls.Add(this.radioFpsCustom);
             this.Controls.Add(this.radioUnlockedFps);
             this.Controls.Add(this.cmbScreenResolution);
             this.Controls.Add(this.btnAccept);
@@ -145,6 +250,9 @@ namespace AutoUpdater
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FrmSettings";
             this.Load += new System.EventHandler(this.FrmSettings_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomFps)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,5 +268,10 @@ namespace AutoUpdater
         private System.Windows.Forms.ComboBox cmbScreenResolution;
         private System.Windows.Forms.Label lblScreenSize;
         private System.Windows.Forms.Label lblFramesPerSecond;
+        private System.Windows.Forms.RadioButton radioFpsCustom;
+        private System.Windows.Forms.NumericUpDown numCustomFps;
+        private System.Windows.Forms.CheckBox chkCustomRes;
+        private System.Windows.Forms.NumericUpDown numWidth;
+        private System.Windows.Forms.NumericUpDown numHeight;
     }
 }
