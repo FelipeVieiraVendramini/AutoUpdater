@@ -85,8 +85,7 @@ namespace AutoUpdater
                                     uint Result = WaitForSingleObject(hThread, 10 * 1000);
 
                                     //...
-                                    if (Result != WAIT_FAILED || Result != WAIT_ABANDONED
-                                                              || Result != WAIT_OBJECT_0 || Result != WAIT_TIMEOUT)
+                                    if (Result != WAIT_FAILED && Result != WAIT_ABANDONED && Result != WAIT_TIMEOUT)
                                     {
                                         //on désalloc la mémoire allouée
                                         if (VirtualFreeEx(hProcess, hModule, 0, MEM_RELEASE))
